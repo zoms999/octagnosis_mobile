@@ -37,15 +37,24 @@
 							<p>아이디</p>
 						</div>
 						<div class="form-cont">
-							<input
-								type="text"
-								v-model.trim="Acunt.acuntId"
-								id="acuntId"
-								name="acuntId"
-								class="w300"
-								placeholder="아이디를 입력하세요"
-								required="required"
-							/>
+							<div class="inp-wrap">
+								<input
+									type="text"
+									v-model.trim="Acunt.acuntId"
+									id="acuntId"
+									name="acuntId"
+									class="w300"
+									placeholder="아이디를 입력하세요"
+									required="required"
+									ref="acuntIdInput"
+								/>
+								<button class="btn sm line-navy" @click="checkDuplicateId">
+									중복 체크
+								</button>
+								<div v-if="!Acunt.acuntId">
+									입력란이 비어 있습니다. 아이디를 입력하세요.
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="form">
@@ -61,6 +70,7 @@
 								class="w300"
 								placeholder="6자 이상, 영문, 숫자, 특수문자 사용"
 								required="required"
+								@input="checkPasswordMatch"
 							/>
 						</div>
 					</div>
@@ -70,14 +80,18 @@
 						</div>
 						<div class="form-cont">
 							<input
-								type="text"
-								v-model.trim="Acunt.PwConfirmation"
+								type="password"
+								v-model="pwConfirmation"
 								id="pwConfirmation"
 								name="pwConfirmation"
 								class="w300"
 								placeholder="비밀번호를 재입력하세요"
 								required="required"
+								@input="checkPasswordMatch"
 							/>
+						</div>
+						<div v-if="!passwordsMatch" class="error-message">
+							비밀번호가 일치하지 않습니다.
 						</div>
 					</div>
 					<div class="form">
@@ -343,10 +357,9 @@ import { useForm } from 'vee-validate';
 
 const Acunt = {
 	acuntId: '',
-	userType: 'C00101',
+	userType: 'C00102',
 	userId: '',
 	pw: '',
-	//pwConfirmation: '',
 	useYn: 'Y',
 	regDt: '',
 	leaveDt: '',
@@ -391,6 +404,11 @@ const { handleSubmit, errors } = useForm();
 const signUpSubmit = handleSubmit(async () => {
 	const acuntRequiredFields = ['acuntId', 'pw', 'pwConfirmation'];
 	const acuntEmptyFields = acuntRequiredFields.filter(field => !Acunt[field]);
+
+	if (!passwordsMatch.value) {
+		alert('비밀번호가 일치하지 않습니다.');
+		return;
+	}
 
 	// if (acuntEmptyFields.length > 0) {
 	// 	alert('Acunt 객체의 모든 필수 필드를 작성해주세요.');
@@ -441,6 +459,41 @@ const signUpSubmit = handleSubmit(async () => {
 		alert('회원가입에 실패했습니다. 다시 시도해주세요.');
 	}
 });
+
+const checkDuplicateId = async () => {
+	if (!Acunt.acuntId) {
+		// 입력된 값이 없는 경우 메시지를 표시합니다.
+		alert('아이디를 입력하세요.');
+		this.$refs.acuntIdInput.focus(); // 입력란에 포커스를 맞춥니다.
+		return;
+	}
+	try {
+		const response = await axios.post(
+			'http://localhost:8080/api/member/check-id',
+			{ acuntId: Acunt.acuntId },
+		);
+		if (response.data.isDuplicate) {
+			alert('사용 가능한 아이디입니다.');
+		} else {
+			alert('이미 사용 중인 아이디입니다.');
+		}
+	} catch (error) {
+		console.error(error);
+		alert('아이디 중복 체크에 실패했습니다.');
+	}
+};
+
+const passwordsMatch = ref(true);
+const pwConfirmation = ref('');
+const checkPasswordMatch = () => {
+	console.log('Password:', Acunt.pw);
+	console.log('Confirmation:', pwConfirmation.value);
+	passwordsMatch.value = Acunt.pw === pwConfirmation.value;
+};
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.error-message {
+	color: red;
+}
+</style>

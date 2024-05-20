@@ -15,9 +15,10 @@ import { createPinia } from 'pinia';
 
 import App from './App.vue';
 import router from './router';
+import globalFunction from './plugins/global-function';
 
 const app = createApp(App);
-
+app.use(globalFunction);
 app.use(createPinia());
 app.use(router);
 
