@@ -371,6 +371,11 @@ const Acunt = {
 	insDt: '',
 	uptId: '',
 	uptDt: '',
+
+	//pwConfirm: '',
+	//oldPw: '',
+	//newPw: '',
+	//newPwConfirm: '',
 };
 
 const Person = {
@@ -394,47 +399,24 @@ const Person = {
 };
 
 const { handleSubmit, errors } = useForm();
-const AcuntFieldsLabels = {
-	acuntId: '계정 ID',
-	pw: '비밀번호',
-};
-const PersonFieldsLabels = {
-	code: '코드',
-	persnNm: '이름',
-	sex: '성별',
-	phone: '전화번호',
-	email: '이메일',
-	zip: '우편번호',
-	addrStret: '도로명 주소',
-	addrLotNum: '지번 주소',
-	educt: '학력',
-	scholNm: '학교명',
-	scholMajor: '전공',
-	scholGrade: '학년',
-	job: '직업',
-	jobNm: '직장명',
-	jobDuty: '직무',
-	agreement: '동의',
-};
+
 // 회원가입 버튼 클릭 시 호출될 함수
 const signUpSubmit = handleSubmit(async () => {
-	const acuntRequiredFields = ['acuntId', 'pw'];
+	const acuntRequiredFields = ['acuntId', 'pw', 'pwConfirmation'];
 	const acuntEmptyFields = acuntRequiredFields.filter(field => !Acunt[field]);
 
-	if (acuntEmptyFields.length > 0) {
-		const missingFields = acuntEmptyFields
-			.map(field => AcuntFieldsLabels[field])
-			.join(', ');
-		alert(`다음 필드를 작성해주세요: ${missingFields}`);
-		return;
-	}
-	if (passwordsMatch.value == '') {
-		alert('비밀번호 확인을 입력하세요.');
+	if (!passwordsMatch.value) {
+		alert('비밀번호가 일치하지 않습니다.');
 		return;
 	}
 
+	// if (acuntEmptyFields.length > 0) {
+	// 	alert('Acunt 객체의 모든 필수 필드를 작성해주세요.');
+	// 	return;
+	// }
+
 	const personRequiredFields = [
-		//'code',
+		'code',
 		'persnNm',
 		'sex',
 		'phone',
@@ -455,18 +437,11 @@ const signUpSubmit = handleSubmit(async () => {
 		field => !Person[field],
 	);
 
-	if (personEmptyFields.length > 0) {
-		const missingFields = personEmptyFields
-			.map(field => PersonFieldsLabels[field])
-			.join(', ');
-		alert(`다음 필드를 작성해주세요: ${missingFields}`);
-		return;
-	}
+	// if (personEmptyFields.length > 0) {
+	// 	alert('Person 객체의 모든 필수 필드를 작성해주세요.');
+	// 	return;
+	// }
 
-	if (!passwordsMatch.value) {
-		alert('비밀번호가 일치하지 않습니다.');
-		return;
-	}
 	const combinedData = {
 		acunt: Acunt,
 		personal: Person,
