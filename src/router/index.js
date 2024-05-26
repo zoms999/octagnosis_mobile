@@ -1,9 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
+import PersonJoinView from '../views/Member/Register.vue';
+import OrgJoinView from '../views/Member/OrgRegister.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
+		{
+			path: '/Register',
+			name: 'register',
+			component: PersonJoinView,
+		},
+		{
+			path: '/OrgRegister',
+			name: 'orgregister',
+			component: OrgJoinView,
+		},
 		{
 			path: '/',
 			name: 'home',

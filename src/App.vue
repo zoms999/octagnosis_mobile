@@ -1,10 +1,9 @@
 <template>
-	<MemberJoin></MemberJoin>
+	<TheView></TheView>
 	<TheBottom></TheBottom>
 </template>
 <script setup>
-import { RouterLink, RouterView } from 'vue-router';
+import TheView from '@/layouts/TheView.vue';
 import TheBottom from './layouts/TheBottom.vue';
-import MemberJoin from './views/Member/Register.vue';
 </script>
 <style scoped></style>

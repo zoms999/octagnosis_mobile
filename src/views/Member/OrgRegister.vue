@@ -9,6 +9,34 @@
 			</button>
 			<div class="form-wrap mt10">
 				<div class="form-group">
+					<p class="txt-guide">소속기관에서 발급받으신 코드를 입력해주세요.</p>
+					<div class="form">
+						<div class="form-title">
+							<p>코드입력</p>
+						</div>
+						<div class="form-cont">
+							<div class="inp-wrap">
+								<input
+									v-model.trim="Person.code"
+									id="code"
+									name="code"
+									type="text"
+									class="w300"
+									placeholder="발급받으신 코드 입력"
+									required
+								/>
+								<button class="btn sm line-navy" @click="validateCode">
+									유효성 확인
+								</button>
+								<div v-if="orgName">소속기관명: {{ orgName }}</div>
+								<div v-if="codeInvalid" class="error-message">
+									유효하지 않은 코드입니다.
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
 					<p class="txt-guide">아래 해당 사항을 입력해 주세요.</p>
 					<div class="form">
 						<div class="form-title">
@@ -394,8 +422,37 @@ const PersonFieldsLabels = {
 	jobDuty: '직무',
 	agreement: '동의',
 };
+
+const orgName = ref('');
+const codeInvalid = ref(false);
+
+const validateCode = async () => {
+	try {
+		//alert(Person.code);
+		const response = await axios.post(
+			'http://localhost:8080/api/member/validate-code',
+			{ urlCd: Person.code },
+		);
+		if (response.data.exists) {
+			orgName.value = response.data.compyNm;
+			codeInvalid.value = false;
+		} else {
+			orgName.value = '';
+			codeInvalid.value = true;
+		}
+	} catch (error) {
+		console.error(error);
+		codeInvalid.value = true;
+	}
+};
+
 // 회원가입 버튼 클릭 시 호출될 함수
 const signUpSubmit = handleSubmit(async () => {
+	if (codeInvalid.value) {
+		alert('유효하지 않은 코드입니다.유효성을 진행해 주세요.');
+		return;
+	}
+
 	const acuntRequiredFields = ['acuntId', 'pw'];
 	const acuntEmptyFields = acuntRequiredFields.filter(field => !Acunt[field]);
 
