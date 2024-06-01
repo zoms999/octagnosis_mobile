@@ -53,7 +53,10 @@
 								</button>
 							</div>
 							<div v-if="orgName">소속기관명: {{ orgName }}</div>
-							<div v-if="codeInvalid" class="error-message">
+							<div
+								v-if="codeValidationAttempted && !codeInvalid"
+								class="error-message"
+							>
 								유효하지 않은 코드입니다.
 							</div>
 						</div>
@@ -115,8 +118,7 @@ const submit = async () => {
 			'http://localhost:8080/api/member/login',
 			loginData.value,
 		);
-		alert(codeInvalid.value);
-		if (response.data.success && codeInvalid.value == false) {
+		if (response.data.success && codeInvalid.value == true) {
 			console.log(response.data);
 			login(response.data.acunt);
 			console.log('codeInvalid  ' + codeInvalid.value);
@@ -135,6 +137,7 @@ const submit = async () => {
 
 const orgName = ref('');
 const codeInvalid = ref(false);
+const codeValidationAttempted = ref(false);
 
 const validateCode = async () => {
 	try {
@@ -143,16 +146,18 @@ const validateCode = async () => {
 			'http://localhost:8080/api/member/validate-code',
 			{ urlCd: loginData.value.code },
 		);
+		codeValidationAttempted.value = true;
 		if (response.data.exists) {
 			orgName.value = response.data.compyNm;
-			codeInvalid.value = false;
+			codeInvalid.value = true;
 		} else {
 			orgName.value = '';
-			codeInvalid.value = true;
+			codeInvalid.value = false;
 		}
 	} catch (error) {
 		console.error(error);
-		codeInvalid.value = true;
+		codeValidationAttempted.value = true;
+		codeInvalid.value = false;
 	}
 };
 

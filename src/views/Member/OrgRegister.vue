@@ -29,7 +29,7 @@
 									유효성 확인
 								</button>
 								<div v-if="orgName">소속기관명: {{ orgName }}</div>
-								<div v-if="codeInvalid" class="error-message">
+								<div v-if="codeInvalid == false" class="error-message">
 									유효하지 않은 코드입니다.
 								</div>
 							</div>
@@ -425,6 +425,7 @@ const PersonFieldsLabels = {
 
 const orgName = ref('');
 const codeInvalid = ref(false);
+const codeValidationAttempted = ref(false);
 
 const validateCode = async () => {
 	try {
@@ -433,22 +434,24 @@ const validateCode = async () => {
 			'http://localhost:8080/api/member/validate-code',
 			{ urlCd: Person.code },
 		);
+		codeValidationAttempted.value = true;
 		if (response.data.exists) {
 			orgName.value = response.data.compyNm;
-			codeInvalid.value = false;
+			codeInvalid.value = true;
 		} else {
 			orgName.value = '';
-			codeInvalid.value = true;
+			codeInvalid.value = false;
 		}
 	} catch (error) {
 		console.error(error);
-		codeInvalid.value = true;
+		codeValidationAttempted.value = true;
+		codeInvalid.value = false;
 	}
 };
 
 // 회원가입 버튼 클릭 시 호출될 함수
 const signUpSubmit = handleSubmit(async () => {
-	if (codeInvalid.value) {
+	if (codeInvalid.value == false) {
 		alert('유효하지 않은 코드입니다.유효성을 진행해 주세요.');
 		return;
 	}
