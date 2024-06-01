@@ -47,7 +47,7 @@
 						<li>
 							<button
 								class="btn-txt btn-find-id"
-								onclick="popOpenAndDim('layerFindId', true)"
+								@click="showFindIdModal = true"
 							>
 								아이디 찾기
 							</button>
@@ -55,7 +55,7 @@
 						<li>
 							<button
 								class="btn-txt btn-find-pw"
-								onclick="popOpenAndDim('layerFindPw', true)"
+								@click="showFindPwModal = true"
 							>
 								비밀번호 찾기
 							</button>
@@ -65,6 +65,11 @@
 			</div>
 		</div>
 	</div>
+	<FindIdModal :isVisible="showFindIdModal" @close="showFindIdModal = false" />
+	<FindPasswordModal
+		:isVisible="showFindPwModal"
+		@close="showFindPwModal = false"
+	/>
 </template>
 
 <script setup>
@@ -73,6 +78,9 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
+import FindIdModal from './FindIdModal.vue';
+import FindPasswordModal from './FindPasswordModal.vue';
+
 const store = useAuthStore();
 const { isAuthenticated } = storeToRefs(store);
 const { login } = store;
@@ -83,6 +91,9 @@ const loginData = ref({
 	acuntId: '',
 	pw: '',
 });
+
+const showFindIdModal = ref(false);
+const showFindPwModal = ref(false);
 
 const submit = async () => {
 	try {
