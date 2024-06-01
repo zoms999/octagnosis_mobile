@@ -34,6 +34,30 @@
 							/>
 						</div>
 					</div>
+					<p class="txt-guide">소속기관에서 발급받으신 코드를 입력해주세요.</p>
+
+					<div class="form">
+						<div class="form-title">
+							<p>회차코드</p>
+						</div>
+						<div class="form-cont">
+							<div class="inp-wrap">
+								<input
+									type="text"
+									v-model="loginData.code"
+									placeholder="발급받으신 코드 입력"
+									required="required"
+								/>
+								<button class="btn sm line-navy w120 p0" @click="validateCode">
+									유효성 확인
+								</button>
+							</div>
+							<div v-if="orgName">소속기관명: {{ orgName }}</div>
+							<div v-if="codeInvalid" class="error-message">
+								유효하지 않은 코드입니다.
+							</div>
+						</div>
+					</div>
 				</div>
 
 				<div class="btn-wrap mt30">
@@ -82,6 +106,7 @@ const router = useRouter();
 const loginData = ref({
 	acuntId: '',
 	pw: '',
+	code: '',
 });
 
 const submit = async () => {
@@ -90,10 +115,11 @@ const submit = async () => {
 			'http://localhost:8080/api/member/login',
 			loginData.value,
 		);
-		if (response.data.success) {
+		alert(codeInvalid.value);
+		if (response.data.success && codeInvalid.value == false) {
 			console.log(response.data);
 			login(response.data.acunt);
-
+			console.log('codeInvalid  ' + codeInvalid.value);
 			window.alert('로그인하였습니다.');
 			console.log('LoginView isAuthenticated --' + isAuthenticated.value);
 			console.log('LoginView acuntId --' + response.data.acunt.acuntId);
@@ -104,6 +130,29 @@ const submit = async () => {
 	} catch (error) {
 		console.error(error);
 		alert('로그인 중 오류가 발생했습니다.');
+	}
+};
+
+const orgName = ref('');
+const codeInvalid = ref(false);
+
+const validateCode = async () => {
+	try {
+		//alert(Person.code);
+		const response = await axios.post(
+			'http://localhost:8080/api/member/validate-code',
+			{ urlCd: loginData.value.code },
+		);
+		if (response.data.exists) {
+			orgName.value = response.data.compyNm;
+			codeInvalid.value = false;
+		} else {
+			orgName.value = '';
+			codeInvalid.value = true;
+		}
+	} catch (error) {
+		console.error(error);
+		codeInvalid.value = true;
 	}
 };
 

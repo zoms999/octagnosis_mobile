@@ -20,8 +20,23 @@ import globalFunction from './plugins/global-function';
 const app = createApp(App);
 app.use(globalFunction);
 app.use(createPinia());
+
+app.config.globalProperties.$authToken = localStorage.getItem('authToken');
+router.beforeEach((to, from, next) => {
+	const authToken = app.config.globalProperties.$authToken;
+
+	if (to.matched.some(record => record.meta.requiresAuth)) {
+		// 로그인 필요한 페이지 접근 시
+		if (!authToken) {
+			next('/login'); // 로그인 페이지로 리다이렉트
+		} else {
+			next();
+		}
+	} else {
+		next();
+	}
+});
+
 app.use(router);
-
 app.mount('#app');
-
 console.log('MODE', import.meta.env.VITE_APP_API_URL);

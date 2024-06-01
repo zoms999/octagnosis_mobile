@@ -4,7 +4,7 @@
 			<h1 class="logo v2"><a href="javascript:void(0);">옥타그노시스</a></h1>
 			<!-- 20230626 수정 -->
 			<h2 class="title">회원가입</h2>
-			<button class="btn btn-existing">
+			<button class="btn btn-existing" @click="navigateToLogin">
 				이미 가입하신 분은 여기를 클릭하세요<i class="ic-existing"></i>
 			</button>
 			<div class="form-wrap mt10">
@@ -332,6 +332,8 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { useForm } from 'vee-validate';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const Acunt = {
 	acuntId: '',
@@ -394,6 +396,11 @@ const PersonFieldsLabels = {
 	jobDuty: '직무',
 	agreement: '동의',
 };
+
+const navigateToLogin = () => {
+	router.push('/login'); // Update this with your actual login route
+};
+
 // 회원가입 버튼 클릭 시 호출될 함수
 const signUpSubmit = handleSubmit(async () => {
 	const acuntRequiredFields = ['acuntId', 'pw'];
