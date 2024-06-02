@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import PersonJoinView from '../views/Member/Register.vue';
 import OrgJoinView from '../views/Member/OrgRegister.vue';
-import LoginView from '../views/Member/Login.vue';
+import LoginView from '../views/Login/Login.vue';
 import OrgLoginView from '../views/Member/OrgLogin.vue';
 import TestStartView from '../views/Test/TestStart.vue';
 

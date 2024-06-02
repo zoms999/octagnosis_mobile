@@ -1,24 +1,25 @@
 <template>
-	<div class="header">
-		<div class="d-flex justify-content-between">
-			<div class="TopLeft">
-				<!-- <img src="@/assets/img/logo3.png" class="logo" /> -->
-			</div>
-			<div class="TopRight">
-				<div class="d-flex mt-1">
-					<div class="me-3" v-if="isAuthenticated">
-						{{ acuntId }}님 안녕하세요
-					</div>
-					<div v-if="!isAuthenticated">
-						<router-link to="/login" class="text-white"></router-link>
-					</div>
-					<div v-if="isAuthenticated">
-						<button @click="handleLogout" class="text-white btn btn-link">
-							로그아웃
-						</button>
-					</div>
+	<div id="header" style="height: 90px">
+		<div class="container" style="padding-top: 5px">
+			<!-- 20230626 수정 -->
+			<h1 class="logo v1"><a href="javascript:void(0);">옥타그노시스</a></h1>
+			<div class="etc">
+				<p class="user">
+					Welcome,<strong>{{ name }}</strong
+					>님
+				</p>
+				<div v-if="isAuthenticated" class="logout">
+					<span class="mx-3">|</span>
+					<span @click="handleLogout" clsss="Poit" style="cursor: pointer">
+						정보수정
+					</span>
+					<span class="mx-3">|</span>
+					<span @click="handleLogout" clsss="Poit" style="cursor: pointer">
+						로그아웃
+					</span>
 				</div>
 			</div>
+			<!--// 20230626 수정 -->
 		</div>
 	</div>
 </template>
@@ -29,7 +30,7 @@ import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 
 const store = useAuthStore();
-const { acuntId, expirDt, isAuthenticated } = storeToRefs(store);
+const { acuntId, expirDt, isAuthenticated, name, email } = storeToRefs(store);
 const { logout } = store;
 const router = useRouter();
 
@@ -66,5 +67,10 @@ const handleLogout = () => {
 .header {
 	background: linear-gradient(135deg, #1db1ad 0%, #3d7aed 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1db1ad', endColorstr='#3d7aed',GradientType=1 );
+	height: 120px !important;
+}
+
+.logout {
+	color: #ffffff;
 }
 </style>

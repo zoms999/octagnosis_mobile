@@ -8,6 +8,12 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppAlert: typeof import('./src/components/app/AppAlert.vue')['default']
+    AppError: typeof import('./src/components/app/AppError.vue')['default']
+    AppGrid: typeof import('./src/components/app/AppGrid.vue')['default']
+    AppLoading: typeof import('./src/components/app/AppLoading.vue')['default']
+    AppModal: typeof import('./src/components/app/AppModal.vue')['default']
+    AppModalV1: typeof import('./src/components/app/AppModalV1.vue')['default']
+    AppPagination: typeof import('./src/components/app/AppPagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

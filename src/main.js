@@ -9,6 +9,7 @@ import './assets/fonts.css';
 import './assets/reset.css';
 import './assets/sub.css';
 import './assets/utility.css';
+import './assets/base.css';
 
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';

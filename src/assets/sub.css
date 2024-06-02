@@ -39,7 +39,7 @@
 .join .form-wrap .form-group .txt-guide + * {margin-top: 3rem;}
 
 /* 로그인 */
-.login {padding-top: 4.8rem; min-height: calc(100vh - 11rem);}
+.login {padding-top: 4.8rem;}
 .login .logo {margin: 0 auto;}
 .login .container {max-width: 63.2rem; margin-top: 3rem;}
 .login .login-form {border: 1px solid #CFD4DA; background-color: #ffffff; padding: 4rem 5rem;}

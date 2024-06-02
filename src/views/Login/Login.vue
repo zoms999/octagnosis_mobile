@@ -37,7 +37,7 @@
 				</div>
 
 				<div class="btn-wrap mt30">
-					<button class="btn md round fill-navy w300" @click="submit">
+					<button class="btn md round fill-navy w300" @click="goLogin">
 						로그인
 					</button>
 				</div>
@@ -75,11 +75,15 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import { useAxios } from '@/hooks/useAxios';
+import { useAlert } from '@/hooks/useAlert';
+
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
-import FindIdModal from './FindIdModal.vue';
-import FindPasswordModal from './FindPasswordModal.vue';
+import { useAuthStore } from '@/stores/auth';
+
+import FindIdModal from '@/views/Member/FindIdModal.vue';
+import FindPasswordModal from '@/views/Member/FindPasswordModal.vue';
 
 const store = useAuthStore();
 const { isAuthenticated } = storeToRefs(store);
@@ -92,30 +96,54 @@ const loginData = ref({
 	pw: '',
 });
 
+const { vAlert, vSuccess } = useAlert();
+
 const showFindIdModal = ref(false);
 const showFindPwModal = ref(false);
 
-const submit = async () => {
-	try {
-		const response = await axios.post(
-			'http://localhost:8080/api/member/login',
-			loginData.value,
-		);
-		if (response.data.success) {
-			console.log(response.data);
-			login(response.data.acunt);
+// Axios / Route	***************************
 
-			window.alert('로그인하였습니다.');
-			console.log('LoginView isAuthenticated --' + isAuthenticated.value);
-			console.log('LoginView acuntId --' + response.data.acunt.acuntId);
-			router.push('/testStart');
-		} else {
-			alert('로그인 실패: ' + response.data.message);
-		}
-	} catch (error) {
-		console.error(error);
-		alert('로그인 중 오류가 발생했습니다.');
-	}
+const Procs = ref({
+	login: { path: '/api/member/login', loading: false },
+});
+
+const { data, execUrl, reqUrl } = useAxios(
+	'',
+	{ method: 'post' },
+	{
+		immediate: false,
+		onSuccess: () => {
+			switch (reqUrl.value) {
+				case Procs.value.login.path:
+					Procs.value.login.loading = false;
+
+					login(data.value.acunt, data.value.persn);
+
+					//vSuccess('로그인하였습니다.');
+					//console.log('LoginView isAuthenticated --' + isAuthenticated.value);
+					//console.log('LoginView acuntId --' + data.value.acunt.acuntId);
+					router.push('/testStart');
+
+					break;
+
+				default:
+					break;
+			}
+		},
+		onError: err => {
+			vAlert(err.message);
+			// Procs의 모든 속성에 대해 반복문을 실행하여 loading 값을 true로 변경
+			for (const key in Procs.value) {
+				if (Object.hasOwnProperty.call(Procs.value, key)) {
+					Procs.value[key].loading = false;
+				}
+			}
+		},
+	},
+);
+
+const goLogin = () => {
+	execUrl(Procs.value.login.path, loginData.value);
 };
 
 const findId = () => {

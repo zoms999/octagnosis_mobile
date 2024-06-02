@@ -6,20 +6,24 @@ export const useAuthStore = defineStore('auth', {
 		acuntId: null,
 		expirDt: null,
 		regDt: null,
+		name: null,
+		email: null,
 	}),
 	actions: {
-		login(userData) {
+		login(userData, persn) {
 			this.isAuthenticated = true;
 			this.acuntId = userData.acuntId;
 			this.expirDt = userData.expirDt;
 			this.regDt = userData.regDt;
+			this.name = persn.persnNm;
+			this.email = persn.email;
 
 			sessionStorage.setItem('acuntId', userData.acuntId);
 			sessionStorage.setItem('expirDt', userData.expirDt);
 		},
 		logout() {
 			this.isAuthenticated = false;
-			this.userEmail = null;
+
 			sessionStorage.removeItem('acuntId');
 			sessionStorage.removeItem('expirDt');
 		},
