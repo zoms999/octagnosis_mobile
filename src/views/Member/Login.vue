@@ -102,8 +102,8 @@ const submit = async () => {
 			loginData.value,
 		);
 		if (response.data.success) {
-			console.log(response.data);
-			login(response.data.acunt);
+			console.log(response.data.personal);
+			login(response.data);
 
 			window.alert('로그인하였습니다.');
 			console.log('LoginView isAuthenticated --' + isAuthenticated.value);
