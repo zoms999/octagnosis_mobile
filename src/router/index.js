@@ -4,6 +4,7 @@ import PersonJoinView from '../views/Member/Register.vue';
 import OrgJoinView from '../views/Member/OrgRegister.vue';
 import LoginView from '../views/Member/Login.vue';
 import OrgLoginView from '../views/Member/OrgLogin.vue';
+import TestStartView from '../views/Test/TestStart.vue';
 
 const routes = [
 	{
@@ -25,6 +26,11 @@ const routes = [
 		path: '/OrgLogin',
 		name: 'orglogin',
 		component: OrgLoginView,
+	},
+	{
+		path: '/TestStart',
+		name: 'testStart',
+		component: TestStartView,
 	},
 	{
 		path: '/',

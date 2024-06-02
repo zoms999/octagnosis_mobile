@@ -108,7 +108,7 @@ const submit = async () => {
 			window.alert('로그인하였습니다.');
 			console.log('LoginView isAuthenticated --' + isAuthenticated.value);
 			console.log('LoginView acuntId --' + response.data.acunt.acuntId);
-			router.push('/dashboard');
+			router.push('/testStart');
 		} else {
 			alert('로그인 실패: ' + response.data.message);
 		}
