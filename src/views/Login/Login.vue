@@ -145,7 +145,6 @@ const { data, execUrl, reqUrl } = useAxios(
 const goLogin = () => {
 	execUrl(Procs.value.login.path, loginData.value);
 };
-
 const findId = () => {
 	alert('아이디 찾기 기능은 아직 구현되지 않았습니다.');
 };
