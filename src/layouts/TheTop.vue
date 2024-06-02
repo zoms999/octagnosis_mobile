@@ -5,7 +5,7 @@
 			<h1 class="logo v1"><a href="javascript:void(0);">옥타그노시스</a></h1>
 			<div class="etc">
 				<p class="user">
-					Welcome,<strong>{{ name }}</strong
+					Welcome,<strong>{{ persnNm }}</strong
 					>님
 				</p>
 				<div v-if="isAuthenticated" class="logout">
@@ -30,7 +30,8 @@ import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 
 const store = useAuthStore();
-const { acuntId, expirDt, isAuthenticated, name, email } = storeToRefs(store);
+const { acuntId, expirDt, isAuthenticated, persnNm, email } =
+	storeToRefs(store);
 const { logout } = store;
 const router = useRouter();
 
