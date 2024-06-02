@@ -3,6 +3,7 @@
 		<header class="header">
 			<div class="welcome">이름 님 환영합니다.</div>
 			<div class="actions">
+				<button class="btn">결제후 검사시작</button>
 				<button class="btn">정보수정</button>
 				<button class="btn">로그아웃</button>
 			</div>
