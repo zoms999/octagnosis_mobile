@@ -117,7 +117,7 @@ const { data, execUrl, reqUrl } = useAxios(
 				case Procs.value.login.path:
 					Procs.value.login.loading = false;
 
-					login(data.value.acunt, data.value.persn);
+					login(data.value.acunt, data.value.personal);
 
 					//vSuccess('로그인하였습니다.');
 					//console.log('LoginView isAuthenticated --' + isAuthenticated.value);

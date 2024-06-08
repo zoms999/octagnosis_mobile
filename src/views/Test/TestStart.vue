@@ -1,4 +1,12 @@
 <template>
+	<div class="header">
+		<div class="welcome">환영합니다!</div>
+		<div class="actions">
+			<button class="btn btn-primary" @click="navigateToPayment">
+				결제하러가기
+			</button>
+		</div>
+	</div>
 	<table class="table table-bordered Tbl1">
 		<thead>
 			<tr>
@@ -29,7 +37,13 @@
 </template>
 
 <script setup>
-// JavaScript 코드는 여기서 추가 가능합니다.
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const navigateToPayment = () => {
+	router.push('/testPayment');
+};
 </script>
 
 <style lang="scss" scoped>

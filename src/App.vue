@@ -31,13 +31,13 @@ const router = useRouter();
 const store = useAuthStore();
 const { isAuthenticated } = storeToRefs(store);
 
-router.beforeEach((to, from, next) => {
-	if (!isAuthenticated.value && to.name !== 'login') {
-		next({ name: 'login' });
-	} else {
-		next();
-	}
-});
+// router.beforeEach((to, from, next) => {
+// 	if (!isAuthenticated.value && to.name !== 'login') {
+// 		next({ name: 'login' });
+// 	} else {
+// 		next();
+// 	}
+// });
 </script>
 <style scoped>
 .LayoutTop {

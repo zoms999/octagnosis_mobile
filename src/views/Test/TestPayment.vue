@@ -14,10 +14,10 @@
 			>
 				<option
 					v-for="product in products"
-					:key="product.prodId"
+					:key="product.prodtId"
 					:value="product"
 				>
-					{{ product.prodNm }}
+					{{ product.prodtNm }}
 				</option>
 			</select>
 			<p>가격: {{ selectedProduct ? selectedProduct.price : 0 }} 원</p>
@@ -37,15 +37,28 @@
 		</div>
 
 		<button class="payment-button" @click="handlePayment">결제하기</button>
+
+		<!-- Modal -->
+		<div v-if="showModal" class="modal">
+			<div class="modal-content">
+				<CheckoutView
+					:productName="selectedProduct.prodtNm"
+					:productPrice="selectedProduct.price"
+				/>
+				<button class="close-button" @click="closeModal">닫기</button>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import CheckoutView from '../TossPayment/CheckoutView.vue';
 
 const products = ref([]);
 const selectedProduct = ref(null);
+const showModal = ref(false);
 
 const fetchProducts = async () => {
 	try {
@@ -65,12 +78,26 @@ const updatePrice = () => {
 };
 
 const handlePayment = () => {
-	const checkoutPopup = window.open(
-		'/CheckoutView',
-		'_blank',
-		'width=800,height=800,resizable=yes',
-	);
+	if (selectedProduct.value) {
+		showModal.value = true;
+	}
 };
+
+const closeModal = () => {
+	showModal.value = false;
+};
+
+// const handlePayment = () => {
+// 	if (selectedProduct.value) {
+// 		const productName = encodeURIComponent(selectedProduct.value.prodtNm);
+// 		const productPrice = selectedProduct.value.price;
+// 		const checkoutPopup = window.open(
+// 			`/CheckoutView?productName=${productName}&productPrice=${productPrice}`,
+// 			'_blank',
+// 			'width=800,height=800,resizable=yes',
+// 		);
+// 	}
+// };
 
 onMounted(() => {
 	fetchProducts();
@@ -114,6 +141,42 @@ button.payment-button {
 }
 
 button.payment-button:hover {
+	background-color: #0056b3;
+}
+
+/* Modal Styles */
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.modal-content {
+	background-color: #fff;
+	padding: 10px;
+	border-radius: 8px;
+	width: 90%;
+	max-width: 750px;
+}
+
+.close-button {
+	margin-top: 10px;
+	padding: 10px 20px;
+	font-size: 16px;
+	color: #fff;
+	background-color: #007bff;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.close-button:hover {
 	background-color: #0056b3;
 }
 </style>
