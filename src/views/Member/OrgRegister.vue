@@ -360,6 +360,7 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { useForm } from 'vee-validate';
+import router from '@/router';
 
 const Acunt = {
 	acuntId: '',
@@ -519,6 +520,7 @@ const signUpSubmit = handleSubmit(async () => {
 		);
 		console.log(response.data);
 		alert('회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.');
+		router.push({ name: 'orglogin' });
 	} catch (error) {
 		console.error(error.response);
 		alert('회원가입에 실패했습니다. 다시 시도해주세요.');

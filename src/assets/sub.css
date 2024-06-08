@@ -41,7 +41,7 @@
 /* 로그인 */
 .login {padding-top: 4.8rem;}
 .login .logo {margin: 0 auto;}
-.login .container {max-width: 63.2rem; margin-top: 3rem;}
+.login .container {max-width: 70rem; margin-top: 3rem;}
 .login .login-form {border: 1px solid #CFD4DA; background-color: #ffffff; padding: 4rem 5rem;}
 .login .login-form .title {text-align: center; font-size: 3.2rem; font-weight: 700;}
 .login .login-form .form-group {border-top: 1px solid #CFD4DA; border-bottom: 1px solid #CFD4DA; margin-top: 2rem; padding: 3rem;}

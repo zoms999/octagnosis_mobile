@@ -30,7 +30,7 @@ import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 
 const store = useAuthStore();
-const { acuntId, expirDt, isAuthenticated, persnNm, email } =
+const { acuntId, expirDt, isAuthenticated, persnNm, email, orgId } =
 	storeToRefs(store);
 const { logout } = store;
 const router = useRouter();
@@ -47,8 +47,9 @@ if (acuntIdFromStorage) {
 }
 console.log('acuntId ->' + acuntId.value);
 const handleLogout = () => {
+	const loginRoute = orgId.value == '0' ? 'login' : 'orglogin';
 	logout();
-	router.push({ name: 'login' });
+	router.push({ name: loginRoute });
 };
 </script>
 

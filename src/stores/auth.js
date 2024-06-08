@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', {
 		persnNm: null,
 		phone: null,
 		sex: null,
+		orgId: null,
 	}),
 	actions: {
 		login(acunt, persn) {
@@ -22,6 +23,7 @@ export const useAuthStore = defineStore('auth', {
 			this.persnNm = persn.persnNm;
 			this.phone = persn.phone;
 			this.sex = persn.sex;
+			this.orgId = persn.orgId;
 
 			sessionStorage.setItem('acuntId', acunt.acuntId);
 			sessionStorage.setItem('expirDt', acunt.expirDt);

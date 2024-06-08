@@ -17,6 +17,7 @@
 								class="w300"
 								placeholder="아이디를 입력하세요"
 								required="required"
+								ref="txtAcuntId"
 							/>
 						</div>
 					</div>
@@ -31,6 +32,7 @@
 								class="w300"
 								placeholder="6자 이상, 영문, 숫자, 특수문자 사용"
 								required="required"
+								ref="txtPw"
 							/>
 						</div>
 					</div>
@@ -74,7 +76,6 @@
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
 import { useAxios } from '@/hooks/useAxios';
 import { useAlert } from '@/hooks/useAlert';
 
@@ -94,9 +95,14 @@ const router = useRouter();
 const loginData = ref({
 	acuntId: '',
 	pw: '',
+	code: '',
+	orgId: '0',
 });
 
 const { vAlert, vSuccess } = useAlert();
+
+const txtAcuntId = ref(null);
+const txtPw = ref(null);
 
 const showFindIdModal = ref(false);
 const showFindPwModal = ref(false);
@@ -117,7 +123,7 @@ const { data, execUrl, reqUrl } = useAxios(
 				case Procs.value.login.path:
 					Procs.value.login.loading = false;
 
-					login(data.value.acunt, data.value.personal);
+					login(data.value.acunt, data.value.persn);
 
 					//vSuccess('로그인하였습니다.');
 					//console.log('LoginView isAuthenticated --' + isAuthenticated.value);
@@ -143,6 +149,13 @@ const { data, execUrl, reqUrl } = useAxios(
 );
 
 const goLogin = () => {
+	if (!validNotBlank(loginData.value.acuntId, '아이디', txtAcuntId.value)) {
+		return;
+	}
+	if (!validNotBlank(loginData.value.pw, '비밀번호', txtPw.value)) {
+		return;
+	}
+
 	execUrl(Procs.value.login.path, loginData.value);
 };
 const findId = () => {
@@ -151,6 +164,21 @@ const findId = () => {
 
 const findPw = () => {
 	alert('비밀번호 찾기 기능은 아직 구현되지 않았습니다.');
+};
+
+// Etc	**************************************
+
+const validNotBlank = (val, tit, obj) => {
+	val = typeof val != 'string' ? val.toString() : val;
+	var Val = val.replace(/\s/g, '');
+	if (Val.length == 0) {
+		vAlert(tit == null ? `입력해 주세요.` : `${tit}를(을) 입력해 주세요.`);
+		if (obj != null) {
+			obj.focus();
+		}
+		return false;
+	}
+	return true;
 };
 </script>
 

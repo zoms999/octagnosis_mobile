@@ -17,6 +17,7 @@
 								class="w300"
 								placeholder="아이디를 입력하세요"
 								required="required"
+								ref="txtAcuntId"
 							/>
 						</div>
 					</div>
@@ -31,6 +32,7 @@
 								class="w300"
 								placeholder="6자 이상, 영문, 숫자, 특수문자 사용"
 								required="required"
+								ref="txtPw"
 							/>
 						</div>
 					</div>
@@ -46,25 +48,25 @@
 									type="text"
 									v-model="loginData.code"
 									placeholder="발급받으신 코드 입력"
+									ref="txtTurnConnCd"
 									required="required"
 								/>
-								<button class="btn sm line-navy w120 p0" @click="validateCode">
+								<button class="btn sm line-navy w110 p0" @click="validateCode">
 									유효성 확인
 								</button>
 							</div>
-							<div v-if="orgName">소속기관명: {{ orgName }}</div>
-							<div
-								v-if="codeValidationAttempted && !codeInvalid"
-								class="error-message"
-							>
+							<div v-if="codeInvalid == false" class="NotOk">
 								유효하지 않은 코드입니다.
+							</div>
+							<div v-if="codeInvalid == true" class="Ok">
+								정상코드 확인되었습니다.
 							</div>
 						</div>
 					</div>
 				</div>
 
 				<div class="btn-wrap mt30">
-					<button class="btn md round fill-navy w300" @click="submit">
+					<button class="btn md round fill-navy w300" @click="goLogin">
 						로그인
 					</button>
 				</div>
@@ -96,12 +98,11 @@
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
+import { useAxios } from '@/hooks/useAxios';
+import { useAlert } from '@/hooks/useAlert';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import { storeToRefs } from 'pinia';
 const store = useAuthStore();
-const { isAuthenticated } = storeToRefs(store);
 const { login } = store;
 
 const router = useRouter();
@@ -110,55 +111,96 @@ const loginData = ref({
 	acuntId: '',
 	pw: '',
 	code: '',
+	orgId: '0',
 });
 
-const submit = async () => {
-	try {
-		const response = await axios.post(
-			'http://localhost:8080/api/member/login',
-			loginData.value,
-		);
-		if (response.data.success && codeInvalid.value == true) {
-			console.log(response.data);
-			login(response.data.acunt);
-			console.log('codeInvalid  ' + codeInvalid.value);
-			window.alert('로그인하였습니다.');
-			console.log('LoginView isAuthenticated --' + isAuthenticated.value);
-			console.log('LoginView acuntId --' + response.data.acunt.acuntId);
-			router.push('/dashboard');
-		} else {
-			alert('로그인 실패: ' + response.data.message);
-		}
-	} catch (error) {
-		console.error(error);
-		alert('로그인 중 오류가 발생했습니다.');
+const { vAlert, vSuccess } = useAlert();
+
+const txtAcuntId = ref(null);
+const txtPw = ref(null);
+const txtTurnConnCd = ref(null);
+
+const Procs = ref({
+	login: { path: '/api/member/login', loading: false },
+	chkTurnConnCd: { path: '/api/OrgTurn/chkTurnConnCd', loading: false },
+});
+
+const { data, execUrl, reqUrl } = useAxios(
+	'',
+	{ method: 'post' },
+	{
+		immediate: false,
+		onSuccess: () => {
+			switch (reqUrl.value) {
+				case Procs.value.login.path:
+					Procs.value.login.loading = false;
+					login(data.value.acunt, data.value.persn);
+					window.alert('로그인하였습니다.');
+					router.push('/testStart');
+
+					break;
+				case Procs.value.chkTurnConnCd.path:
+					if (data.value.ExistYn == 'Y') {
+						loginData.value.orgId = data.value.OrgTurn.orgId;
+						codeInvalid.value = true;
+						vSuccess('회차코드 확인되었습니다.');
+					} else {
+						loginData.value.code = '';
+						loginData.value.orgId = '0';
+						codeInvalid.value = false;
+						vAlert('잘못된 회차코드 입니다.');
+					}
+					break;
+				default:
+					break;
+			}
+		},
+		onError: err => {
+			vAlert(err.message);
+			// Procs의 모든 속성에 대해 반복문을 실행하여 loading 값을 true로 변경
+			for (const key in Procs.value) {
+				if (Object.hasOwnProperty.call(Procs.value, key)) {
+					Procs.value[key].loading = false;
+				}
+			}
+		},
+	},
+);
+
+const codeInvalid = ref(null);
+
+const goLogin = () => {
+	if (!validNotBlank(loginData.value.acuntId, '아이디', txtAcuntId.value)) {
+		return;
 	}
+	if (!validNotBlank(loginData.value.pw, '비밀번호', txtPw.value)) {
+		return;
+	}
+
+	if (!validNotBlank(loginData.value.code, '회차코드', txtTurnConnCd.value)) {
+		return;
+	}
+
+	if (loginData.value.orgId == '0') {
+		vAlert('회차코드 유효성 검사를 진행하세요.');
+		txtTurnConnCd.value.focus();
+	}
+
+	if (loginData.value.orgId) execUrl(Procs.value.login.path, loginData.value);
 };
 
-const orgName = ref('');
-const codeInvalid = ref(false);
-const codeValidationAttempted = ref(false);
+const validateCode = () => {
+	const OrgTurn = ref({
+		turnConnCd: loginData.value.code,
+		valid: false,
+	});
 
-const validateCode = async () => {
-	try {
-		//alert(Person.code);
-		const response = await axios.post(
-			'http://localhost:8080/api/member/validate-code',
-			{ urlCd: loginData.value.code },
-		);
-		codeValidationAttempted.value = true;
-		if (response.data.exists) {
-			orgName.value = response.data.compyNm;
-			codeInvalid.value = true;
-		} else {
-			orgName.value = '';
-			codeInvalid.value = false;
-		}
-	} catch (error) {
-		console.error(error);
-		codeValidationAttempted.value = true;
-		codeInvalid.value = false;
+	if (!validNotBlank(loginData.value.code, '회차코드', txtTurnConnCd.value)) {
+		return;
 	}
+
+	Procs.value.chkTurnConnCd.loading = true;
+	execUrl(Procs.value.chkTurnConnCd.path, OrgTurn.value);
 };
 
 const findId = () => {
@@ -168,6 +210,31 @@ const findId = () => {
 const findPw = () => {
 	alert('비밀번호 찾기 기능은 아직 구현되지 않았습니다.');
 };
+
+// Etc	**************************************
+
+const validNotBlank = (val, tit, obj) => {
+	val = typeof val != 'string' ? val.toString() : val;
+	var Val = val.replace(/\s/g, '');
+	if (Val.length == 0) {
+		vAlert(tit == null ? `입력해 주세요.` : `${tit}를(을) 입력해 주세요.`);
+		if (obj != null) {
+			obj.focus();
+		}
+		return false;
+	}
+	return true;
+};
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.Ok {
+	margin: 10px 0 0 10px;
+	color: deepskyblue;
+}
+
+.NotOk {
+	margin: 10px 0 0 10px;
+	color: red;
+}
+</style>
