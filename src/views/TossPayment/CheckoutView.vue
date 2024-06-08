@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { loadPaymentWidget, ANONYMOUS } from '@tosspayments/payment-widget-sdk';
+//import { loadPaymentWidget, ANONYMOUS } from '@tosspayments/payment-widget-sdk';
 import { nanoid } from 'nanoid';
 
 export default {

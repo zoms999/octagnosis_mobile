@@ -3,7 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import PersonJoinView from '../views/Member/Register.vue';
 import OrgJoinView from '../views/Member/OrgRegister.vue';
 import LoginView from '../views/Login/Login.vue';
-import OrgLoginView from '../views/Member/OrgLogin.vue';
+import OrgLoginView from '../views/Login/OrgLogin.vue';
 import TestStartView from '../views/Test/TestStart.vue';
 import TestPaymentView from '../views/Test/TestPayment.vue';
 import CheckoutView from '../views/TossPayment/CheckoutView.vue';

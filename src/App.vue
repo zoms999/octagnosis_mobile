@@ -32,7 +32,13 @@ const store = useAuthStore();
 const { isAuthenticated } = storeToRefs(store);
 
 router.beforeEach((to, from, next) => {
-	if (!isAuthenticated.value && to.name !== 'login') {
+	if (
+		!isAuthenticated.value &&
+		to.name !== 'login' &&
+		to.name !== 'orglogin' &&
+		to.name !== 'register' &&
+		to.name != 'orgregister'
+	) {
 		next({ name: 'login' });
 	} else {
 		next();

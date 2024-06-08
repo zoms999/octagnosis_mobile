@@ -397,6 +397,7 @@ const Person = {
 	jobNm: '', //직장명
 	jobDuty: '',
 	agreement: false,
+	orgId: 0, // 조직Id
 };
 
 const { handleSubmit, errors } = useForm();
@@ -437,6 +438,7 @@ const validateCode = async () => {
 		codeValidationAttempted.value = true;
 		if (response.data.exists) {
 			orgName.value = response.data.compyNm;
+			Person.orgId = response.data.orgId;
 			codeInvalid.value = true;
 		} else {
 			orgName.value = '';

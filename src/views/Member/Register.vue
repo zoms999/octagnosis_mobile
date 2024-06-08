@@ -371,6 +371,7 @@ const Person = {
 	jobNm: '', //직장명
 	jobDuty: '',
 	agreement: false,
+	orgId: 0, // 조직Id
 };
 
 const { handleSubmit, errors } = useForm();
