@@ -39,15 +39,24 @@ import { loadPaymentWidget, ANONYMOUS } from '@tosspayments/payment-widget-sdk';
 import { nanoid } from 'nanoid';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
+import { toHandlers } from 'vue';
 
 export default {
 	props: {
+		productId: {
+			type: String,
+			required: true,
+		},
 		productName: {
 			type: String,
 			required: true,
 		},
 		productPrice: {
 			type: Number,
+			required: true,
+		},
+		productType: {
+			type: String,
 			required: true,
 		},
 	},
@@ -64,43 +73,46 @@ export default {
 	methods: {
 		async requestPayment() {
 			try {
-				const paymentInfo = {
-					//payId: nanoid(),
-					dutyYn: 'N', // Set appropriate values
-					studyYn: 'N', // Set appropriate values
-					subjYn: 'N', // Set appropriate values
-					imgYn: 'N', // Set appropriate values
-					acuntId: 12345, // Set appropriate value
-					prodId: 67890, // Set appropriate value
-					prodType: 'Product', // Set appropriate value
-					price: this.amount,
-					payDt: new Date().toISOString().replace(/[-:.]/g, '').slice(0, 14),
-					orgId: 11111, // Set appropriate value
-					turnId: 22222, // Set appropriate value
-					payYn: 'N', // Set appropriate value
-					insId: 33333, // Set appropriate value
-					insDt: new Date().toISOString().replace(/[-:.]/g, '').slice(0, 14),
-					uptId: null,
-					uptDt: null,
-				};
-
-				// Save payment information to the server
-				const response = await fetch('http://localhost:8080/api/payment/save', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(paymentInfo),
-				});
-
-				if (!response.ok) {
-					const errorMessage = await response.text();
-					throw new Error(
-						`Request failed: ${response.status} - ${errorMessage}`,
-					);
-				}
-
 				if (this.paymentWidget) {
+					const paymentInfo = {
+						//payId: nanoid(),
+						dutyYn: 'N', // Set appropriate values
+						studyYn: 'N', // Set appropriate values
+						subjYn: 'N', // Set appropriate values
+						imgYn: 'N', // Set appropriate values
+						acuntId: this.acuntId, // Set appropriate value
+						prodId: this.productId, // Set appropriate value
+						prodType: this.productType, // Set appropriate value
+						price: this.amount,
+						payDt: '',
+						orgId: this.orgId, // Set appropriate value
+						turnId: 22222, // Set appropriate value
+						payYn: 'N', // Set appropriate value
+						insId: this.userId, // Set appropriate value
+						insDt: '',
+						uptId: null,
+						uptDt: null,
+					};
+
+					// Save payment information to the server
+					const response = await fetch(
+						'http://localhost:8080/api/payment/save',
+						{
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify(paymentInfo),
+						},
+					);
+
+					if (!response.ok) {
+						const errorMessage = await response.text();
+						throw new Error(
+							`Request failed: ${response.status} - ${errorMessage}`,
+						);
+					}
+
 					await this.paymentWidget.requestPayment({
 						orderId: nanoid(),
 						orderName: this.productName,
@@ -126,11 +138,15 @@ export default {
 	},
 	async mounted() {
 		const store = useAuthStore();
-		const { persnNm, email, phone } = storeToRefs(store);
+		const { acuntId, userId, persnNm, email, phone, orgId } =
+			storeToRefs(store);
 
+		this.acuntId = acuntId.value;
+		this.userId = userId.value;
 		this.persnNm = persnNm.value;
 		this.email = email.value;
 		this.phone = phone.value.replace(/-/g, '');
+		this.orgId = orgId.value;
 
 		this.paymentWidget = await loadPaymentWidget(this.clientKey, ANONYMOUS);
 		this.paymentMethodWidget = this.paymentWidget.renderPaymentMethods(
