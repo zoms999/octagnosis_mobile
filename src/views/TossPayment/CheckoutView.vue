@@ -35,8 +35,10 @@
 </template>
 
 <script>
-//import { loadPaymentWidget, ANONYMOUS } from '@tosspayments/payment-widget-sdk';
+import { loadPaymentWidget, ANONYMOUS } from '@tosspayments/payment-widget-sdk';
 import { nanoid } from 'nanoid';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
 
 export default {
 	props: {
@@ -62,13 +64,49 @@ export default {
 	methods: {
 		async requestPayment() {
 			try {
+				const paymentInfo = {
+					//payId: nanoid(),
+					dutyYn: 'N', // Set appropriate values
+					studyYn: 'N', // Set appropriate values
+					subjYn: 'N', // Set appropriate values
+					imgYn: 'N', // Set appropriate values
+					acuntId: 12345, // Set appropriate value
+					prodId: 67890, // Set appropriate value
+					prodType: 'Product', // Set appropriate value
+					price: this.amount,
+					payDt: new Date().toISOString().replace(/[-:.]/g, '').slice(0, 14),
+					orgId: 11111, // Set appropriate value
+					turnId: 22222, // Set appropriate value
+					payYn: 'N', // Set appropriate value
+					insId: 33333, // Set appropriate value
+					insDt: new Date().toISOString().replace(/[-:.]/g, '').slice(0, 14),
+					uptId: null,
+					uptDt: null,
+				};
+
+				// Save payment information to the server
+				const response = await fetch('http://localhost:8080/api/payment/save', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(paymentInfo),
+				});
+
+				if (!response.ok) {
+					const errorMessage = await response.text();
+					throw new Error(
+						`Request failed: ${response.status} - ${errorMessage}`,
+					);
+				}
+
 				if (this.paymentWidget) {
 					await this.paymentWidget.requestPayment({
 						orderId: nanoid(),
 						orderName: this.productName,
-						customerName: '김토스',
-						customerEmail: 'customer123@gmail.com',
-						customerMobilePhone: '01012341234',
+						customerName: this.persnNm,
+						customerEmail: this.email,
+						customerMobilePhone: this.phone,
 						successUrl: `${window.location.origin}/success`,
 						failUrl: `${window.location.origin}/fail`,
 					});
@@ -87,6 +125,13 @@ export default {
 		},
 	},
 	async mounted() {
+		const store = useAuthStore();
+		const { persnNm, email, phone } = storeToRefs(store);
+
+		this.persnNm = persnNm.value;
+		this.email = email.value;
+		this.phone = phone.value.replace(/-/g, '');
+
 		this.paymentWidget = await loadPaymentWidget(this.clientKey, ANONYMOUS);
 		this.paymentMethodWidget = this.paymentWidget.renderPaymentMethods(
 			'#payment-method',
