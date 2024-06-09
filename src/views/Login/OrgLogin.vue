@@ -45,7 +45,7 @@
 						<div class="form-cont">
 							<div class="inp-wrap">
 								<input
-									type="text"
+									type="password"
 									v-model="loginData.code"
 									placeholder="발급받으신 코드 입력"
 									ref="txtTurnConnCd"

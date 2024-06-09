@@ -1,38 +1,66 @@
 <template>
-	<div class="header">
-		<div class="welcome">환영합니다!</div>
-		<div class="actions">
-			<button class="btn btn-primary" @click="navigateToPayment">
-				결제하러가기
-			</button>
+	<div id="content" class="main">
+		<div class="visual">
+			<div class="text-wrap">
+				<div class="headline">
+					<p class="text01">
+						<span class="dot"></span>
+						<strong>진짜 나</strong>를 찾아주는
+					</p>
+					<p class="text02">옥타그노시스 검사</p>
+					<p class="text03">나답게 살아갈 인생설계도를 제시합니다!</p>
+				</div>
+				<p class="text04">
+					해외의 진로적성검사를 짜깁기 한 검사가 아닙니다. <br />
+					교육과학적 문항을 기반으로 특허받은 진로적성검사입니다.
+				</p>
+			</div>
 		</div>
 	</div>
-	<table class="table table-bordered Tbl1">
-		<thead>
-			<tr>
-				<th>순번</th>
-				<th>검사상품</th>
-				<th>검사 유효일자</th>
-				<th>검사완료일자</th>
-				<th>검사상태</th>
-				<th>결과보기</th>
-			</tr>
-		</thead>
-		<tbody>
-			<!-- 여기에 데이터를 반복 렌더링 할 수 있습니다 -->
-			<tr>
-				<td>1</td>
-				<td>적성검사 A</td>
-				<td>2024-12-31</td>
-				<td>2024-06-01</td>
-				<td><button class="btn btn-primary">검사진행</button></td>
-				<td><button class="btn btn-primary">결과보기</button></td>
-			</tr>
-			<!-- 추가적인 행들은 여기서 반복 -->
-		</tbody>
-	</table>
-	<div class="fs070 text-center">
-		검사결과 '다시 보기'는 유효일자 안에서만 가능합니다.
+	<div class="container">
+		<div class="d-flex justify-content-between">
+			<div class="tit">
+				검사이력
+				<span class="sub">( 진행중인 검사는 신속히 완료하여 주십시요. )</span>
+			</div>
+			<div class="actions">
+				<button
+					class="btn btn-primary"
+					@click="navigateToPayment"
+					style="font-size: 1.8rem; padding: 0.8rem 1rem 0.8rem 1rem"
+				>
+					결제 후 검사시작
+				</button>
+			</div>
+		</div>
+		<table class="table table-bordered Tbl1">
+			<thead>
+				<tr>
+					<th class="w100">순번</th>
+					<th>검사상품</th>
+					<th class="w220">검사 유효일자</th>
+					<th class="w220">검사완료일자</th>
+					<th class="w140">검사상태</th>
+					<th class="w140">결과보기</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- 여기에 데이터를 반복 렌더링 할 수 있습니다 -->
+				<tr class="text-center">
+					<td>1</td>
+					<td>적성검사 A</td>
+					<td>2024-12-31</td>
+					<td>2024-06-01</td>
+					<td class="text-center">
+						<button class="btn btn-primary">검사진행</button>
+					</td>
+					<td><button class="btn btn-primary">결과보기</button></td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="text-center mb-5">
+			검사결과 '다시 보기'는 유효일자 안에서만 가능합니다.
+		</div>
 	</div>
 </template>
 
@@ -47,6 +75,17 @@ const navigateToPayment = () => {
 </script>
 
 <style lang="scss" scoped>
+.tit {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin: 5px 0 0 0px;
+	padding: 0 0 0 10px;
+}
+.tit span.sub {
+	font-size: 1.8rem;
+	margin: 0 0 0 10px;
+}
+
 .test-page {
 	display: flex;
 	flex-direction: column;
@@ -58,16 +97,6 @@ const navigateToPayment = () => {
 		padding: 1rem;
 		background-color: #f5f5f5;
 		border-bottom: 1px solid #ccc;
-
-		.welcome {
-			font-size: 1.2rem;
-		}
-
-		.actions {
-			.btn {
-				margin-left: 0.5rem;
-			}
-		}
 	}
 
 	.main {
@@ -87,11 +116,6 @@ const navigateToPayment = () => {
 
 			th {
 				background-color: #e9e9e9;
-			}
-
-			.btn {
-				padding: 0.25rem 0.5rem;
-				cursor: pointer;
 			}
 		}
 	}
