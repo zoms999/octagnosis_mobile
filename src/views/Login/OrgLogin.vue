@@ -45,7 +45,7 @@
 						<div class="form-cont">
 							<div class="inp-wrap">
 								<input
-									type="text"
+									type="password"
 									v-model="loginData.code"
 									placeholder="발급받으신 코드 입력"
 									ref="txtTurnConnCd"
@@ -134,9 +134,27 @@ const { data, execUrl, reqUrl } = useAxios(
 			switch (reqUrl.value) {
 				case Procs.value.login.path:
 					Procs.value.login.loading = false;
-					login(data.value.acunt, data.value.persn);
-					window.alert('로그인하였습니다.');
-					router.push('/testStart');
+
+					if (data.value.success) {
+						login(data.value.acunt, data.value.persn);
+						window.alert('로그인하였습니다.');
+						router.push('/testStart');
+					} else {
+						switch (data.value.errCode) {
+							case '100':
+								alert(
+									'기관소속 사용자 입니다. 기관 로그인 화면으로 이동합니다.',
+								);
+								router.push('/OrgLogin');
+								break;
+							case '200':
+								vAlert('기관에 소속된 검사 회차코드가 아닙니다.');
+								break;
+							case '300':
+								vAlert('사용자 정보를 확인하세요.');
+								break;
+						}
+					}
 
 					break;
 				case Procs.value.chkTurnConnCd.path:

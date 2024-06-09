@@ -9,7 +9,7 @@
 			LayoutCenterTopNo: !isAuthenticated,
 		}"
 	>
-		<div class="container py-4">
+		<div class="container-fluid" style="padding: 0">
 			<RouterView></RouterView>
 		</div>
 	</div>
@@ -50,6 +50,7 @@ router.beforeEach((to, from, next) => {
 	height: 90px;
 }
 .LayoutCenter {
+	width: 100%;
 }
 .LayoutBottom {
 	height: 110px;

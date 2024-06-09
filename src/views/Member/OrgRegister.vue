@@ -20,7 +20,7 @@
 									v-model.trim="Person.code"
 									id="code"
 									name="code"
-									type="text"
+									type="password"
 									class="w300"
 									placeholder="발급받으신 코드 입력"
 									required

@@ -946,9 +946,9 @@
 	}
 
   .Tbl1 thead th {
-    padding: 0.6rem 0.3rem;
+    padding: 1rem 1rem 1rem 1rem ;
     border: 1px solid #cacaca;
-    background-color: #418b89;
+    background-color: #0d4f8a;
     color:#ffffff;
     font-size:1.6rem;
   }
@@ -956,9 +956,9 @@
 	.Tbl1 thead td {
     padding: 0.6rem 0.3rem;
     border: 1px solid #cacaca;
-    background-color: #418b89;
+    background-color: #0d4f8a;
     color:#ffffff;
-    font-size:1.4rem;
+    font-size:1.6rem;
 	}
 
 
@@ -972,8 +972,8 @@
 	}
 
 	.Tbl1 tbody td {
-    padding: 0.6rem 0.5rem;
-		font-size: 1.6rem;
+    padding: 1rem 1rem 1rem 1rem ;
+		font-size: 1.8rem;
 		text-align: center;
 		line-height: 1.85rem;
 		border: 1px solid #cacaca;
