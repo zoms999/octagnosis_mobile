@@ -63,7 +63,13 @@
 					<td>{{ item.ProdtNm }}</td>
 
 					<td>{{ dayjs(item.ValidEndDt).format('YYYY-MM-DD') }}</td>
-					<td>{{ dayjs(item.AnsPrgrsEndDt).format('YYYY-MM-DD') }}</td>
+					<td>
+						{{
+							item.AnsPrgrsEndDt != ''
+								? dayjs(item.AnsPrgrsEndDt).format('YYYY-MM-DD')
+								: '-'
+						}}
+					</td>
 
 					<td class="text-center">
 						<button class="btn btn-primary">검사진행</button>
@@ -79,7 +85,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
@@ -99,6 +105,7 @@ onMounted(() => {
 const { acuntId, orgId, turnConnCd } = storeToRefs(useAuthStore());
 const { vAlert, vSuccess } = useAlert();
 const router = useRouter();
+const dayjs = inject('dayjs');
 
 const TestList = ref([]);
 
