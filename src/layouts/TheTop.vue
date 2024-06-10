@@ -30,7 +30,7 @@ import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 
 const store = useAuthStore();
-const { acuntId, expirDt, isAuthenticated, persnNm, email, orgId } =
+const { acuntId, expirDt, isAuthenticated, persnNm, email, phone, orgId } =
 	storeToRefs(store);
 const { logout } = store;
 const router = useRouter();

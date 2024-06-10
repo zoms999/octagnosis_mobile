@@ -35,17 +35,28 @@
 </template>
 
 <script>
-//import { loadPaymentWidget, ANONYMOUS } from '@tosspayments/payment-widget-sdk';
+import { loadPaymentWidget, ANONYMOUS } from '@tosspayments/payment-widget-sdk';
 import { nanoid } from 'nanoid';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
+import { toHandlers } from 'vue';
 
 export default {
 	props: {
+		productId: {
+			type: String,
+			required: true,
+		},
 		productName: {
 			type: String,
 			required: true,
 		},
 		productPrice: {
 			type: Number,
+			required: true,
+		},
+		productType: {
+			type: String,
 			required: true,
 		},
 	},
@@ -63,12 +74,51 @@ export default {
 		async requestPayment() {
 			try {
 				if (this.paymentWidget) {
+					const paymentInfo = {
+						//payId: nanoid(),
+						dutyYn: 'N', // Set appropriate values
+						studyYn: 'N', // Set appropriate values
+						subjYn: 'N', // Set appropriate values
+						imgYn: 'N', // Set appropriate values
+						acuntId: this.acuntId, // Set appropriate value
+						prodId: this.productId, // Set appropriate value
+						prodType: this.productType, // Set appropriate value
+						price: this.amount,
+						payDt: '',
+						orgId: this.orgId, // Set appropriate value
+						turnId: 22222, // Set appropriate value
+						payYn: 'N', // Set appropriate value
+						insId: this.userId, // Set appropriate value
+						insDt: '',
+						uptId: null,
+						uptDt: null,
+					};
+
+					// Save payment information to the server
+					const response = await fetch(
+						'http://localhost:8080/api/payment/save',
+						{
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify(paymentInfo),
+						},
+					);
+
+					if (!response.ok) {
+						const errorMessage = await response.text();
+						throw new Error(
+							`Request failed: ${response.status} - ${errorMessage}`,
+						);
+					}
+
 					await this.paymentWidget.requestPayment({
 						orderId: nanoid(),
 						orderName: this.productName,
-						customerName: '김토스',
-						customerEmail: 'customer123@gmail.com',
-						customerMobilePhone: '01012341234',
+						customerName: this.persnNm,
+						customerEmail: this.email,
+						customerMobilePhone: this.phone,
 						successUrl: `${window.location.origin}/success`,
 						failUrl: `${window.location.origin}/fail`,
 					});
@@ -87,6 +137,17 @@ export default {
 		},
 	},
 	async mounted() {
+		const store = useAuthStore();
+		const { acuntId, userId, persnNm, email, phone, orgId } =
+			storeToRefs(store);
+
+		this.acuntId = acuntId.value;
+		this.userId = userId.value;
+		this.persnNm = persnNm.value;
+		this.email = email.value;
+		this.phone = phone.value.replace(/-/g, '');
+		this.orgId = orgId.value;
+
 		this.paymentWidget = await loadPaymentWidget(this.clientKey, ANONYMOUS);
 		this.paymentMethodWidget = this.paymentWidget.renderPaymentMethods(
 			'#payment-method',

@@ -4,6 +4,8 @@ export const useAuthStore = defineStore('auth', {
 	state: () => ({
 		isAuthenticated: false,
 		acuntId: null,
+		userType: null,
+		userId: null,
 		expirDt: null,
 		regDt: null,
 		email: null,
@@ -16,8 +18,9 @@ export const useAuthStore = defineStore('auth', {
 	actions: {
 		login(acunt, persn, turnConnCd) {
 			this.isAuthenticated = true;
-
 			this.acuntId = acunt.acuntId;
+			this.userType = acunt.userType;
+			this.userId = acunt.userId;
 			this.expirDt = acunt.expirDt;
 			this.regDt = acunt.regDt;
 			this.email = persn.email;

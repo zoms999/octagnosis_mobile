@@ -42,8 +42,10 @@
 		<div v-if="showModal" class="modal">
 			<div class="modal-content">
 				<CheckoutView
+					:productId="selectedProduct.prodtId"
 					:productName="selectedProduct.prodtNm"
 					:productPrice="selectedProduct.price"
+					:productType="selectedProduct.prodtType"
 				/>
 				<button class="close-button" @click="closeModal">닫기</button>
 			</div>
