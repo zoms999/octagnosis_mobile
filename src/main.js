@@ -14,6 +14,7 @@ import './assets/base.css';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 
+import dayjs from './plugins/dayjs';
 import App from './App.vue';
 import router from './router';
 import globalFunction from './plugins/global-function';
@@ -39,5 +40,6 @@ app.use(createPinia());
 // });
 
 app.use(router);
+app.use(dayjs);
 app.mount('#app');
 console.log('MODE', import.meta.env.VITE_APP_API_URL);

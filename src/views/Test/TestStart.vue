@@ -31,6 +31,14 @@
 				>
 					결제 후 검사시작
 				</button>
+
+				<button
+					class="btn btn-primary"
+					@click="getTestList"
+					style="font-size: 1.8rem; padding: 0.8rem 1rem 0.8rem 1rem"
+				>
+					검사 조사
+				</button>
 			</div>
 		</div>
 		<table class="table table-bordered Tbl1">
@@ -46,11 +54,17 @@
 			</thead>
 			<tbody>
 				<!-- 여기에 데이터를 반복 렌더링 할 수 있습니다 -->
-				<tr class="text-center">
-					<td>1</td>
-					<td>적성검사 A</td>
-					<td>2024-12-31</td>
-					<td>2024-06-01</td>
+				<tr
+					class="text-center"
+					v-for="(item, idx) in TestList"
+					:key="item.TurnId"
+				>
+					<td>{{ idx + 1 }}</td>
+					<td>{{ item.ProdtNm }}</td>
+
+					<td>{{ dayjs(item.ValidEndDt).format('YYYY-MM-DD') }}</td>
+					<td>{{ dayjs(item.AnsPrgrsEndDt).format('YYYY-MM-DD') }}</td>
+
 					<td class="text-center">
 						<button class="btn btn-primary">검사진행</button>
 					</td>
@@ -65,13 +79,85 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAlert } from '@/hooks/useAlert';
+import { useAxios } from '@/hooks/useAxios';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
 
+// Props / Emit  ****************************
+
+// Hook  ************************************
+
+onMounted(() => {
+	getTestList();
+});
+
+// Model / Data  ****************************
+
+const { acuntId, orgId, turnConnCd } = storeToRefs(useAuthStore());
+const { vAlert, vSuccess } = useAlert();
 const router = useRouter();
+
+const TestList = ref([]);
+
+const TestParm = {
+	acuntId: acuntId.value,
+	orgId: orgId.value,
+	turnConnCd: turnConnCd.value,
+};
+
+// Html ref  ********************************
+
+// Axios / Route  ***************************
+
+const Procs = ref({
+	getTestList: { path: '/api/Test/getTestList', loading: false },
+});
+
+const { data, execUrl, reqUrl } = useAxios(
+	'',
+	{ method: 'post' },
+	{
+		immediate: false,
+		onSuccess: () => {
+			switch (reqUrl.value) {
+				case Procs.value.getTestList.path:
+					Procs.value.getTestList.loading = false;
+					TestList.value = data.value.TestList;
+					break;
+				default:
+					break;
+			}
+		},
+		onError: err => {
+			vAlert(err.message);
+			// Procs의 모든 속성에 대해 반복문을 실행하여 loading 값을 true로 변경
+			for (const key in Procs.value) {
+				if (Object.hasOwnProperty.call(Procs.value, key)) {
+					Procs.value[key].loading = false;
+				}
+			}
+		},
+	},
+);
+
+// Modal  ***********************************
 
 const navigateToPayment = () => {
 	router.push('/testPayment');
 };
+
+const getTestList = () => {
+	execUrl(Procs.value.getTestList.path, TestParm);
+};
+
+// Watch  ***********************************
+
+// Method  **********************************
+
+// Etc  *************************************
 </script>
 
 <style lang="scss" scoped>

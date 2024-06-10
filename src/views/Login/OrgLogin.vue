@@ -136,8 +136,7 @@ const { data, execUrl, reqUrl } = useAxios(
 					Procs.value.login.loading = false;
 
 					if (data.value.success) {
-						login(data.value.acunt, data.value.persn);
-						window.alert('로그인하였습니다.');
+						login(data.value.acunt, data.value.persn, loginData.value.code);
 						router.push('/testStart');
 					} else {
 						switch (data.value.errCode) {
@@ -161,7 +160,6 @@ const { data, execUrl, reqUrl } = useAxios(
 					if (data.value.ExistYn == 'Y') {
 						loginData.value.orgId = data.value.OrgTurn.orgId;
 						codeInvalid.value = true;
-						vSuccess('회차코드 확인되었습니다.');
 					} else {
 						loginData.value.code = '';
 						loginData.value.orgId = '0';
@@ -202,6 +200,7 @@ const goLogin = () => {
 	if (loginData.value.orgId == '0') {
 		vAlert('회차코드 유효성 검사를 진행하세요.');
 		txtTurnConnCd.value.focus();
+		return;
 	}
 
 	if (loginData.value.orgId) execUrl(Procs.value.login.path, loginData.value);

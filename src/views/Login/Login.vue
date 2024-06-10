@@ -124,7 +124,7 @@ const { data, execUrl, reqUrl } = useAxios(
 					Procs.value.login.loading = false;
 
 					if (data.value.success) {
-						login(data.value.acunt, data.value.persn);
+						login(data.value.acunt, data.value.persn, '');
 						router.push('/testStart');
 					} else {
 						switch (data.value.errCode) {
