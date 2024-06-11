@@ -31,13 +31,12 @@
 				>
 					결제 후 검사시작
 				</button>
-
 				<button
 					class="btn btn-primary"
 					@click="getTestList"
 					style="font-size: 1.8rem; padding: 0.8rem 1rem 0.8rem 1rem"
 				>
-					검사 조사
+					Reload
 				</button>
 			</div>
 		</div>
@@ -72,9 +71,21 @@
 					</td>
 
 					<td class="text-center">
-						<button class="btn btn-primary">검사진행</button>
+						<div v-if="item.TurnReqCnt - item.TurnUseCnt == 0">
+							검사라이센스 부족
+						</div>
+						<div v-else-if="item.RegDt == ''">
+							<button class="btn btn-primary">검사진행</button>
+						</div>
+						<div v-else-if="item.AnsPrgrsDoneYn == 'N'">검사진행중</div>
+						<div v-else-if="item.AnsPrgrsDoneYn == 'Y'">검사완료</div>
 					</td>
-					<td><button class="btn btn-primary">결과보기</button></td>
+					<td>
+						<div v-if="item.AnsPrgrsDoneYn == 'Y'">
+							<button class="btn btn-primary">결과보기</button>
+						</div>
+						<div v-else>-</div>
+					</td>
 				</tr>
 			</tbody>
 		</table>
