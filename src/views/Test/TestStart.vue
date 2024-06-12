@@ -19,7 +19,7 @@
 	</div>
 	<div class="container">
 		<div class="d-flex justify-content-between">
-			<div class="tit">
+			<div class="tit" @click="getTestList">
 				검사이력
 				<span class="sub">( 진행중인 검사는 신속히 완료하여 주십시요. )</span>
 			</div>
@@ -30,13 +30,6 @@
 					style="font-size: 1.8rem; padding: 0.8rem 1rem 0.8rem 1rem"
 				>
 					결제 후 검사시작
-				</button>
-				<button
-					class="btn btn-primary"
-					@click="getTestList"
-					style="font-size: 1.8rem; padding: 0.8rem 1rem 0.8rem 1rem"
-				>
-					Reload
 				</button>
 			</div>
 		</div>
@@ -75,7 +68,9 @@
 							검사라이센스 부족
 						</div>
 						<div v-else-if="item.RegDt == ''">
-							<button class="btn btn-primary">검사진행</button>
+							<button class="btn btn-primary" @click="goPage('questMain')">
+								검사진행
+							</button>
 						</div>
 						<div v-else-if="item.AnsPrgrsDoneYn == 'N'">검사진행중</div>
 						<div v-else-if="item.AnsPrgrsDoneYn == 'Y'">검사완료</div>
@@ -174,6 +169,10 @@ const getTestList = () => {
 // Watch  ***********************************
 
 // Method  **********************************
+
+const goPage = (nm, q) => {
+	router.push({ name: nm, query: q });
+};
 
 // Etc  *************************************
 </script>

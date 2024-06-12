@@ -9,6 +9,7 @@ import TestPaymentView from '../views/Test/TestPayment.vue';
 import CheckoutView from '../views/TossPayment/CheckoutView.vue';
 import SuccessView from '../views/TossPayment/SuccessView.vue';
 import FailView from '../views/TossPayment/FailView.vue';
+import QuestMain from '../views/Test/QuestMainView.vue';
 
 const routes = [
 	{
@@ -55,6 +56,11 @@ const routes = [
 		path: '/FailView',
 		name: 'failView',
 		component: FailView,
+	},
+	{
+		path: '/QuestMain',
+		name: 'questMain',
+		component: QuestMain,
 	},
 	{
 		path: '/',
