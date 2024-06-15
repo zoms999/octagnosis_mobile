@@ -82,13 +82,10 @@ const closeModal = () => {
 const findPassword = async () => {
 	try {
 		// 비밀번호 찾기 API 호출
-		const response = await axios.post(
-			'http://localhost:8080/api/member/find-password',
-			{
-				userId: userId.value,
-				email: email.value,
-			},
-		);
+		const response = await axios.post('/api/member/find-password', {
+			userId: userId.value,
+			email: email.value,
+		});
 		if (response.data.success) {
 			successMessage.value = '임시 비밀번호를 이메일로 전송했습니다.';
 			errorMessage.value = '';

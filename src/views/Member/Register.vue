@@ -459,10 +459,7 @@ const signUpSubmit = handleSubmit(async () => {
 	};
 
 	try {
-		const response = await axios.post(
-			'http://localhost:8080/api/member/register',
-			combinedData,
-		);
+		const response = await axios.post('/api/member/register', combinedData);
 		console.log(response.data);
 		alert('회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.');
 		router.push({ name: 'login' });
@@ -480,10 +477,9 @@ const checkDuplicateId = async () => {
 		return;
 	}
 	try {
-		const response = await axios.post(
-			'http://localhost:8080/api/member/check-id',
-			{ acuntId: Acunt.acuntId },
-		);
+		const response = await axios.post('/api/member/check-id', {
+			acuntId: Acunt.acuntId,
+		});
 		if (response.data.isDuplicate) {
 			alert('사용 가능한 아이디입니다.');
 		} else {

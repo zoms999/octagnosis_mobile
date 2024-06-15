@@ -95,16 +95,13 @@ export default {
 					};
 
 					// Save payment information to the server
-					const response = await fetch(
-						'http://localhost:8080/api/payment/save',
-						{
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-							},
-							body: JSON.stringify(paymentInfo),
+					const response = await fetch('/api/payment/save', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
 						},
-					);
+						body: JSON.stringify(paymentInfo),
+					});
 
 					if (!response.ok) {
 						const errorMessage = await response.text();

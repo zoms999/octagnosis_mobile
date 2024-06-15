@@ -77,13 +77,10 @@ const closeModal = () => {
 
 const findId = async () => {
 	try {
-		const response = await axios.post(
-			'http://localhost:8080/api/member/find-id',
-			{
-				name: name.value,
-				email: email.value,
-			},
-		);
+		const response = await axios.post('/api/member/find-id', {
+			name: name.value,
+			email: email.value,
+		});
 		if (response.data.success) {
 			successMessage.value = '아이디는 ' + response.data.acuntId + ' 입니다.';
 			errorMessage.value = '';
