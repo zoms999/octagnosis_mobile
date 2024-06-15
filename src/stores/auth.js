@@ -31,13 +31,13 @@ export const useAuthStore = defineStore('auth', {
 			this.turnConnCd = turnConnCd;
 
 			sessionStorage.setItem('acuntId', acunt.acuntId);
-			sessionStorage.setItem('expirDt', acunt.expirDt);
+			sessionStorage.setItem('userId', acunt.userId);
 		},
 		logout() {
 			this.isAuthenticated = false;
 
 			sessionStorage.removeItem('acuntId');
-			sessionStorage.removeItem('expirDt');
+			sessionStorage.removeItem('userId');
 		},
 	},
 });
