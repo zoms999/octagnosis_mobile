@@ -23,6 +23,7 @@ const app = createApp(App);
 app.use(globalFunction);
 app.use(createPinia());
 
+/**
 app.config.globalProperties.$authToken = localStorage.getItem('authToken');
 router.beforeEach((to, from, next) => {
 	const authToken = app.config.globalProperties.$authToken;
@@ -38,6 +39,7 @@ router.beforeEach((to, from, next) => {
 		next();
 	}
 });
+ */
 
 app.use(router);
 app.use(dayjs);

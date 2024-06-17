@@ -104,6 +104,9 @@
 
 <script setup>
 import { onBeforeMount, onMounted, ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useAlert } from '@/hooks/useAlert';
+import { useAxios } from '@/hooks/useAxios';
 
 import MultiQuestItemA from '@/components/Test/QuestPage/MultiQuestItemA.vue';
 import OneQuestItemA from '@/components/Test/QuestPage/OneQuestItemA.vue';
@@ -118,8 +121,6 @@ import FreeTypeTime2 from '@/components/Test/QuestPage/FreeType/Time2.vue';
 
 // Props / Emit  ****************************
 
-var Emits = defineEmits(['update:modelValue', 'getQuestList']);
-
 var ModalParm = defineModel('ModalParm');
 
 // Hook	 *************************************
@@ -133,8 +134,7 @@ onMounted(() => {});
 // Model / Data *****************************
 
 const { vAlert, vSuccess } = useAlert();
-import { useAlert } from '@/hooks/useAlert';
-import { useAxios } from '@/hooks/useAxios';
+const route = useRoute();
 
 const TestList = ref([]);
 const QuestPage = ref({});
@@ -208,8 +208,8 @@ const { data, execUrl, reqUrl } = useAxios(
 
 const getQuestPageForTest = () => {
 	const Parm = {
-		testId: ModalParm.value.testId,
-		questPageId: ModalParm.value.questPageId,
+		testId: route.query.testId,
+		questPageId: route.query.questPageId,
 	};
 
 	execUrl(Procs.value.getQuestPageForTest.path, Parm);

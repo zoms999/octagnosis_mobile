@@ -23,13 +23,15 @@
 import TheTop from './layouts/TheTop.vue';
 import TheBottom from './layouts/TheBottom.vue';
 
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import { storeToRefs } from 'pinia';
 
 const router = useRouter();
 const store = useAuthStore();
-const { isAuthenticated } = storeToRefs(store);
+
+store.checkAuth();
+const isAuthenticated = computed(() => store.isAuthenticated);
 
 router.beforeEach((to, from, next) => {
 	if (

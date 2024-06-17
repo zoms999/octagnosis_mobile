@@ -68,7 +68,15 @@
 							검사라이센스 부족
 						</div>
 						<div v-else-if="item.RegDt == ''">
-							<button class="btn btn-primary" @click="goPage('questMain')">
+							<button
+								class="btn btn-primary"
+								@click="
+									goPage({
+										testId: item.TestId,
+										questPageId: item.QuestPageId,
+									})
+								"
+							>
 								검사진행
 							</button>
 						</div>
@@ -170,7 +178,8 @@ const getTestList = () => {
 
 // Method  **********************************
 
-const goPage = (nm, q) => {
+const goPage = q => {
+	var nm = q.questPageId == '0' ? 'questMain' : 'quest';
 	router.push({ name: nm, query: q });
 };
 

@@ -39,11 +39,12 @@
 				</div>
 
 				<div class="bottom d-flex justify-content-center">
-					<div class="btnNext d-flex" @click="saveAns">
-						<span class="fs130">다 음</span> &nbsp;
+					<div class="btnNext d-flex" @click="goNext">
+						<span style="font-size: 2.2rem !important">다 음</span> &nbsp;
+						&nbsp;
 						<span
 							class="material-icons"
-							style="border: none; font-size: 1.3rem; margin-top: 8px"
+							style="border: none; font-size: 2.2rem; margin-top: 8px"
 						>
 							forward
 						</span>
@@ -91,10 +92,16 @@
 			</div>
 		</div>
 	</div>
+	<button class="btn btn-primary" @click="goPageTemp()">Reload</button>
 </template>
 
 <script setup>
 import { onBeforeMount, onMounted, ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
+import { useAlert } from '@/hooks/useAlert';
+import { useAxios } from '@/hooks/useAxios';
 
 // Props / Emit  ****************************
 
@@ -102,15 +109,19 @@ var ModalParm = defineModel('ModalParm');
 
 // Hook	 *************************************
 
-onBeforeMount(() => {});
+onBeforeMount(() => {
+	TestParm.testId = route.query.testId;
+	TestParm.questPageId = route.query.questPageId;
+});
 
 onMounted(() => {});
 
 // Model / Data *****************************
 
+const { acuntId, orgId, turnConnCd } = storeToRefs(useAuthStore());
 const { vAlert, vSuccess } = useAlert();
-import { useAlert } from '@/hooks/useAlert';
-import { useAxios } from '@/hooks/useAxios';
+const route = useRoute();
+const router = useRouter();
 
 const TestList = ref([]);
 const QuestPage = ref({});
@@ -118,7 +129,26 @@ const QuestList = ref([]);
 const QuestItemList = ref([]);
 const QuestImgList = ref([]);
 
+const TestParm = {
+	acuntId: acuntId.value,
+	orgId: orgId.value,
+	turnConnCd: turnConnCd.value,
+	testId: '0',
+	questPageId: '0',
+};
+
 // Html ref  ********************************
+
+const goPageTemp = () => {
+	router.push({ name: 'questMain', query: { TestId: '1', QuestPageId: '0' } });
+};
+
+const goNext = () => {
+	router.push({
+		name: 'quest',
+		query: { TestId: TestParm.testId, QuestPageId: '1' },
+	});
+};
 
 // Axios / Route	***************************
 
