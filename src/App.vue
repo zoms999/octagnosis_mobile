@@ -1,5 +1,5 @@
 <template>
-	<div v-if="isAuthenticated" class="LayoutTop">
+	<div v-if="isAuthenticated && TopYn" class="LayoutTop">
 		<TheTop></TheTop>
 	</div>
 	<div
@@ -14,7 +14,7 @@
 		</div>
 	</div>
 
-	<div class="LayoutBottom">
+	<div v-if="BottomYn" class="LayoutBottom">
 		<TheBottom></TheBottom>
 	</div>
 	<AppAlert></AppAlert>
@@ -23,17 +23,23 @@
 import TheTop from './layouts/TheTop.vue';
 import TheBottom from './layouts/TheBottom.vue';
 
-import { computed } from 'vue';
+import { computed, ref, onBeforeMount, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
 const store = useAuthStore();
+const TopYn = ref(true);
+const BottomYn = ref(true);
 
 store.checkAuth();
 const isAuthenticated = computed(() => store.isAuthenticated);
 
 router.beforeEach((to, from, next) => {
+	if (to.name == 'questMain' || to.name == 'quest') {
+		TopYn.value = false;
+		BottomYn.value = false;
+	}
 	if (
 		!isAuthenticated.value &&
 		to.name !== 'login' &&

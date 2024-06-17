@@ -92,7 +92,6 @@
 			</div>
 		</div>
 	</div>
-	<button class="btn btn-primary" @click="goPageTemp()">Reload</button>
 </template>
 
 <script setup>
@@ -102,16 +101,17 @@ import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
+import { useBase64Utils } from '@/plugins/base64.js';
 
 // Props / Emit  ****************************
-
-var ModalParm = defineModel('ModalParm');
 
 // Hook	 *************************************
 
 onBeforeMount(() => {
-	TestParm.testId = route.query.testId;
-	TestParm.questPageId = route.query.questPageId;
+	const P = JSON.parse(decodeBase64(route.query.p));
+
+	TestParm.testId = P.testId;
+	TestParm.questPageId = P.questPageId;
 });
 
 onMounted(() => {});
@@ -137,16 +137,14 @@ const TestParm = {
 	questPageId: '0',
 };
 
-// Html ref  ********************************
+const { decodeBase64 } = useBase64Utils();
 
-const goPageTemp = () => {
-	router.push({ name: 'questMain', query: { TestId: '1', QuestPageId: '0' } });
-};
+// Html ref  ********************************
 
 const goNext = () => {
 	router.push({
 		name: 'quest',
-		query: { TestId: TestParm.testId, QuestPageId: '1' },
+		query: { testId: TestParm.testId, questPageId: TestParm.questPageId },
 	});
 };
 

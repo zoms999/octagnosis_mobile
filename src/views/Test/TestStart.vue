@@ -71,7 +71,7 @@
 							<button
 								class="btn btn-primary"
 								@click="
-									goPage({
+									popupPage({
 										testId: item.TestId,
 										questPageId: item.QuestPageId,
 									})
@@ -105,6 +105,7 @@ import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
+import { useBase64Utils } from '@/plugins/base64.js';
 
 // Props / Emit  ****************************
 
@@ -120,6 +121,7 @@ const { acuntId, orgId, turnConnCd } = storeToRefs(useAuthStore());
 const { vAlert, vSuccess } = useAlert();
 const router = useRouter();
 const dayjs = inject('dayjs');
+const { encodeBase64 } = useBase64Utils();
 
 const TestList = ref([]);
 
@@ -128,6 +130,8 @@ const TestParm = {
 	orgId: orgId.value,
 	turnConnCd: turnConnCd.value,
 };
+
+let windowRef = null;
 
 // Html ref  ********************************
 
@@ -178,9 +182,44 @@ const getTestList = () => {
 
 // Method  **********************************
 
-const goPage = q => {
+const popupPage = q => {
 	var nm = q.questPageId == '0' ? 'questMain' : 'quest';
-	router.push({ name: nm, query: q });
+
+	//let uri = `/views/Test/QuestMainView?testId=${q.testId}&questPageId=${q.questPageId}`;
+	//let uri = `/src/views/Test/QuestMainView.vue?testId=${q.testId}&questPageId=${q.questPageId}`;
+	const parm = encodeBase64(JSON.stringify(q));
+	let uri = `${nm}?p=${parm}`;
+
+	//localhost:5200/QuestMain?TestId=1&QuestPageId=2
+
+	if (windowRef != null) {
+		windowRef.focus();
+		return;
+	}
+	const width = 1560;
+	const height = 900;
+
+	let left = screen.width ? (screen.width - width) / 2 : 0;
+	let top = screen.height ? (screen.height - height) / 2 : 0;
+
+	let attr =
+		'top=' +
+		top +
+		', left=' +
+		left +
+		', width=' +
+		width +
+		', height=' +
+		height +
+		', resizable=no,status=no';
+
+	// 1. 윈도우 팝업 띄우기
+	windowRef = window.open(uri, '', attr);
+	if (windowRef != null) {
+		//windowRef.addEventListener('beforeunload', this.evtClose);
+	} else {
+		alert('window.open fail!!!');
+	}
 };
 
 // Etc  *************************************

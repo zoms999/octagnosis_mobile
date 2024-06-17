@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@tosspayments/payment-widget-sdk": "^0.10.2",
+    "@vueuse/core": "^10.11.0",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
