@@ -64,7 +64,7 @@ const showModal = ref(false);
 
 const fetchProducts = async () => {
 	try {
-		const response = await axios.get('http://localhost:8080/api/products');
+		const response = await axios.get('/api/products');
 		products.value = response.data;
 		console.log(products.value);
 		if (products.value.length > 0) {
