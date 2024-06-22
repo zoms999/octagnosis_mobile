@@ -46,50 +46,92 @@
 			</thead>
 			<tbody>
 				<!-- 여기에 데이터를 반복 렌더링 할 수 있습니다 -->
-				<tr
-					class="text-center"
-					v-for="(item, idx) in TestList"
-					:key="item.TurnId"
-				>
-					<td>{{ idx + 1 }}</td>
-					<td>{{ item.ProdtNm }}</td>
-
-					<td>{{ dayjs(item.ValidEndDt).format('YYYY-MM-DD') }}</td>
-					<td>
-						{{
-							item.AnsPrgrsEndDt != ''
-								? dayjs(item.AnsPrgrsEndDt).format('YYYY-MM-DD')
-								: '-'
-						}}
-					</td>
-
-					<td class="text-center">
-						<div v-if="item.TurnReqCnt - item.TurnUseCnt == 0">
-							검사라이센스 부족
-						</div>
-						<div v-else-if="item.RegDt == ''">
-							<button
-								class="btn btn-primary"
-								@click="
-									popupPage({
-										testId: item.TestId,
-										questPageId: item.QuestPageId,
-									})
-								"
-							>
-								검사진행
-							</button>
-						</div>
-						<div v-else-if="item.AnsPrgrsDoneYn == 'N'">검사진행중</div>
-						<div v-else-if="item.AnsPrgrsDoneYn == 'Y'">검사완료</div>
-					</td>
-					<td>
-						<div v-if="item.AnsPrgrsDoneYn == 'Y'">
-							<button class="btn btn-primary">결과보기</button>
-						</div>
-						<div v-else>-</div>
-					</td>
-				</tr>
+				<template v-if="orgId == 0">
+					<tr
+						class="text-center"
+						v-for="(item, idx) in TestList"
+						:key="item.TurnId"
+					>
+						<td>{{ idx + 1 }}</td>
+						<td>{{ item.ProdtNm }}</td>
+						<td>{{ dayjs(item.ExpirDt).format('YYYY-MM-DD') }}</td>
+						<td>
+							{{
+								item.AnsPrgrsEndDt !== ''
+									? dayjs(item.AnsPrgrsEndDt).format('YYYY-MM-DD')
+									: '-'
+							}}
+						</td>
+						<td class="text-center">
+							<div v-if="item.PayYn === 'Y'">
+								<button
+									class="btn btn-primary"
+									@click="
+										popupPage({
+											testId: item.TestId,
+											questPageId: item.QuestPageId,
+										})
+									"
+								>
+									검사진행
+								</button>
+							</div>
+							<div v-else-if="item.PayYn === 'N'">결제하기</div>
+							<div v-else-if="item.AnsPrgrsDoneYn === 'N'">검사진행중</div>
+							<div v-else-if="item.AnsPrgrsDoneYn === 'Y'">검사완료</div>
+						</td>
+						<td>
+							<div v-if="item.AnsPrgrsDoneYn === 'Y'">
+								<button class="btn btn-primary">결과보기</button>
+							</div>
+							<div v-else>-</div>
+						</td>
+					</tr>
+				</template>
+				<template v-else>
+					<tr
+						class="text-center"
+						v-for="(item, idx) in TestList"
+						:key="item.TurnId"
+					>
+						<td>{{ idx + 1 }}</td>
+						<td>{{ item.ProdtNm }}</td>
+						<td>{{ dayjs(item.ValidEndDt).format('YYYY-MM-DD') }}</td>
+						<td>
+							{{
+								item.AnsPrgrsEndDt !== ''
+									? dayjs(item.AnsPrgrsEndDt).format('YYYY-MM-DD')
+									: '-'
+							}}
+						</td>
+						<td class="text-center">
+							<div v-if="item.TurnReqCnt - item.TurnUseCnt === 0">
+								검사라이센스 부족
+							</div>
+							<div v-else-if="item.RegDt === ''">
+								<button
+									class="btn btn-primary"
+									@click="
+										popupPage({
+											testId: item.TestId,
+											questPageId: item.QuestPageId,
+										})
+									"
+								>
+									검사진행
+								</button>
+							</div>
+							<div v-else-if="item.AnsPrgrsDoneYn === 'N'">검사진행중</div>
+							<div v-else-if="item.AnsPrgrsDoneYn === 'Y'">검사완료</div>
+						</td>
+						<td>
+							<div v-if="item.AnsPrgrsDoneYn === 'Y'">
+								<button class="btn btn-primary">결과보기</button>
+							</div>
+							<div v-else>-</div>
+						</td>
+					</tr>
+				</template>
 			</tbody>
 		</table>
 		<div class="text-center mb-5">
@@ -177,7 +219,7 @@ const navigateToPayment = () => {
 const getTestList = () => {
 	execUrl(Procs.value.getTestList.path, TestParm);
 };
-
+console.log('orgId', orgId.value);
 // Watch  ***********************************
 
 // Method  **********************************
