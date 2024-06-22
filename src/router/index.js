@@ -5,6 +5,7 @@ import OrgJoinView from '../views/Member/OrgRegister.vue';
 import LoginView from '../views/Login/Login.vue';
 import OrgLoginView from '../views/Login/OrgLogin.vue';
 import TestStartView from '../views/Test/TestStart.vue';
+import TestSelectView from '../views/Test/TestSelect.vue';
 import TestPaymentView from '../views/Test/TestPayment.vue';
 import CheckoutView from '../views/TossPayment/CheckoutView.vue';
 import SuccessView from '../views/TossPayment/SuccessView.vue';
@@ -42,6 +43,11 @@ const routes = [
 		path: '/TestPayment',
 		name: 'testPayment',
 		component: TestPaymentView,
+	},
+	{
+		path: '/TestSelect',
+		name: 'testSelect',
+		component: TestSelectView,
 	},
 	{
 		path: '/CheckoutView',

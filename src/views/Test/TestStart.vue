@@ -66,12 +66,7 @@
 							<div v-if="item.PayYn === 'Y'">
 								<button
 									class="btn btn-primary"
-									@click="
-										popupPage({
-											testId: item.TestId,
-											questPageId: item.QuestPageId,
-										})
-									"
+									@click="navigateToTestSelect(item.TestId, item.QuestPageId)"
 								>
 									검사진행
 								</button>
@@ -220,6 +215,7 @@ const getTestList = () => {
 	execUrl(Procs.value.getTestList.path, TestParm);
 };
 console.log('orgId', orgId.value);
+console.log('acuntId', acuntId.value);
 // Watch  ***********************************
 
 // Method  **********************************
@@ -262,6 +258,11 @@ const popupPage = q => {
 	} else {
 		alert('window.open fail!!!');
 	}
+};
+
+const navigateToTestSelect = (testId, questPageId) => {
+	const encodedParams = encodeBase64(JSON.stringify({ testId, questPageId }));
+	router.push({ name: 'testSelect', query: { p: encodedParams } });
 };
 
 // Etc  *************************************
