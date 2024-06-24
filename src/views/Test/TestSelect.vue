@@ -19,7 +19,7 @@
 		<div class="test">
 			<div class="container">
 				<div class="card-list">
-					<div class="card enabled">
+					<div :class="['card', isEnabled('C01204') ? 'enabled' : 'disabled']">
 						<!-- 활성화: .enabled, 비활성화: .disabled -->
 						<div class="card-head">
 							<div class="deco">
@@ -39,7 +39,7 @@
 							</ul>
 						</div>
 					</div>
-					<div class="card enabled">
+					<div :class="['card', isEnabled('C01205') ? 'enabled' : 'disabled']">
 						<!-- 활성화: .enabled, 비활성화: .disabled -->
 						<div class="card-head">
 							<div class="deco">
@@ -59,7 +59,7 @@
 							</ul>
 						</div>
 					</div>
-					<div class="card disabled">
+					<div :class="['card', isEnabled('C01206') ? 'enabled' : 'disabled']">
 						<!-- 활성화: .enabled, 비활성화: .disabled -->
 						<div class="card-head">
 							<div class="deco">
@@ -78,7 +78,7 @@
 							</ul>
 						</div>
 					</div>
-					<div class="card disabled">
+					<div :class="['card', isEnabled('C01203') ? 'enabled' : 'disabled']">
 						<!-- 활성화: .enabled, 비활성화: .disabled -->
 						<div class="card-head">
 							<div class="deco">
@@ -168,17 +168,24 @@ const { decodeBase64 } = useBase64Utils();
 
 const testId = ref(null);
 const questPageId = ref(null);
+const prodType = ref(null);
 
 onMounted(() => {
 	if (route.query.p) {
 		const params = JSON.parse(decodeBase64(route.query.p));
 		testId.value = params.testId;
 		questPageId.value = params.questPageId;
+		prodType.value = params.prodType;
 
 		console.log('testId.value', testId.value);
 		console.log('questPageId.value', questPageId.value);
+		console.log('prodType.value', prodType.value);
 	}
 });
+
+const isEnabled = code => {
+	return prodType.value === code || prodType.value === 'C01203';
+};
 </script>
 
 <style lang="scss" scoped></style>

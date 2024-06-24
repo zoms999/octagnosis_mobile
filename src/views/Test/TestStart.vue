@@ -66,7 +66,13 @@
 							<div v-if="item.PayYn === 'Y'">
 								<button
 									class="btn btn-primary"
-									@click="navigateToTestSelect(item.TestId, item.QuestPageId)"
+									@click="
+										navigateToTestSelect(
+											item.TestId,
+											item.QuestPageId,
+											item.ProdType,
+										)
+									"
 								>
 									검사진행
 								</button>
@@ -260,8 +266,11 @@ const popupPage = q => {
 	}
 };
 
-const navigateToTestSelect = (testId, questPageId) => {
-	const encodedParams = encodeBase64(JSON.stringify({ testId, questPageId }));
+const navigateToTestSelect = (testId, questPageId, prodType) => {
+	const encodedParams = encodeBase64(
+		JSON.stringify({ testId, questPageId, prodType }),
+	);
+
 	router.push({ name: 'testSelect', query: { p: encodedParams } });
 };
 
