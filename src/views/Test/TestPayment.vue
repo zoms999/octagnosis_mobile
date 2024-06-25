@@ -1,26 +1,43 @@
 <template>
 	<div class="payment-container">
 		<h1>결제를 진행하여 주십시오.</h1>
-		<p>
-			짐스<br />검사자님께서는 아래 선택하신 프로그램으로 진행됨을 알려드립니다.
-		</p>
+		<p>검사자님께서는 아래 선택하신 프로그램으로 진행됨을 알려드립니다.</p>
 
 		<div class="program-info">
 			<label for="product-select">검사 프로그램: </label>
 			<select
 				id="product-select"
-				v-model="selectedProduct"
-				@change="updatePrice"
+				v-model="selectedProductId"
+				@change="loadSubProducts"
 			>
 				<option
 					v-for="product in products"
-					:key="product.prodtId"
-					:value="product"
+					:key="product.ProdtId"
+					:value="product.ProdtId"
 				>
-					{{ product.prodtNm }}
+					{{ product.ProdtNm }}
 				</option>
 			</select>
-			<p>가격: {{ selectedProduct ? selectedProduct.price : 0 }} 원</p>
+		</div>
+
+		<div class="program-info">
+			<label for="sub-product-select">Sub 프로그램: </label>
+			<select
+				id="sub-product-select"
+				v-model="selectedSubProductId"
+				@change="updateSelectedSubProduct"
+			>
+				<option
+					v-for="subProduct in subProducts"
+					:key="subProduct.ProdtSubId"
+					:value="subProduct.ProdtSubId"
+				>
+					{{ subProduct.ProdtNm }}
+				</option>
+			</select>
+			<span v-if="selectedSubProduct"
+				>가격: {{ selectedSubProduct.Price }}원</span
+			>
 		</div>
 
 		<div class="important-info">
@@ -42,32 +59,35 @@
 		<div v-if="showModal" class="modal">
 			<div class="modal-content">
 				<CheckoutView
-					:productId="selectedProduct.prodtId"
-					:productName="selectedProduct.prodtNm"
-					:productPrice="selectedProduct.price"
-					:productType="selectedProduct.prodtType"
+					:productId="selectedSubProductId"
+					:productName="selectedSubProduct.ProdtNm"
+					:productPrice="selectedSubProduct.Price"
+					:productType="selectedSubProduct.ProdtType"
 				/>
 				<button class="close-button" @click="closeModal">닫기</button>
 			</div>
 		</div>
 	</div>
 </template>
-
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import CheckoutView from '../TossPayment/CheckoutView.vue';
 
 const products = ref([]);
+const subProducts = ref([]);
+const selectedProductId = ref(null);
+const selectedSubProductId = ref(null);
 const selectedProduct = ref(null);
+const selectedSubProduct = ref(null);
 const showModal = ref(false);
 
 const fetchProducts = async () => {
 	try {
-		const response = await axios.get('http://localhost:8080/api/products');
-		products.value = response.data;
-		console.log(products.value);
+		const response = await axios.get('/api/products');
+		products.value = response.data.ProductList;
 		if (products.value.length > 0) {
+			selectedProductId.value = products.value[0].ProdtId;
 			selectedProduct.value = products.value[0];
 		}
 	} catch (error) {
@@ -75,8 +95,22 @@ const fetchProducts = async () => {
 	}
 };
 
-const updatePrice = () => {
-	// You can perform any additional logic when the selected product changes
+const loadSubProducts = async () => {
+	try {
+		const response = await axios.get(
+			`/api/products/${selectedProductId.value}/subproducts`,
+		);
+		subProducts.value = response.data.subProducts;
+		if (subProducts.value.length > 0) {
+			selectedSubProductId.value = subProducts.value[0].ProdtSubId;
+			selectedSubProduct.value = subProducts.value[0];
+		} else {
+			selectedSubProductId.value = null;
+			selectedSubProduct.value = null;
+		}
+	} catch (error) {
+		console.error('Error fetching sub-products:', error);
+	}
 };
 
 const handlePayment = () => {
@@ -89,17 +123,11 @@ const closeModal = () => {
 	showModal.value = false;
 };
 
-// const handlePayment = () => {
-// 	if (selectedProduct.value) {
-// 		const productName = encodeURIComponent(selectedProduct.value.prodtNm);
-// 		const productPrice = selectedProduct.value.price;
-// 		const checkoutPopup = window.open(
-// 			`/CheckoutView?productName=${productName}&productPrice=${productPrice}`,
-// 			'_blank',
-// 			'width=800,height=800,resizable=yes',
-// 		);
-// 	}
-// };
+const updateSelectedSubProduct = () => {
+	selectedSubProduct.value = subProducts.value.find(
+		sub => sub.ProdtSubId === selectedSubProductId.value,
+	);
+};
 
 onMounted(() => {
 	fetchProducts();

@@ -40,6 +40,7 @@ import { nanoid } from 'nanoid';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import { toHandlers } from 'vue';
+import axios from 'axios';
 
 export default {
 	props: {
@@ -95,18 +96,15 @@ export default {
 					};
 
 					// Save payment information to the server
-					const response = await fetch('/api/payment/save', {
-						method: 'POST',
+					const response = await axios.post('/api/payment/save', paymentInfo, {
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify(paymentInfo),
 					});
 
-					if (!response.ok) {
-						const errorMessage = await response.text();
+					if (response.status !== 200) {
 						throw new Error(
-							`Request failed: ${response.status} - ${errorMessage}`,
+							`Request failed: ${response.status} - ${response.statusText}`,
 						);
 					}
 

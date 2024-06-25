@@ -42,6 +42,7 @@ export const useAuthStore = defineStore('auth', {
 			sessionStorage.setItem('sex', persn.sex);
 			sessionStorage.setItem('orgId', persn.orgId);
 			sessionStorage.setItem('turnConnCd', turnConnCd);
+			console.log('orgId', persn.orgId);
 		},
 		logout() {
 			this.isAuthenticated = false;
