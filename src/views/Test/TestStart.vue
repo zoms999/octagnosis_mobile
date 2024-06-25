@@ -71,10 +71,7 @@
 							<button
 								class="btn btn-primary"
 								@click="
-									popupPage({
-										testId: item.TestId,
-										questPageId: item.QuestPageId,
-									})
+									getNextTest(item.ProdtId, item.TestId, item.QuestPageId)
 								"
 							>
 								검사진행
@@ -129,6 +126,10 @@ const TestParm = {
 	acuntId: acuntId.value,
 	orgId: orgId.value,
 	turnConnCd: turnConnCd.value,
+
+	prodtId: 0,
+	testId: 0,
+	questPageId: 0,
 };
 
 let windowRef = null;
@@ -139,6 +140,7 @@ let windowRef = null;
 
 const Procs = ref({
 	getTestList: { path: '/api/Test/getTestList', loading: false },
+	getNextTest: { path: '/api/Test/getNextTest', loading: false },
 });
 
 const { data, execUrl, reqUrl } = useAxios(
@@ -151,6 +153,12 @@ const { data, execUrl, reqUrl } = useAxios(
 				case Procs.value.getTestList.path:
 					Procs.value.getTestList.loading = false;
 					TestList.value = data.value.TestList;
+					break;
+				case Procs.value.getNextTest.path:
+					Procs.value.getNextTest.loading = false;
+					TestParm.testId = data.value.testId;
+					TestParm.questPageId = data.value.questPageId;
+					popupPage();
 					break;
 				default:
 					break;
@@ -174,20 +182,26 @@ const navigateToPayment = () => {
 	router.push('/testPayment');
 };
 
-const getTestList = () => {
-	execUrl(Procs.value.getTestList.path, TestParm);
-};
-
 // Watch  ***********************************
 
 // Method  **********************************
 
-const popupPage = q => {
-	var nm = q.questPageId == '0' ? 'questMain' : 'quest';
+const getTestList = () => {
+	execUrl(Procs.value.getTestList.path, TestParm);
+};
 
-	//let uri = `/views/Test/QuestMainView?testId=${q.testId}&questPageId=${q.questPageId}`;
-	//let uri = `/src/views/Test/QuestMainView.vue?testId=${q.testId}&questPageId=${q.questPageId}`;
-	const parm = encodeBase64(JSON.stringify(q));
+const getNextTest = (prodtId, testId, questPageId) => {
+	TestParm.prodtId = prodtId;
+	TestParm.testId = testId;
+	TestParm.questPageId = questPageId;
+
+	execUrl(Procs.value.getNextTest.path, TestParm);
+};
+
+const popupPage = () => {
+	var nm = TestParm.questPageId == '0' ? 'questMain' : 'quest';
+
+	const parm = encodeBase64(JSON.stringify(TestParm));
 	let uri = `${nm}?p=${parm}`;
 
 	//localhost:5200/QuestMain?TestId=1&QuestPageId=2

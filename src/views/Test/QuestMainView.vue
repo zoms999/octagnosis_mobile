@@ -110,6 +110,7 @@ import { useBase64Utils } from '@/plugins/base64.js';
 onBeforeMount(() => {
 	const P = JSON.parse(decodeBase64(route.query.p));
 
+	TestParm.prodtId = P.prodtId;
 	TestParm.testId = P.testId;
 	TestParm.questPageId = P.questPageId;
 });
@@ -133,6 +134,7 @@ const TestParm = {
 	acuntId: acuntId.value,
 	orgId: orgId.value,
 	turnConnCd: turnConnCd.value,
+	prodtId: '0',
 	testId: '0',
 	questPageId: '0',
 };
