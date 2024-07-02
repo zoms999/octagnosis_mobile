@@ -22,7 +22,7 @@
 		</div>
 	</div>
 
-	<div class="quest">
+	<div class="quest" style="background-color: #ffffff !important">
 		<MultiQuestItemA
 			v-if="QuestPage.questPageType == 'C00402'"
 			v-model:QuestPage="QuestPage"
@@ -30,7 +30,6 @@
 			v-model:QuestItemList="QuestItemList"
 			v-model:QuestImgList="QuestImgList"
 		></MultiQuestItemA>
-
 		<OneQuestItemA
 			v-if="QuestPage.questPageType == 'C00401'"
 			v-model:QuestPage="QuestPage"
@@ -91,13 +90,24 @@
 	</div>
 	<div class="bottom d-flex justify-content-center">
 		<div class="btnNext d-flex" @click="saveAns">
-			<span class="fs130">다 음</span> &nbsp;
-			<span
-				class="material-icons"
-				style="border: none; font-size: 1.3rem; margin-top: 8px"
-			>
-				forward
-			</span>
+			<template v-if="Procs.saveAns.loading">
+				<div
+					class="spinner-border"
+					style="width: 2.5rem; height: 2.5rem; margin-top: 5px"
+					role="status"
+				>
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</template>
+			<template v-else>
+				<span class="fs190">다 음</span>&nbsp;
+				<span
+					class="material-icons"
+					style="border: none; font-size: 1.8rem; margin-top: 8px"
+				>
+					forward
+				</span>
+			</template>
 		</div>
 	</div>
 </template>
@@ -107,6 +117,9 @@ import { onBeforeMount, onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
+import { useBase64Utils } from '@/plugins/base64.js';
 
 import MultiQuestItemA from '@/components/Test/QuestPage/MultiQuestItemA.vue';
 import OneQuestItemA from '@/components/Test/QuestPage/OneQuestItemA.vue';
@@ -126,21 +139,50 @@ var ModalParm = defineModel('ModalParm');
 // Hook	 *************************************
 
 onBeforeMount(() => {
+	window.removeEventListener('keydown', preventRefresh);
+
+	const P = JSON.parse(decodeBase64(route.query.p));
+
+	TestParm.ansPrgrsId = P.ansPrgrsId;
+	TestParm.prodtId = P.prodtId;
+	TestParm.testId = P.testId;
+	TestParm.questPageId = P.questPageId;
+
 	getQuestPageForTest();
 });
 
-onMounted(() => {});
+onMounted(() => {
+	window.addEventListener('keydown', preventRefresh);
+});
 
 // Model / Data *****************************
 
+const { acuntId, orgId, turnConnCd, userId } = storeToRefs(useAuthStore());
 const { vAlert, vSuccess } = useAlert();
 const route = useRoute();
+const router = useRouter();
+const { encodeBase64, decodeBase64 } = useBase64Utils();
 
 const TestList = ref([]);
 const QuestPage = ref({});
 const QuestList = ref([]);
 const QuestItemList = ref([]);
 const QuestImgList = ref([]);
+
+const TestParm = {
+	acuntId: acuntId.value,
+	orgId: orgId.value,
+	turnConnCd: turnConnCd.value,
+	insId: userId.value,
+	uptId: userId.value,
+
+	ansPrgrsId: '0',
+	prodtId: '0',
+	testId: '0',
+	questPageId: '0',
+
+	questList: null,
+};
 
 // Html ref  ********************************
 
@@ -151,6 +193,8 @@ const Procs = ref({
 		path: '/api/Test/getQuestPageForTest',
 		loading: false,
 	},
+	getNextTest: { path: '/api/Test/getNextTest', loading: false },
+	saveAns: { path: '/api/Test/saveAns', loading: false },
 });
 
 const { data, execUrl, reqUrl } = useAxios(
@@ -184,6 +228,29 @@ const { data, execUrl, reqUrl } = useAxios(
 					});
 
 					break;
+				case Procs.value.saveAns.path:
+					Procs.value.saveAns.loading = false;
+					vSuccess('저장되었습니다.');
+					TestParm.testId = data.value.testId;
+					TestParm.questPageId = data.value.questPageId;
+
+					TestParm.questList = ''; // Json 객체내의 객체를 없애줌. 안 없애면 encodeBase64 안됨.
+
+					if (TestParm.questPageId == '0') {
+						const parm = encodeBase64(JSON.stringify(TestParm));
+						router.push(`questMain?p=${parm}`);
+					} else {
+						const parm = encodeBase64(JSON.stringify(TestParm));
+						location.href = `quest?p=${parm}`;
+						/*
+						router.replace({
+							path: 'quest',
+							query: { p: parm, t: Date.now() },
+						});
+						*/
+					}
+
+					break;
 				default:
 					break;
 			}
@@ -208,8 +275,8 @@ const { data, execUrl, reqUrl } = useAxios(
 
 const getQuestPageForTest = () => {
 	const Parm = {
-		testId: route.query.testId,
-		questPageId: route.query.questPageId,
+		testId: TestParm.testId,
+		questPageId: TestParm.questPageId,
 	};
 
 	execUrl(Procs.value.getQuestPageForTest.path, Parm);
@@ -236,11 +303,34 @@ const saveAns = () => {
 	if (NotChkYn) {
 		return;
 	} else {
-		alert('저장되었습니다.');
+		Procs.value.saveAns.loading = true;
+
+		TestParm.questList = QuestList.value;
+		execUrl(Procs.value.saveAns.path, TestParm);
 	}
 };
 
 // Etc	*************************************
+
+const preventRefresh = event => {
+	// F5 키 코드 (116)
+	if (event.keyCode === 116) {
+		event.preventDefault();
+		vAlert('검사중에는 화면을 새로고침 할 수 없습니다.');
+	}
+
+	// Ctrl+R 키 조합 (Ctrl: 17, R: 82)
+	if (event.ctrlKey && event.keyCode === 82) {
+		event.preventDefault();
+		vAlert('검사중에는 화면을 새로고침 할 수 없습니다.');
+	}
+
+	// Ctrl+Shift+R 키 조합 (Ctrl: 17, Shift: 16, R: 82)
+	if (event.ctrlKey && event.shiftKey && event.keyCode === 82) {
+		event.preventDefault();
+		vAlert('검사중에는 화면을 새로고침 할 수 없습니다.');
+	}
+};
 </script>
 
 <style scoped>
@@ -294,7 +384,7 @@ const saveAns = () => {
 	background-color: #1db1ad;
 	color: #ffffff;
 	margin: 20px 0 0 20px;
-	font-size: 1.8rem;
+	font-size: 2.3rem;
 	padding: 10px 60px 10px 60px;
 	border-radius: 10px;
 }
@@ -302,10 +392,10 @@ const saveAns = () => {
 .step {
 	border: 1px solid #ffffff;
 	border-radius: 30px;
-	font-size: 1.4rem;
+	font-size: 2rem;
 	font-weight: 500;
-	margin: 30px 0 0 50px;
-	padding: 5px 30px 0px 30px;
+	margin: 23px 0 0 50px;
+	padding: 8px 30px 0px 30px;
 	height: 50px;
 }
 .curStep {
@@ -315,20 +405,20 @@ const saveAns = () => {
 .stepTit {
 	border: 0;
 	border-radius: 20px;
-	font-size: 1.7rem;
+	font-size: 2.4rem;
 	font-weight: 600;
-	margin: 22px 0 0 0px;
-	padding: 10px 30px 0px 20px;
+	margin: 16px 0 0 0px;
+	padding: 13px 30px 0px 20px;
 }
 .timer {
-	margin: 35px 10px 0 0;
+	margin: 27px 10px 0 0;
 }
 .timer img {
 	width: 40px;
 }
 .questNum {
-	margin: 30px 0 0 0;
-	font-size: 1.7rem;
+	margin: 27px 0 0 0;
+	font-size: 2.4rem;
 }
 .questNum strong {
 	color: #ffd62c;

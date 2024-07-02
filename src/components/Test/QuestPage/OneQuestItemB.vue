@@ -2,12 +2,9 @@
 	<div class="test-form">
 		<div class="questPageNm">
 			<span class="badge text-bg-secondary">{{ QuestPage.questPageNm }}</span>
+			<span style="color: white">OneQuestItemB</span>
 		</div>
-		<div
-			class="d-flex questBox"
-			v-for="(item, idx) in QuestList"
-			:key="item.questId"
-		>
+		<div class="d-flex questBox" v-for="item in QuestList" :key="item.questId">
 			<div class="numBox">
 				<div class="num">{{ item.questNo }}</div>
 			</div>
@@ -101,7 +98,7 @@ const getQuestItemImg = imgNm => {
 	margin-bottom: 30px;
 }
 .questPageNm span {
-	font-size: 1.3rem;
+	font-size: 1.8rem;
 	padding: 10px;
 }
 .num {
@@ -113,14 +110,14 @@ const getQuestItemImg = imgNm => {
 	vertical-align: middle;
 	color: #ffffff;
 	padding-top: 8px;
-	font-size: 1.3rem;
+	font-size: 1.9rem;
 	margin: 0 10px 0 0;
 }
 .quest1 {
-	font-size: 1.2rem;
+	font-size: 1.8rem;
 }
 .quest2 {
-	font-size: 1.2rem;
+	font-size: 1.8rem;
 	margin: 0px 0 20px 0;
 }
 
@@ -137,7 +134,7 @@ const getQuestItemImg = imgNm => {
 	background-color: #f0f3f5;
 	padding: 10px 10px 10px 20px;
 	text-align: left;
-	font-size: 1.2rem;
+	font-size: 1.8rem;
 	cursor: pointer;
 	display: inline-block;
 }
@@ -149,7 +146,7 @@ const getQuestItemImg = imgNm => {
 	width: 90%;
 	max-width: 300px !important;
 
-	margin: 10px 0 10px 0;
+	margin: 10px auto;
 	border-radius: 10px;
 }
 .itemCont {

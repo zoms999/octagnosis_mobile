@@ -36,10 +36,11 @@
 		<table class="table table-bordered Tbl1">
 			<thead>
 				<tr>
-					<th class="w100">순번</th>
+					<th class="w80">순번</th>
 					<th>검사상품</th>
-					<th class="w220">검사 유효일자</th>
-					<th class="w220">검사완료일자</th>
+					<th class="w150">검사유효일</th>
+					<th class="w150">검사시작일</th>
+					<th class="w150">검사완료일</th>
 					<th class="w140">검사상태</th>
 					<th class="w140">결과보기</th>
 				</tr>
@@ -57,6 +58,13 @@
 					<td>{{ dayjs(item.ValidEndDt).format('YYYY-MM-DD') }}</td>
 					<td>
 						{{
+							item.AnsPrgrsStartDt != ''
+								? dayjs(item.AnsPrgrsStartDt).format('YYYY-MM-DD')
+								: '-'
+						}}
+					</td>
+					<td>
+						{{
 							item.AnsPrgrsEndDt != ''
 								? dayjs(item.AnsPrgrsEndDt).format('YYYY-MM-DD')
 								: '-'
@@ -67,17 +75,23 @@
 						<div v-if="item.TurnReqCnt - item.TurnUseCnt == 0">
 							검사라이센스 부족
 						</div>
-						<div v-else-if="item.RegDt == ''">
+						<div v-else-if="item.RegDt == '' || item.AnsPrgrsDoneYn == 'N'">
 							<button
 								class="btn btn-primary"
 								@click="
-									getNextTest(item.ProdtId, item.TestId, item.QuestPageId)
+									getNextTest(
+										item.AnsPrgrsId,
+										item.TurnId,
+										item.PayId,
+										item.ProdtId,
+										item.TestId,
+										item.QuestPageId,
+									)
 								"
 							>
-								검사진행
+								{{ item.RegDt == '' ? '검사 시작' : '검사 진행중' }}
 							</button>
 						</div>
-						<div v-else-if="item.AnsPrgrsDoneYn == 'N'">검사진행중</div>
 						<div v-else-if="item.AnsPrgrsDoneYn == 'Y'">검사완료</div>
 					</td>
 					<td>
@@ -114,7 +128,7 @@ onMounted(() => {
 
 // Model / Data  ****************************
 
-const { acuntId, orgId, turnConnCd } = storeToRefs(useAuthStore());
+const { acuntId, orgId, turnConnCd, userId } = storeToRefs(useAuthStore());
 const { vAlert, vSuccess } = useAlert();
 const router = useRouter();
 const dayjs = inject('dayjs');
@@ -126,13 +140,18 @@ const TestParm = {
 	acuntId: acuntId.value,
 	orgId: orgId.value,
 	turnConnCd: turnConnCd.value,
+	insId: userId.value,
+
+	ansPrgrsId: '0',
+	turnId: '0',
+	payId: '0',
 
 	prodtId: 0,
 	testId: 0,
 	questPageId: 0,
 };
 
-let windowRef = null;
+var windowRef = null;
 
 // Html ref  ********************************
 
@@ -156,6 +175,8 @@ const { data, execUrl, reqUrl } = useAxios(
 					break;
 				case Procs.value.getNextTest.path:
 					Procs.value.getNextTest.loading = false;
+
+					TestParm.ansPrgrsId = data.value.ansPrgrsId;
 					TestParm.testId = data.value.testId;
 					TestParm.questPageId = data.value.questPageId;
 					popupPage();
@@ -190,7 +211,29 @@ const getTestList = () => {
 	execUrl(Procs.value.getTestList.path, TestParm);
 };
 
-const getNextTest = (prodtId, testId, questPageId) => {
+const getNextTest = (
+	ansPrgrsId,
+	turnId,
+	payId,
+	prodtId,
+	testId,
+	questPageId,
+) => {
+	if (ansPrgrsId == '0') {
+		if (
+			!confirm(
+				'기관에서 부여받은 검사회차 라이센스를 사용합니다.\n\n검사를 시작하시겠습니까 ?',
+			)
+		) {
+			return;
+		}
+	} else {
+		alert('진행중인 검사를 계속 합니다.');
+	}
+	TestParm.ansPrgrsId = ansPrgrsId;
+	TestParm.turnId = turnId;
+	TestParm.payId = payId;
+
 	TestParm.prodtId = prodtId;
 	TestParm.testId = testId;
 	TestParm.questPageId = questPageId;
@@ -210,8 +253,9 @@ const popupPage = () => {
 		windowRef.focus();
 		return;
 	}
-	const width = 1560;
-	const height = 900;
+
+	const width = screen.width;
+	const height = screen.height;
 
 	let left = screen.width ? (screen.width - width) / 2 : 0;
 	let top = screen.height ? (screen.height - height) / 2 : 0;
@@ -229,10 +273,11 @@ const popupPage = () => {
 
 	// 1. 윈도우 팝업 띄우기
 	windowRef = window.open(uri, '', attr);
-	if (windowRef != null) {
+
+	if (!windowRef && windowRef.closed) {
 		//windowRef.addEventListener('beforeunload', this.evtClose);
 	} else {
-		alert('window.open fail!!!');
+		windowRef.focus();
 	}
 };
 

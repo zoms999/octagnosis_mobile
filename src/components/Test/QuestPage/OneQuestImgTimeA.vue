@@ -3,6 +3,7 @@
 		<div class="d-flex justify-content-between">
 			<div class="questPageNm">
 				<span class="badge text-bg-secondary">{{ QuestPage.questPageNm }}</span>
+				OneQuestImgTimeA
 			</div>
 			<div v-if="TimerYn">
 				<div class="tiemr d-flex justify-content-end">
@@ -27,9 +28,9 @@
 				</div>
 
 				<!-- 이미지 -->
-				<div class="imgs d-flex flex-wrap">
+				<div class="imgs">
 					<div
-						class="imgBox"
+						class="imgBox d-flex flex-wrap justify-content-center"
 						v-for="questImg in getQuestImgList(item.questId)"
 						:key="questImg.imgId"
 						:style="`width:${Math.round(100 / item.imgColCnt, 2) - 0.5}% !important`"
@@ -185,7 +186,7 @@ const setTimeoutAction = () => {
 	margin-bottom: 30px;
 }
 .questPageNm span {
-	font-size: 1.3rem;
+	font-size: 1.8rem;
 	padding: 10px;
 }
 .num {
@@ -197,14 +198,14 @@ const setTimeoutAction = () => {
 	vertical-align: middle;
 	color: #ffffff;
 	padding-top: 8px;
-	font-size: 1.3rem;
+	font-size: 1.9rem;
 	margin: 0 10px 0 0;
 }
 .quest1 {
-	font-size: 1.2rem;
+	font-size: 1.8rem;
 }
 .quest2 {
-	font-size: 1.2rem;
+	font-size: 1.8rem;
 	margin: 0px 0 20px 0;
 }
 
@@ -240,7 +241,7 @@ const setTimeoutAction = () => {
 	background-color: #f0f3f5;
 	padding: 10px 10px 10px 10px;
 	text-align: center;
-	font-size: 1.3rem;
+	font-size: 1.8rem;
 	cursor: pointer;
 	display: inline-block;
 }
@@ -250,7 +251,7 @@ const setTimeoutAction = () => {
 }
 
 .tiemr {
-	font-size: 1.4rem;
+	font-size: 2rem;
 	background-color: rgb(100, 100, 100);
 	padding: 5px 20px 5px 30px;
 	border-radius: 5px;
@@ -262,11 +263,9 @@ const setTimeoutAction = () => {
 .tiemr span:nth-child(2) {
 	margin: 0 10px 0 10px;
 }
-.tiemr span:nth-child(3) {
-}
 .tiemr span:nth-child(4) {
 	margin: 10px 0 0 5px;
 
-	font-size: 0.9rem;
+	font-size: 1.3rem;
 }
 </style>

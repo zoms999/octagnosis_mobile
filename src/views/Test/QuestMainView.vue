@@ -1,45 +1,23 @@
 <template>
-	<div id="content" class="finish mt-5">
+	<div id="content" class="finish mt-5" style="background-color: #ffffff">
 		<div class="container">
 			<!-- 20230626 수정: 로고 지움 -->
 			<div class="celebration-wrap">
 				<img src="../img/sub/img_congratulation.png" alt="" />
-				<p class="text01 d-flex justify-content-center">
-					<span
-						class="material-icons"
-						style="font-size: 5rem; margin: 5px 10px 5px 5px"
-					>
-						assignment_turned_in
-					</span>
-					<span> 검사유의사항 </span>
-				</p>
-				<p class="text03 text-start px-5">
-					옥타그노시스검사를 시작하기 전, 검사의 효과를 높이기 위해 아래 내용을
-					꼼꼼하게 읽어주시면 감사하겠습니다.
-				</p>
 
-				<div class="checkItem">
-					<div>1. 검사 진행시 모든 문항에 솔직하게 답변해주세요</div>
-					<div>
-						2. 시간 제한이 있는 문항에는 반드시 시간을 엄수해서 답해 주시기
-						바랍니다.
-					</div>
-					<div>
-						3. 고민이 되거나 어려운 문제가 나올 시 시간을 지체하지 마시고, 생각
-						속에 떠오르는 대로 선택해주세요.
-					</div>
-					<div>
-						4. 검사가 시작되면 중간에 멈추지 마시고, 끝까지 한번에 진행해
-						주세요.
-					</div>
-					<div>
-						5. 검사에 방해가 될 수 있는 휴대전화, 전자기기 등은 무음이나
-						비행기모드로 하시고 검사를 진행해 주세요.
-					</div>
-				</div>
+				<TestHeadMain v-if="TestParm.testId == 9"></TestHeadMain>
 
-				<div class="bottom d-flex justify-content-center">
-					<div class="btnNext d-flex" @click="goNext">
+				<TestHead_1 v-if="TestParm.testId == 6"></TestHead_1>
+
+				<TestHead_2 v-if="TestParm.testId == 10"></TestHead_2>
+
+				<TestHeadComplete v-if="TestParm.testId == 0"></TestHeadComplete>
+
+				<div
+					class="bottom d-flex justify-content-center"
+					v-if="TestParm.testId != 0"
+				>
+					<div class="btnNext d-flex" @click="getNextTest">
 						<span style="font-size: 2.2rem !important">다 음</span> &nbsp;
 						&nbsp;
 						<span
@@ -103,6 +81,11 @@ import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
 import { useBase64Utils } from '@/plugins/base64.js';
 
+import TestHeadMain from '@/components/Test/TestHeadMain.vue';
+import TestHead_1 from '@/components/Test/TestHead_1.vue';
+import TestHead_2 from '@/components/Test/TestHead_2.vue';
+import TestHeadComplete from '@/components/Test/TestHeadComplete.vue';
+
 // Props / Emit  ****************************
 
 // Hook	 *************************************
@@ -110,6 +93,7 @@ import { useBase64Utils } from '@/plugins/base64.js';
 onBeforeMount(() => {
 	const P = JSON.parse(decodeBase64(route.query.p));
 
+	TestParm.ansPrgrsId = P.ansPrgrsId;
 	TestParm.prodtId = P.prodtId;
 	TestParm.testId = P.testId;
 	TestParm.questPageId = P.questPageId;
@@ -123,40 +107,25 @@ const { acuntId, orgId, turnConnCd } = storeToRefs(useAuthStore());
 const { vAlert, vSuccess } = useAlert();
 const route = useRoute();
 const router = useRouter();
-
-const TestList = ref([]);
-const QuestPage = ref({});
-const QuestList = ref([]);
-const QuestItemList = ref([]);
-const QuestImgList = ref([]);
+const { encodeBase64, decodeBase64 } = useBase64Utils();
 
 const TestParm = {
 	acuntId: acuntId.value,
 	orgId: orgId.value,
 	turnConnCd: turnConnCd.value,
+
+	ansPrgrsId: '0',
 	prodtId: '0',
 	testId: '0',
 	questPageId: '0',
 };
 
-const { decodeBase64 } = useBase64Utils();
-
 // Html ref  ********************************
-
-const goNext = () => {
-	router.push({
-		name: 'quest',
-		query: { testId: TestParm.testId, questPageId: TestParm.questPageId },
-	});
-};
 
 // Axios / Route	***************************
 
 const Procs = ref({
-	getQuestPageForTest: {
-		path: '/api/Test/getQuestPageForTest',
-		loading: false,
-	},
+	getNextTest: { path: '/api/Test/getNextTest', loading: false },
 });
 
 const { data, execUrl, reqUrl } = useAxios(
@@ -166,28 +135,14 @@ const { data, execUrl, reqUrl } = useAxios(
 		immediate: false,
 		onSuccess: () => {
 			switch (reqUrl.value) {
-				case Procs.value.getQuestPageForTest.path:
-					Procs.value.getQuestPageForTest.loading = false;
+				case Procs.value.getNextTest.path:
+					Procs.value.getNextTest.loading = false;
 
-					TestList.value = data.value.TestList;
-					QuestPage.value = data.value.QuestPage;
-					QuestList.value = data.value.QuestList;
-					QuestItemList.value = data.value.QuestItemList;
-					QuestImgList.value = data.value.QuestImgList;
+					TestParm.ansPrgrsId = data.value.ansPrgrsId;
+					TestParm.testId = data.value.testId;
+					TestParm.questPageId = data.value.questPageId;
 
-					// Quest 에 답변값 "val" 추가
-					QuestList.value.forEach(quest => {
-						quest.val1 = 0;
-						quest.val2 = 0;
-					});
-					// QuestItem 에 선택값 "selected" 추가
-					QuestItemList.value.forEach(item => {
-						item.selected = false;
-					});
-					// QuestItem 에 선택값 "selected" 추가
-					QuestImgList.value.forEach(item => {
-						item.showYn = true;
-					});
+					goNext();
 
 					break;
 				default:
@@ -212,10 +167,21 @@ const { data, execUrl, reqUrl } = useAxios(
 
 // Method	***********************************
 
+const getNextTest = () => {
+	execUrl(Procs.value.getNextTest.path, TestParm);
+};
+
+const goNext = () => {
+	var nm = TestParm.questPageId == '0' ? 'questMain' : 'quest';
+
+	const parm = encodeBase64(JSON.stringify(TestParm));
+	router.push(`${nm}?p=${parm}`);
+};
+
 // Etc	*************************************
 </script>
 
-<style scoped>
+<style scoped="">
 .logo {
 	width: 200px;
 }

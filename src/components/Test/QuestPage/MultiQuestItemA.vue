@@ -2,6 +2,7 @@
 	<div class="test-form">
 		<div class="questPageNm">
 			<span class="badge text-bg-secondary">{{ QuestPage.questPageNm }}</span>
+			<span style="color: white">MultiQuestItemA</span>
 		</div>
 		<div
 			class="d-flex questBox"
@@ -104,7 +105,7 @@ const setQuestVal = (questId, itemId) => {
 	margin-bottom: 30px;
 }
 .questPageNm span {
-	font-size: 1.3rem;
+	font-size: 1.8rem;
 	padding: 10px;
 }
 .num {
@@ -116,14 +117,14 @@ const setQuestVal = (questId, itemId) => {
 	vertical-align: middle;
 	color: #ffffff;
 	padding-top: 8px;
-	font-size: 1.3rem;
+	font-size: 1.9rem;
 	margin: 0 10px 0 0;
 }
 .quest1 {
-	font-size: 1.2rem;
+	font-size: 1.8rem;
 }
 .quest2 {
-	font-size: 1.2rem;
+	font-size: 1.8rem;
 	margin: 0px 0 20px 0;
 }
 
@@ -147,7 +148,7 @@ const setQuestVal = (questId, itemId) => {
 	background-color: #f0f3f5;
 	padding: 10px 10px 10px 10px;
 	text-align: center;
-	font-size: 1.2rem;
+	font-size: 1.8rem;
 	cursor: pointer;
 	display: inline-block;
 }

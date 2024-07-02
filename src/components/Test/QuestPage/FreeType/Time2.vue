@@ -3,6 +3,7 @@
 		<div class="d-flex justify-content-between">
 			<div class="questPageNm">
 				<span class="badge text-bg-secondary">{{ QuestPage.questPageNm }}</span>
+				<span style="color: white">Time2</span>
 			</div>
 			<div v-if="TimerYn">
 				<div class="tiemr d-flex justify-content-end">
@@ -30,8 +31,8 @@
 					class="container-fluid fs120 my-3 p-3 border"
 					v-if="Quest.questId == 70"
 				>
-					<div class="row">
-						<div class="col-4">
+					<div class="row" style="font-size: 1.8rem">
+						<div class="col-4" style="font-size: 1.8rem">
 							<span :class="{ hide1: timeEndYn }">
 								방구들 선득선득해지는 날부터 봄까지<br />
 								조선 팔도 거리에서 제일 아름다운 것은<br />
@@ -63,6 +64,7 @@
 									padding: 10px;
 									color: #ffffff;
 									border-radius: 10px;
+									font-size: 1.8rem;
 								"
 							>
 								시의 내용과 어울리도록 (_________________).
@@ -76,6 +78,7 @@
 									color: #ffffff;
 									line-height: 2.2rem;
 									border-radius: 10px;
+									font-size: 1.8rem;
 								"
 								:class="{ hide1: timeEndYn == false }"
 							>
@@ -89,7 +92,7 @@
 					v-if="Quest.questId == 71"
 				>
 					<div class="row">
-						<div class="col-7">
+						<div class="col-7" style="font-size: 1.8rem">
 							거대한 열대초원이 있는 탄자니아는 충분한 햇빛과 적당한 비가 내려
 							다양한 열대 동물들이 살아가기에 이상적인 환경이다. 그래서
 							유네스코에서는 이 거대한 초원지대를 인류 자연환경 보호구역으로
@@ -110,7 +113,7 @@
 									padding: 10px;
 									color: #ffffff;
 									border-radius: 10px;
-									font-size: 1.1rem;
+									font-size: 1.8rem;
 								"
 							>
 								내가 그 이야기를 전해들은 여인이라면, <br />어떤 방법을
@@ -124,7 +127,7 @@
 									color: #ffffff;
 									line-height: 1.7rem;
 									border-radius: 10px;
-									font-size: 1.1rem;
+									font-size: 1.8rem;
 								"
 								:class="{ hide1: timeEndYn == false }"
 							>
@@ -147,7 +150,7 @@
 						<div class="container-fluid">
 							<div class="row">
 								<div class="col-8">
-									<div v-if="timeEndYn == false">
+									<div v-if="timeEndYn == false" style="font-size: 1.8rem">
 										신도시 ‘행복지구’에 최근 버스 관련 민원 사항이 빗발치고
 										있다.<br />
 										대규모 아파트 단지가 조성된 뒤, 많은 사람들이 서울에서
@@ -178,7 +181,7 @@
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col12">
-								<div v-if="timeEndYn == false">
+								<div v-if="timeEndYn == false" style="font-size: 1.8rem">
 									당신은 혼자서 고객을 만나러 약속장소로 시간 맞춰 가고 있다.<br /><br />
 
 									지하철 역에서 나오면서 올라오는 계단에서 스마트폰을
@@ -313,7 +316,7 @@ const setTimeoutAction = () => {
 	margin-bottom: 30px;
 }
 .questPageNm span {
-	font-size: 1.3rem;
+	font-size: 1.8rem;
 	padding: 10px;
 }
 .num {
@@ -325,14 +328,14 @@ const setTimeoutAction = () => {
 	vertical-align: middle;
 	color: #ffffff;
 	padding-top: 8px;
-	font-size: 1.3rem;
+	font-size: 1.9rem;
 	margin: 0 10px 0 0;
 }
 .quest1 {
-	font-size: 1.2rem;
+	font-size: 1.8rem;
 }
 .quest2 {
-	font-size: 1.2rem;
+	font-size: 1.8rem;
 	margin: 0px 0 20px 0;
 }
 
@@ -365,7 +368,7 @@ const setTimeoutAction = () => {
 	background-color: #f0f3f5;
 	padding: 10px 10px 10px 20px;
 	text-align: left;
-	font-size: 1.2rem;
+	font-size: 1.8rem;
 	cursor: pointer;
 	display: inline-block;
 }
@@ -381,7 +384,7 @@ const setTimeoutAction = () => {
 }
 
 .tiemr {
-	font-size: 1.4rem;
+	font-size: 2rem;
 	background-color: rgb(100, 100, 100);
 	padding: 5px 20px 5px 30px;
 	border-radius: 5px;
@@ -393,12 +396,10 @@ const setTimeoutAction = () => {
 .tiemr span:nth-child(2) {
 	margin: 0 10px 0 10px;
 }
-.tiemr span:nth-child(3) {
-}
 .tiemr span:nth-child(4) {
 	margin: 10px 0 0 5px;
 
-	font-size: 0.9rem;
+	font-size: 1.3rem;
 }
 .hide1 {
 	display: none;

@@ -9,12 +9,19 @@
 			LayoutCenterTopNo: !isAuthenticated,
 		}"
 	>
-		<div class="container-fluid" style="padding: 0">
+		<div
+			class="container-fluid"
+			style="padding: 0; background-color: #ffffff !important"
+		>
 			<RouterView></RouterView>
 		</div>
 	</div>
 
-	<div v-if="BottomYn" class="LayoutBottom">
+	<div
+		v-if="BottomYn"
+		class="LayoutBottom"
+		style="background-color: #ffffff !important"
+	>
 		<TheBottom></TheBottom>
 	</div>
 	<AppAlert></AppAlert>
