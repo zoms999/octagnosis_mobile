@@ -23,7 +23,7 @@
 						<!-- 활성화: .enabled, 비활성화: .disabled -->
 						<div class="card-head">
 							<div class="deco">
-								<img src="../img/icon/ic_tendency.png" alt="" />
+								<img src="@/assets/img/icon/ic_tendency.png" alt="" />
 							</div>
 							<div class="text-wrap">
 								<p class="title">성향검사</p>
@@ -43,7 +43,7 @@
 						<!-- 활성화: .enabled, 비활성화: .disabled -->
 						<div class="card-head">
 							<div class="deco">
-								<img src="../img/icon/ic_ability.png" alt="" />
+								<img src="@/assets/img/icon/ic_ability.png" alt="" />
 							</div>
 							<div class="text-wrap">
 								<p class="title">핵심역량 검사</p>
@@ -63,7 +63,7 @@
 						<!-- 활성화: .enabled, 비활성화: .disabled -->
 						<div class="card-head">
 							<div class="deco">
-								<img src="../img/icon/ic_prefer.png" alt="" />
+								<img src="@/assets/img/icon/ic_prefer.png" alt="" />
 							</div>
 							<div class="text-wrap">
 								<p class="title">선호반응 검사</p>
@@ -82,7 +82,7 @@
 						<!-- 활성화: .enabled, 비활성화: .disabled -->
 						<div class="card-head">
 							<div class="deco">
-								<img src="../img/icon/ic_synthesis.png" alt="" />
+								<img src="@/assets/img/icon/ic_synthesis.png" alt="" />
 							</div>
 							<div class="text-wrap">
 								<p class="title">종합검사</p>
@@ -119,13 +119,13 @@
 				<ul>
 					<li>
 						<div class="thumb">
-							<img src="../img/main/img_award01.png" alt="" />
+							<img src="@/assets/img/main/img_award01.png" alt="" />
 						</div>
 						<p class="text">특허: 제 10-2469087호</p>
 					</li>
 					<li>
 						<div class="thumb">
-							<img src="../img/main/img_award02.png" alt="" />
+							<img src="@/assets/img/main/img_award02.png" alt="" />
 						</div>
 						<p class="text">
 							올해의 우수브랜드 대상 <br />
@@ -135,7 +135,7 @@
 					</li>
 					<li>
 						<div class="thumb">
-							<img src="../img/main/img_award03.png" alt="" />
+							<img src="@/assets/img/main/img_award03.png" alt="" />
 						</div>
 						<p class="text">
 							고객감동 브랜드대상 <br />
@@ -145,7 +145,7 @@
 					</li>
 					<li>
 						<div class="thumb">
-							<img src="../img/main/img_award04.png" alt="" />
+							<img src="@/assets/img/main/img_award04.png" alt="" />
 						</div>
 						<p class="text">
 							신지식경영인 대상 <br />

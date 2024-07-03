@@ -3,7 +3,7 @@
 		<div class="container">
 			<!-- 20230626 수정: 로고 지움 -->
 			<div class="celebration-wrap">
-				<img src="../img/sub/img_congratulation.png" alt="" />
+				<img src="@/assets/img/sub/img_congratulation.png" alt="" />
 
 				<TestHeadMain v-if="TestParm.testId == 9"></TestHeadMain>
 
@@ -33,13 +33,13 @@
 				<ul>
 					<li>
 						<div class="thumb">
-							<img src="../img/main/img_award01.png" alt="" />
+							<img src="@/assets/img/main/img_award01.png" alt="" />
 						</div>
 						<p class="text">특허: 제 10-2469087호</p>
 					</li>
 					<li>
 						<div class="thumb">
-							<img src="../img/main/img_award02.png" alt="" />
+							<img src="@/assets/img/main/img_award02.png" alt="" />
 						</div>
 						<p class="text">
 							올해의 우수브랜드 대상 <br />
@@ -49,7 +49,7 @@
 					</li>
 					<li>
 						<div class="thumb">
-							<img src="../img/main/img_award03.png" alt="" />
+							<img src="@/assets/img/main/img_award03.png" alt="" />
 						</div>
 						<p class="text">
 							고객감동 브랜드대상 <br />
@@ -59,7 +59,7 @@
 					</li>
 					<li>
 						<div class="thumb">
-							<img src="../img/main/img_award04.png" alt="" />
+							<img src="@/assets/img/main/img_award04.png" alt="" />
 						</div>
 						<p class="text">
 							신지식경영인 대상 <br />
