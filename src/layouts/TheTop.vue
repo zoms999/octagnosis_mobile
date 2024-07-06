@@ -4,6 +4,7 @@
 			<!-- 20230626 수정 -->
 			<h1 class="logo v1"><a href="javascript:void(0);">옥타그노시스</a></h1>
 			<div class="etc">
+				<LanguageSwitcher />
 				<p class="user">
 					Welcome,<strong>{{ persnNm }}</strong
 					>님
@@ -28,6 +29,7 @@
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
+import LanguageSwitcher from '@/components/app/LanguageSwitcher.vue';
 
 const store = useAuthStore();
 const {

@@ -1,21 +1,21 @@
 <template>
+	<LanguageSwitcher />
 	<div id="content" class="login">
 		<h1 class="logo v2"><a href="javascript:void(0);">옥타그노시스</a></h1>
-		<!-- 20230626 수정 -->
 		<div class="container">
 			<div class="login-form">
-				<h2 class="title">로그인</h2>
+				<h2 class="title">{{ $t('login') }}</h2>
 				<div class="form-group">
 					<div class="form">
 						<div class="form-title">
-							<p>아이디</p>
+							<p>{{ $t('username') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
 								type="text"
 								v-model="loginData.acuntId"
 								class="w300"
-								placeholder="아이디를 입력하세요"
+								:placeholder="$t('enterUsername')"
 								required="required"
 								ref="txtAcuntId"
 							/>
@@ -23,14 +23,14 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>비밀번호</p>
+							<p>{{ $t('password') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
 								type="password"
 								v-model="loginData.pw"
 								class="w300"
-								placeholder="6자 이상, 영문, 숫자, 특수문자 사용"
+								:placeholder="$t('enterPassword')"
 								required="required"
 								ref="txtPw"
 							/>
@@ -40,7 +40,7 @@
 
 				<div class="btn-wrap mt30">
 					<button class="btn md round fill-navy w300" @click="goLogin">
-						로그인
+						{{ $t('login') }}
 					</button>
 				</div>
 
@@ -51,7 +51,7 @@
 								class="btn-txt btn-find-id"
 								@click="showFindIdModal = true"
 							>
-								아이디 찾기
+								{{ $t('findId') }}
 							</button>
 						</li>
 						<li>
@@ -59,7 +59,7 @@
 								class="btn-txt btn-find-pw"
 								@click="showFindPwModal = true"
 							>
-								비밀번호 찾기
+								{{ $t('findPassword') }}
 							</button>
 						</li>
 					</ul>
@@ -76,6 +76,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useAxios } from '@/hooks/useAxios';
 import { useAlert } from '@/hooks/useAlert';
 
@@ -85,6 +86,9 @@ import { useAuthStore } from '@/stores/auth';
 
 import FindIdModal from '@/views/Member/FindIdModal.vue';
 import FindPasswordModal from '@/views/Member/FindPasswordModal.vue';
+import LanguageSwitcher from '@/components/app/LanguageSwitcher.vue';
+
+const { t, locale } = useI18n();
 
 const store = useAuthStore();
 const { isAuthenticated } = storeToRefs(store);
@@ -106,8 +110,6 @@ const txtPw = ref(null);
 
 const showFindIdModal = ref(false);
 const showFindPwModal = ref(false);
-
-// Axios / Route	***************************
 
 const Procs = ref({
 	login: { path: '/api/member/login', loading: false },
@@ -151,7 +153,6 @@ const { data, execUrl, reqUrl } = useAxios(
 		},
 		onError: err => {
 			vAlert(err.message);
-			// Procs의 모든 속성에 대해 반복문을 실행하여 loading 값을 true로 변경
 			for (const key in Procs.value) {
 				if (Object.hasOwnProperty.call(Procs.value, key)) {
 					Procs.value[key].loading = false;
@@ -178,8 +179,6 @@ const findId = () => {
 const findPw = () => {
 	alert('비밀번호 찾기 기능은 아직 구현되지 않았습니다.');
 };
-
-// Etc	**************************************
 
 const validNotBlank = (val, tit, obj) => {
 	val = typeof val != 'string' ? val.toString() : val;

@@ -15,6 +15,7 @@ declare module 'vue' {
     AppModalV1: typeof import('./src/components/app/AppModalV1.vue')['default']
     AppPagination: typeof import('./src/components/app/AppPagination.vue')['default']
     AppPopup: typeof import('./src/components/app/AppPopup.vue')['default']
+    LanguageSwitcher: typeof import('./src/components/app/LanguageSwitcher.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

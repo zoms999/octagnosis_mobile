@@ -1,21 +1,22 @@
 <template>
+	<LanguageSwitcher />
 	<div id="content" class="login">
 		<h1 class="logo v2"><a href="javascript:void(0);">옥타그노시스</a></h1>
 		<!-- 20230626 수정 -->
 		<div class="container">
 			<div class="login-form">
-				<h2 class="title">로그인</h2>
+				<h2 class="title">{{ $t('login_title') }}</h2>
 				<div class="form-group">
 					<div class="form">
 						<div class="form-title">
-							<p>아이디</p>
+							<p>{{ $t('username') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
 								type="text"
 								v-model="loginData.acuntId"
 								class="w300"
-								placeholder="아이디를 입력하세요"
+								:placeholder="$t('username_placeholder')"
 								required="required"
 								ref="txtAcuntId"
 							/>
@@ -23,43 +24,43 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>비밀번호</p>
+							<p>{{ $t('password') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
 								type="password"
 								v-model="loginData.pw"
 								class="w300"
-								placeholder="6자 이상, 영문, 숫자, 특수문자 사용"
+								:placeholder="$t('password_placeholder')"
 								required="required"
 								ref="txtPw"
 							/>
 						</div>
 					</div>
-					<p class="txt-guide">소속기관에서 발급받으신 코드를 입력해주세요.</p>
+					<p class="txt-guide">{{ $t('code_check_message') }}</p>
 
 					<div class="form">
 						<div class="form-title">
-							<p>회차코드</p>
+							<p>{{ $t('code_placeholder') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="inp-wrap">
 								<input
 									type="password"
 									v-model="loginData.code"
-									placeholder="발급받으신 코드 입력"
+									:placeholder="$t('code_placeholder')"
 									ref="txtTurnConnCd"
 									required="required"
 								/>
 								<button class="btn sm line-navy w110 p0" @click="validateCode">
-									유효성 확인
+									{{ $t('code_validation_button') }}
 								</button>
 							</div>
 							<div v-if="codeInvalid == false" class="NotOk">
-								유효하지 않은 코드입니다.
+								{{ $t('code_invalid_message') }}
 							</div>
 							<div v-if="codeInvalid == true" class="Ok">
-								정상코드 확인되었습니다.
+								{{ $t('code_valid_message') }}
 							</div>
 						</div>
 					</div>
@@ -67,26 +68,20 @@
 
 				<div class="btn-wrap mt30">
 					<button class="btn md round fill-navy w300" @click="goLogin">
-						로그인
+						{{ $t('login_button') }}
 					</button>
 				</div>
 
 				<div class="user-offer">
 					<ul>
 						<li>
-							<button
-								class="btn-txt btn-find-id"
-								onclick="popOpenAndDim('layerFindId', true)"
-							>
-								아이디 찾기
+							<button class="btn-txt btn-find-id" @click="findId">
+								{{ $t('find_id_button') }}
 							</button>
 						</li>
 						<li>
-							<button
-								class="btn-txt btn-find-pw"
-								onclick="popOpenAndDim('layerFindPw', true)"
-							>
-								비밀번호 찾기
+							<button class="btn-txt btn-find-pw" @click="findPw">
+								{{ $t('find_password_button') }}
 							</button>
 						</li>
 					</ul>
@@ -102,6 +97,10 @@ import { useAxios } from '@/hooks/useAxios';
 import { useAlert } from '@/hooks/useAlert';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n(); // Import translation function
+
 const store = useAuthStore();
 const { login } = store;
 

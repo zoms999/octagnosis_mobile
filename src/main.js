@@ -19,6 +19,9 @@ import App from './App.vue';
 import router from './router';
 import globalFunction from './plugins/global-function';
 
+import i18n from '@/i18n/i18n'; // i18n import
+import { useI18nStore } from '@/stores/i18n';
+
 const app = createApp(App);
 app.use(globalFunction);
 app.use(createPinia());
@@ -40,8 +43,15 @@ router.beforeEach((to, from, next) => {
 	}
 });
  */
-
+app.use(i18n); // i18n 사용
 app.use(router);
 app.use(dayjs);
+
+const i18nStore = useI18nStore();
+const savedLanguage = sessionStorage.getItem('language');
+if (savedLanguage) {
+	i18nStore.setLanguage(savedLanguage);
+}
+
 app.mount('#app');
 console.log('MODE', import.meta.env.VITE_APP_API_URL);

@@ -5,106 +5,109 @@
 				<div class="headline">
 					<p class="text01">
 						<span class="dot"></span>
-						<strong>진짜 나</strong>를 찾아주는
+						<strong>{{ $t('find_yourself') }}</strong>
+						{{ $t('test_name') }}
 					</p>
-					<p class="text02">옥타그노시스 검사</p>
-					<p class="text03">나답게 살아갈 인생설계도를 제시합니다!</p>
+					<p class="text02">{{ $t('test_name') }}</p>
+					<p class="text03">{{ $t('life_plan') }}</p>
 				</div>
 				<p class="text04">
-					해외의 진로적성검사를 짜깁기 한 검사가 아닙니다. <br />
-					교육과학적 문항을 기반으로 특허받은 진로적성검사입니다.
+					{{ $t('description') }}
 				</p>
 			</div>
 		</div>
-	</div>
-	<div class="container">
-		<div class="d-flex justify-content-between">
-			<div class="tit" @click="getTestList">
-				검사이력
-				<span class="sub">( 진행중인 검사는 신속히 완료하여 주십시요. )</span>
+		<div class="container">
+			<div class="d-flex justify-content-between">
+				<div class="tit" @click="getTestList">
+					{{ $t('test_history') }}
+					<span class="sub">{{ $t('ongoing_test_message') }}</span>
+				</div>
+				<div class="actions">
+					<button
+						class="btn btn-primary"
+						@click="navigateToPayment"
+						style="font-size: 1.8rem; padding: 0.8rem 1rem 0.8rem 1rem"
+					>
+						{{ $t('start_test_after_payment') }}
+					</button>
+				</div>
 			</div>
-			<div class="actions">
-				<button
-					class="btn btn-primary"
-					@click="navigateToPayment"
-					style="font-size: 1.8rem; padding: 0.8rem 1rem 0.8rem 1rem"
-				>
-					결제 후 검사시작
-				</button>
+			<table class="table table-bordered Tbl1">
+				<thead>
+					<tr>
+						<th class="w80">{{ $t('number') }}</th>
+						<th>{{ $t('test_item') }}</th>
+						<th class="w150">{{ $t('validity_date') }}</th>
+						<th class="w150">{{ $t('start_date') }}</th>
+						<th class="w150">{{ $t('completion_date') }}</th>
+						<th class="w140">{{ $t('status') }}</th>
+						<th class="w140">{{ $t('view_result') }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						class="text-center"
+						v-for="(item, idx) in TestList"
+						:key="item.TurnId"
+					>
+						<td>{{ idx + 1 }}</td>
+						<td>{{ item.ProdtNm }}</td>
+						<td>{{ dayjs(item.ValidEndDt).format('YYYY-MM-DD') }}</td>
+						<td>
+							{{
+								item.AnsPrgrsStartDt !== ''
+									? dayjs(item.AnsPrgrsStartDt).format('YYYY-MM-DD')
+									: '-'
+							}}
+						</td>
+						<td>
+							{{
+								item.AnsPrgrsEndDt !== ''
+									? dayjs(item.AnsPrgrsEndDt).format('YYYY-MM-DD')
+									: '-'
+							}}
+						</td>
+						<td class="text-center">
+							<div v-if="item.TurnReqCnt - item.TurnUseCnt === 0">
+								{{ $t('license_shortage') }}
+							</div>
+							<div v-else-if="item.RegDt === '' || item.AnsPrgrsDoneYn === 'N'">
+								<button
+									class="btn btn-primary"
+									@click="
+										getNextTest(
+											item.AnsPrgrsId,
+											item.TurnId,
+											item.PayId,
+											item.ProdtId,
+											item.TestId,
+											item.QuestPageId,
+										)
+									"
+								>
+									{{
+										item.RegDt === ''
+											? $t('start_test')
+											: $t('test_in_progress')
+									}}
+								</button>
+							</div>
+							<div v-else-if="item.AnsPrgrsDoneYn === 'Y'">
+								{{ $t('test_completed') }}
+							</div>
+						</td>
+						<td>
+							<div v-if="item.AnsPrgrsDoneYn === 'Y'">
+								<button class="btn btn-primary">{{ $t('view_result') }}</button>
+							</div>
+							<div v-else>-</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="text-center mb-5">
+				{{ $t('view_results_within_validity') }}
 			</div>
-		</div>
-		<table class="table table-bordered Tbl1">
-			<thead>
-				<tr>
-					<th class="w80">순번</th>
-					<th>검사상품</th>
-					<th class="w150">검사유효일</th>
-					<th class="w150">검사시작일</th>
-					<th class="w150">검사완료일</th>
-					<th class="w140">검사상태</th>
-					<th class="w140">결과보기</th>
-				</tr>
-			</thead>
-			<tbody>
-				<!-- 여기에 데이터를 반복 렌더링 할 수 있습니다 -->
-				<tr
-					class="text-center"
-					v-for="(item, idx) in TestList"
-					:key="item.TurnId"
-				>
-					<td>{{ idx + 1 }}</td>
-					<td>{{ item.ProdtNm }}</td>
-
-					<td>{{ dayjs(item.ValidEndDt).format('YYYY-MM-DD') }}</td>
-					<td>
-						{{
-							item.AnsPrgrsStartDt != ''
-								? dayjs(item.AnsPrgrsStartDt).format('YYYY-MM-DD')
-								: '-'
-						}}
-					</td>
-					<td>
-						{{
-							item.AnsPrgrsEndDt != ''
-								? dayjs(item.AnsPrgrsEndDt).format('YYYY-MM-DD')
-								: '-'
-						}}
-					</td>
-
-					<td class="text-center">
-						<div v-if="item.TurnReqCnt - item.TurnUseCnt == 0">
-							검사라이센스 부족
-						</div>
-						<div v-else-if="item.RegDt == '' || item.AnsPrgrsDoneYn == 'N'">
-							<button
-								class="btn btn-primary"
-								@click="
-									getNextTest(
-										item.AnsPrgrsId,
-										item.TurnId,
-										item.PayId,
-										item.ProdtId,
-										item.TestId,
-										item.QuestPageId,
-									)
-								"
-							>
-								{{ item.RegDt == '' ? '검사 시작' : '검사 진행중' }}
-							</button>
-						</div>
-						<div v-else-if="item.AnsPrgrsDoneYn == 'Y'">검사완료</div>
-					</td>
-					<td>
-						<div v-if="item.AnsPrgrsDoneYn == 'Y'">
-							<button class="btn btn-primary">결과보기</button>
-						</div>
-						<div v-else>-</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<div class="text-center mb-5">
-			검사결과 '다시 보기'는 유효일자 안에서만 가능합니다.
 		</div>
 	</div>
 </template>
@@ -117,7 +120,10 @@ import { useAxios } from '@/hooks/useAxios';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { useBase64Utils } from '@/plugins/base64.js';
+import { useI18n } from 'vue-i18n';
+import LanguageSwitcher from '@/components/app/LanguageSwitcher.vue';
 
+const { t, locale } = useI18n();
 // Props / Emit  ****************************
 
 // Hook  ************************************
