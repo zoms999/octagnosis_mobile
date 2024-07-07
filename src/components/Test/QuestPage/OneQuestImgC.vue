@@ -18,7 +18,7 @@
 					:key="questImg.imgId"
 					:style="`width:${Math.round(100 / item.imgColCnt, 2) - 0.2}% !important`"
 				>
-					<img :src="`/public/img/QuestImg/${questImg.imgNm}`" class="img" />
+					<img :src="`${imageSrc}/QuestImg/${questImg.imgNm}`" class="img" />
 				</div>
 				<div class="quest2">
 					<span v-html="item.questCont2"></span>
@@ -46,6 +46,7 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 // Props / Emit  ****************************
 
 var QuestPage = defineModel('QuestPage');
@@ -66,6 +67,10 @@ var QuestImgList = defineModel('QuestImgList');
 // Watch  ***********************************
 
 // Method  **********************************
+const imageSrc = computed(() => {
+	const basePath = import.meta.env.VITE_IMG_BASE_PATH;
+	return `${basePath}`;
+});
 
 const getQuestImgList = questId => {
 	return QuestImgList.value.filter(o => o.questId == questId);

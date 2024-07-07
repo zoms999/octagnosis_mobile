@@ -166,7 +166,7 @@
 								</div>
 								<div class="col-4">
 									<img
-										src="/public/img/QuestImg/QuestImg_96_1067.jpg"
+										:src="`${imageSrc}/QuestImg/QuestImg_96_1067.jpg`"
 										style="width: 300px"
 									/>
 								</div>
@@ -231,7 +231,7 @@
 
 <script setup>
 import { onBeforeMount, onMounted, ref } from 'vue';
-
+import { computed } from 'vue';
 // Props / Emit  ****************************
 
 var QuestPage = defineModel('QuestPage');
@@ -281,6 +281,10 @@ const timeEndYn = ref(false);
 // Watch  ***********************************
 
 // Method  **********************************
+const imageSrc = computed(() => {
+	const basePath = import.meta.env.VITE_IMG_BASE_PATH;
+	return `${basePath}`;
+});
 
 const getQuestItemList = questId => {
 	return QuestItemList.value.filter(o => o.questId == questId);

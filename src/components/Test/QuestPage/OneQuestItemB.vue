@@ -80,7 +80,7 @@ const setQuestVal = (questId, itemId) => {
 
 const getQuestItemImg = imgNm => {
 	var ImgNm = imgNm == '' ? 'none.png' : imgNm;
-	return `/public/img/QuestItem/${ImgNm}`;
+	return `${import.meta.env.VITE_IMG_BASE_PATH}/QuestItem/${ImgNm}`;
 };
 
 // Etc  *************************************
