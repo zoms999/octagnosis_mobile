@@ -26,8 +26,8 @@ import ko from '../locales/ko.json';
 
 const i18n = createI18n({
 	legacy: false, // Use Composition API
-	locale: 'en',
-	fallbackLocale: 'en',
+	locale: 'ko',
+	fallbackLocale: 'ko',
 	messages: {
 		en,
 		ko,
