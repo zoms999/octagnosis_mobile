@@ -1,5 +1,5 @@
 <template>
-	<div v-if="isAuthenticated && TopYn" class="LayoutTop">
+	<div v-if="TopYn" class="LayoutTop">
 		<TheTop></TheTop>
 	</div>
 	<div

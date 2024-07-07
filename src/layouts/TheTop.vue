@@ -5,19 +5,21 @@
 			<h1 class="logo v1"><a href="javascript:void(0);">옥타그노시스</a></h1>
 			<div class="etc">
 				<LanguageSwitcher />
-				<p class="user">
-					Welcome,<strong>{{ persnNm }}</strong
-					>님
-				</p>
-				<div v-if="isAuthenticated" class="logout">
-					<span class="mx-3">|</span>
-					<span @click="handleLogout" clsss="Poit" style="cursor: pointer">
-						정보수정
-					</span>
-					<span class="mx-3">|</span>
-					<span @click="handleLogout" clsss="Poit" style="cursor: pointer">
-						로그아웃
-					</span>
+				<div v-if="!isLoginOrSignUpPage">
+					<p class="user">
+						Welcome,<strong>{{ persnNm }}</strong
+						>님
+					</p>
+					<div v-if="isAuthenticated" class="logout">
+						<span class="mx-3">|</span>
+						<span @click="handleLogout" class="Poit" style="cursor: pointer">
+							정보수정
+						</span>
+						<span class="mx-3">|</span>
+						<span @click="handleLogout" class="Poit" style="cursor: pointer">
+							로그아웃
+						</span>
+					</div>
 				</div>
 			</div>
 			<!--// 20230626 수정 -->
@@ -26,9 +28,10 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 import LanguageSwitcher from '@/components/app/LanguageSwitcher.vue';
 
 const store = useAuthStore();
@@ -44,6 +47,7 @@ const {
 } = storeToRefs(store);
 const { logout } = store;
 const router = useRouter();
+const route = useRoute();
 
 const acuntIdFromStorage = sessionStorage.getItem('acuntId');
 if (acuntIdFromStorage) {
@@ -62,6 +66,11 @@ const handleLogout = () => {
 	logout();
 	router.push({ name: loginRoute });
 };
+
+const isLoginOrSignUpPage = computed(() => {
+	const loginPages = ['login', 'orglogin', 'register', 'orgregister']; // Add your login and signup route names here
+	return loginPages.includes(route.name);
+});
 </script>
 
 <style scoped>
