@@ -8,7 +8,7 @@
 			<select
 				id="product-select"
 				v-model="selectedProductId"
-				@change="loadSubProducts"
+				@change="updatePrice"
 			>
 				<option
 					v-for="product in products"
@@ -18,25 +18,8 @@
 					{{ product.ProdtNm }}
 				</option>
 			</select>
-		</div>
-
-		<div class="program-info">
-			<label for="sub-product-select">Sub 프로그램: </label>
-			<select
-				id="sub-product-select"
-				v-model="selectedSubProductId"
-				@change="updateSelectedSubProduct"
-			>
-				<option
-					v-for="subProduct in subProducts"
-					:key="subProduct.ProdtSubId"
-					:value="subProduct.ProdtSubId"
-				>
-					{{ subProduct.ProdtNm }}
-				</option>
-			</select>
-			<span v-if="selectedSubProduct"
-				>가격: {{ selectedSubProduct.Price }}원</span
+			<span v-if="selectedProduct"
+				>가격: {{ selectedProduct ? selectedProduct.Price : 0 }}원</span
 			>
 		</div>
 
@@ -59,10 +42,10 @@
 		<div v-if="showModal" class="modal">
 			<div class="modal-content">
 				<CheckoutView
-					:productId="selectedSubProductId"
-					:productName="selectedSubProduct.ProdtNm"
-					:productPrice="selectedSubProduct.Price"
-					:productType="selectedSubProduct.ProdtType"
+					:productId="selectedProductId"
+					:productName="selectedProduct.ProdtNm"
+					:productPrice="selectedProduct.Price"
+					:productType="selectedProduct.ProdtType"
 				/>
 				<button class="close-button" @click="closeModal">닫기</button>
 			</div>
@@ -75,11 +58,8 @@ import axios from 'axios';
 import CheckoutView from '../TossPayment/CheckoutView.vue';
 
 const products = ref([]);
-const subProducts = ref([]);
 const selectedProductId = ref(null);
-const selectedSubProductId = ref(null);
 const selectedProduct = ref(null);
-const selectedSubProduct = ref(null);
 const showModal = ref(false);
 
 const fetchProducts = async () => {
@@ -95,22 +75,11 @@ const fetchProducts = async () => {
 	}
 };
 
-const loadSubProducts = async () => {
-	try {
-		const response = await axios.get(
-			`/api/products/${selectedProductId.value}/subproducts`,
-		);
-		subProducts.value = response.data.subProducts;
-		if (subProducts.value.length > 0) {
-			selectedSubProductId.value = subProducts.value[0].ProdtSubId;
-			selectedSubProduct.value = subProducts.value[0];
-		} else {
-			selectedSubProductId.value = null;
-			selectedSubProduct.value = null;
-		}
-	} catch (error) {
-		console.error('Error fetching sub-products:', error);
-	}
+const updatePrice = () => {
+	selectedProduct.value = products.value.find(
+		product => product.ProdtId === selectedProductId.value,
+	);
+	console.log('products.value', products.value);
 };
 
 const handlePayment = () => {
@@ -121,12 +90,6 @@ const handlePayment = () => {
 
 const closeModal = () => {
 	showModal.value = false;
-};
-
-const updateSelectedSubProduct = () => {
-	selectedSubProduct.value = subProducts.value.find(
-		sub => sub.ProdtSubId === selectedSubProductId.value,
-	);
 };
 
 onMounted(() => {
