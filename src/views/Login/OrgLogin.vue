@@ -1,5 +1,4 @@
 <template>
-	<LanguageSwitcher />
 	<div id="content" class="login">
 		<h1 class="logo v2"><a href="javascript:void(0);">옥타그노시스</a></h1>
 		<!-- 20230626 수정 -->
