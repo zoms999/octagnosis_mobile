@@ -2,7 +2,7 @@
 	<div class="test-form">
 		<div class="questPageNm">
 			<span class="badge text-bg-secondary">{{ QuestPage.questPageNm }}</span>
-			OneQuestImgC
+			<span style="color: white">OneQuestImgC</span>
 		</div>
 		<div class="d-flex questBox" v-for="item in QuestList" :key="item.questId">
 			<div class="numBox">

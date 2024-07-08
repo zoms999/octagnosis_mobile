@@ -3,7 +3,7 @@
 		<div class="d-flex justify-content-between">
 			<div class="questPageNm">
 				<span class="badge text-bg-secondary">{{ QuestPage.questPageNm }}</span>
-				OneQuestImgTimeA
+				<span style="color: white">OneQuestImgTimeA</span>
 			</div>
 			<div v-if="TimerYn">
 				<div class="tiemr d-flex justify-content-end">

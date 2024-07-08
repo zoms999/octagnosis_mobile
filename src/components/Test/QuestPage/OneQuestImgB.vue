@@ -2,7 +2,7 @@
 	<div class="test-form">
 		<div class="questPageNm">
 			<span class="badge text-bg-secondary">{{ QuestPage.questPageNm }}</span>
-			OneQuestImgB
+			<span style="color: white">OneQuestImgB</span>
 		</div>
 		<div
 			class="d-flex questBox"
