@@ -24,12 +24,12 @@
 				</div>
 
 				<!-- 이미지 -->
-				<div class="imgs d-flex flex-wrap">
+				<div class="imgs d-flex flex-wrap" v-if="ScreenYn">
 					<div
 						class="imgBox d-flex flex-wrap justify-content-center"
 						v-for="questImg in getQuestImgList(item.questId)"
 						:key="questImg.imgId"
-						:style="`width:${Math.round(100 / item.imgColCnt, 2) - 0.5}% !important`"
+						:style="`width:${Math.round(100 / item.imgColCnt, 2) - 1.5}% !important`"
 						:class="{ imgHide: questImg.showYn == false }"
 					>
 						<img :src="`${imageSrc}/QuestImg/${questImg.imgNm}`" class="img" />

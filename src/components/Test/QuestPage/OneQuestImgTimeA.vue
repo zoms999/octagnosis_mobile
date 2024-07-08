@@ -28,12 +28,12 @@
 				</div>
 
 				<!-- 이미지 -->
-				<div class="imgs">
+				<div class="imgs d-flex flex-wrap justify-content-center">
 					<div
-						class="imgBox d-flex flex-wrap justify-content-center"
+						class="imgBox"
 						v-for="questImg in getQuestImgList(item.questId)"
 						:key="questImg.imgId"
-						:style="`width:${Math.round(100 / item.imgColCnt, 2) - 0.5}% !important`"
+						:style="`width:${Math.round(100 / item.imgColCnt, 2) - 3}% !important`"
 						:class="{ imgHide: questImg.showYn == false }"
 					>
 						<img :src="`${imageSrc}/QuestImg/${questImg.imgNm}`" class="img" />
@@ -222,7 +222,7 @@ const setTimeoutAction = () => {
 	margin: 20px;
 }
 .imgHide {
-	display: none;
+	display: none !important;
 }
 
 .itemsScreen {

@@ -95,6 +95,8 @@ onBeforeMount(() => {
 	TestParm.prodtId = P.prodtId;
 	TestParm.testId = P.testId;
 	TestParm.questPageId = P.questPageId;
+	TestParm.turnId = P.turnId;
+	TestParm.payId = P.payId;
 });
 
 onMounted(() => {});
