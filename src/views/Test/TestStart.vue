@@ -255,7 +255,7 @@ const popupPage = () => {
 
 	//localhost:5200/QuestMain?TestId=1&QuestPageId=2
 
-	if (windowRef != null) {
+	if (windowRef != null && !windowRef.closed) {
 		windowRef.focus();
 		return;
 	}

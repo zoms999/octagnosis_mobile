@@ -3,8 +3,6 @@
 		<div class="container">
 			<!-- 20230626 수정: 로고 지움 -->
 			<div class="celebration-wrap">
-				<img src="@/assets/img/sub/img_congratulation.png" alt="" />
-
 				<TestHeadMain v-if="TestParm.testId == 9"></TestHeadMain>
 
 				<TestHead_1 v-if="TestParm.testId == 6"></TestHead_1>
