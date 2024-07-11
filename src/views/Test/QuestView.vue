@@ -290,13 +290,13 @@ const saveAns = () => {
 		if (QuestList.value[i].questId == 25) {
 			// 25번 문항은 선택값이 2개
 			if (QuestList.value[i].val1 == 0 || QuestList.value[i].val2 == 0) {
-				alert(QuestList.value[i].questNo + '번 문항을 선택하세요.');
+				alert(QuestList.value[i].questNo + '번 문항이 선택되지 않았습니다.');
 				NotChkYn = true;
 				break;
 			}
 		} else {
 			if (QuestList.value[i].val1 == 0) {
-				alert(QuestList.value[i].questNo + '번 문항을 선택하세요.');
+				alert(QuestList.value[i].questNo + '번 문항이 선택되지 않았습니다.');
 				NotChkYn = true;
 				break;
 			}

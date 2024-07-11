@@ -28,9 +28,9 @@
 				</div>
 
 				<!-- 이미지 -->
-				<div class="imgs d-flex flex-wrap justify-content-center">
+				<div class="d-flex flex-wrap justify-content-center">
 					<div
-						class="imgBox"
+						class="imgBox d-flex flex-wrap justify-content-center"
 						v-for="questImg in getQuestImgList(item.questId)"
 						:key="questImg.imgId"
 						:style="`width:${Math.round(100 / item.imgColCnt, 2) - 0.5}% !important`"
