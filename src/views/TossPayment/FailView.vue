@@ -20,7 +20,7 @@
 			</div>
 
 			<div class="button-group">
-				<a
+				<!-- <a
 					class="button"
 					href="https://docs.tosspayments.com/guides/payment/integration"
 					target="_blank"
@@ -33,7 +33,8 @@
 					target="_blank"
 				>
 					실시간 문의
-				</a>
+				</a> -->
+				<button class="button" @click="goToPayPage">재결제</button>
 			</div>
 		</div>
 	</div>
@@ -41,11 +42,13 @@
 
 <script>
 import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 
 export default {
 	name: 'ErrorView',
 	setup() {
+		const router = useRouter();
 		const errorMessage = ref('');
 		const errorCode = ref('');
 
@@ -61,6 +64,10 @@ export default {
 				console.error('Error updating payment status:', error);
 			}
 		};
+		const goToPayPage = () => {
+			console.log('goToPayPage');
+			router.push('/TestPayment'); // 메인 페이지로 이동
+		};
 
 		// 페이지가 마운트된 후에 에러 정보를 읽고 API 호출
 		onMounted(() => {
@@ -72,12 +79,13 @@ export default {
 				'Unknown code';
 
 			// 실패 상태 업데이트 API 호출
-			updatePaymentStatus('failed', errorMessage.value, errorCode.value);
+			//updatePaymentStatus('failed', errorMessage.value, errorCode.value);
 		});
 
 		return {
 			errorMessage,
 			errorCode,
+			goToPayPage,
 		};
 	},
 };

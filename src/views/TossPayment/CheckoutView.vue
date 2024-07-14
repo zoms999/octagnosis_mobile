@@ -82,6 +82,7 @@ export default {
 			paymentWidget: null,
 			paymentMethodWidget: null,
 			clientKey: 'test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm',
+			//clientKey: 'test_ck_P9BRQmyarY7dQOplOXNa3J07KzLN',
 			customerKey: nanoid(),
 			amount: this.productPrice,
 			inputEnabled: false,
@@ -128,15 +129,15 @@ export default {
 						);
 					}
 					this.payId = response.data.payId; // Save the payId from the response
-
+					console.log('this.payId', this.payId);
 					await this.paymentWidget.requestPayment({
 						orderId: nanoid(),
 						orderName: this.productName,
 						customerName: this.persnNm,
 						customerEmail: this.email,
 						customerMobilePhone: this.phone,
-						successUrl: `${window.location.origin}/success`,
-						failUrl: `${window.location.origin}/fail`,
+						successUrl: `${window.location.origin}/success?payId=${this.payId}`,
+						failUrl: `${window.location.origin}/fail?payId=${this.payId}`,
 					});
 					// .then(async paymentResult => {
 					// 	// Update payment status to SUCCESS

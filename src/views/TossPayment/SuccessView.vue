@@ -27,7 +27,10 @@
 					</div>
 
 					<div class="button-group">
-						<a
+						<button class="button" @click="goToMainPage">
+							메인 페이지로 이동
+						</button>
+						<!-- <a
 							class="button"
 							href="https://docs.tosspayments.com/guides/payment/integration"
 							target="_blank"
@@ -40,7 +43,7 @@
 							target="_blank"
 						>
 							실시간 문의
-						</a>
+						</a> -->
 					</div>
 				</div>
 				<div class="box_section response-section">
@@ -61,28 +64,35 @@ import { confirmPayment } from '@/confirmPayment';
 import axios from 'axios';
 
 export default {
-	props: {
-		payId: {
-			type: String,
-			required: true,
-		},
-	},
+	// props: {
+	// 	payId: {
+	// 		type: String,
+	// 		required: true,
+	// 	},
+	// },
 
-	setup(props) {
+	setup() {
 		const route = useRoute();
 		const router = useRouter();
 		const confirmed = ref(false);
 		const jsonData = ref(null);
 
-		const updatePaymentStatus = async (status, data) => {
+		const updatePaymentStatus = async (status, data, payId) => {
 			try {
-				await axios.post('/api/updatePaymentStatus', {
+				console.log(
+					`Updating payment status for payId: ${payId}, status: ${status}`,
+				);
+
+				await axios.post(`/api/payment/updateStatus/${payId}`, {
 					status,
-					data,
 				});
 			} catch (error) {
 				console.error('Error updating payment status:', error);
 			}
+		};
+		const goToMainPage = () => {
+			console.log('goToPayPage');
+			router.push('/TestStart'); // 메인 페이지로 이동
 		};
 
 		onMounted(async () => {
@@ -96,11 +106,11 @@ export default {
 				const { response, json } = await confirmPayment(requestData);
 				if (!response.ok) {
 					// Update payment status as failed
-					await updatePaymentStatus('failed', json);
+					await updatePaymentStatus('FAIL', json, route.query.payId);
 					router.push(`/fail?message=${json.message}&code=${json.code}`);
 				} else {
 					// Update payment status as succeeded
-					await updatePaymentStatus('succeeded', json);
+					await updatePaymentStatus('SUCCESS', json, route.query.payId);
 					confirmed.value = true;
 					jsonData.value = json;
 				}
@@ -112,6 +122,7 @@ export default {
 		return {
 			confirmed,
 			jsonData,
+			goToMainPage,
 		};
 	},
 };
