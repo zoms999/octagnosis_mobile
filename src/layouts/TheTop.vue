@@ -12,7 +12,7 @@
 					</p>
 					<div v-if="isAuthenticated" class="logout">
 						<span class="mx-3">|</span>
-						<span @click="handleLogout" class="Poit" style="cursor: pointer">
+						<span @click="handleInfoEdit" class="Poit" style="cursor: pointer">
 							정보수정
 						</span>
 						<span class="mx-3">|</span>
@@ -59,12 +59,21 @@ if (acuntIdFromStorage) {
 	acuntId.value = null;
 	userId.value = null;
 }
-console.log('acuntId ->' + acuntId.value);
-console.log('userId ->' + userId.value);
+console.log('sessionStorage acuntId ->' + acuntId.value);
+console.log('sessionStorage userId ->' + userId.value);
 const handleLogout = () => {
 	const loginRoute = orgId.value == '0' ? 'login' : 'orglogin';
 	logout();
 	router.push({ name: loginRoute });
+};
+
+const handleInfoEdit = () => {
+	console.log('orgId.value', orgId.value);
+	if (orgId.value == 1) {
+		router.push({ name: 'orgmemberedit', query: { mode: 'edit' } });
+	} else {
+		router.push({ name: 'register' });
+	}
 };
 
 const isLoginOrSignUpPage = computed(() => {

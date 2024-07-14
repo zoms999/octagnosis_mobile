@@ -31,6 +31,15 @@
 				결제하기
 			</button>
 		</div>
+		<!-- 성공 모달 -->
+		<SuccessView
+			v-if="showSuccessModal"
+			:payId="payId"
+			@close="showSuccessModal = false"
+		/>
+
+		<!-- 실패 모달 -->
+		<FailView v-if="showFailModal" @close="showFailModal = false" />
 	</div>
 </template>
 
@@ -40,6 +49,9 @@ import { nanoid } from 'nanoid';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import { toHandlers } from 'vue';
+import SuccessView from '@/views/TossPayment/SuccessView.vue';
+import FailView from '@/views/TossPayment/FailView.vue';
+
 import axios from 'axios';
 
 export default {
@@ -61,6 +73,10 @@ export default {
 			required: true,
 		},
 	},
+	components: {
+		SuccessView,
+		FailView,
+	},
 	data() {
 		return {
 			paymentWidget: null,
@@ -69,6 +85,9 @@ export default {
 			customerKey: nanoid(),
 			amount: this.productPrice,
 			inputEnabled: false,
+			showSuccessModal: false,
+			showFailModal: false,
+			payId: null,
 		};
 	},
 	methods: {
@@ -103,10 +122,12 @@ export default {
 					});
 
 					if (response.status !== 200) {
+						console.log('response.status', response.status);
 						throw new Error(
 							`Request failed: ${response.status} - ${response.statusText}`,
 						);
 					}
+					this.payId = response.data.payId; // Save the payId from the response
 
 					await this.paymentWidget.requestPayment({
 						orderId: nanoid(),
@@ -117,9 +138,51 @@ export default {
 						successUrl: `${window.location.origin}/success`,
 						failUrl: `${window.location.origin}/fail`,
 					});
+					// .then(async paymentResult => {
+					// 	// Update payment status to SUCCESS
+					// 	await axios.post(`/api/payment/updateStatus/${this.payId}`, {
+					// 		status: 'SUCCESS',
+					// 	});
+					// })
+					// .catch(async error => {
+					// 	if (this.payId) {
+					// 		// Update payment status to FAIL
+					// 		await axios.post(`/api/payment/updateStatus/${this.payId}`, {
+					// 			status: 'FAIL',
+					// 		});
+					// 	}
+					// 	if (error.code === 'USER_CANCEL') {
+					// 		// 결제 고객이 결제창을 닫았을 때 에러 처리
+					// 	} else if (error.code === 'INVALID_CARD_COMPANY') {
+					// 		// 유효하지 않은 카드 코드에 대한 에러 처리
+					// 	}
+					// 	console.error(error);
+					// });
 				}
 			} catch (error) {
 				console.error(error);
+				// Delete payment record if there was an error or the user closed the payment window
+				if (this.payId) {
+					try {
+						const response = await axios.delete(
+							`/api/payment/delete/${this.payId}`,
+							{
+								headers: {
+									'Content-Type': 'application/json',
+								},
+							},
+						);
+
+						if (response.status === 200) {
+							console.log('Payment canceled successfully.');
+							this.payId = null;
+						} else {
+							console.error('Failed to cancel payment:', response.statusText);
+						}
+					} catch (deleteError) {
+						console.error('Error canceling payment:', deleteError);
+					}
+				}
 			}
 		},
 		async updateAmount() {

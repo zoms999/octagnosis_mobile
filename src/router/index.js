@@ -12,6 +12,7 @@ import SuccessView from '../views/TossPayment/SuccessView.vue';
 import FailView from '../views/TossPayment/FailView.vue';
 import QuestMain from '../views/Test/QuestMainView.vue';
 import Quest from '../views/Test/QuestView.vue';
+import OrgMemberEditView from '../views/Member/OrgMemberEdit.vue';
 
 const routes = [
 	{
@@ -23,6 +24,11 @@ const routes = [
 		path: '/OrgRegister',
 		name: 'orgregister',
 		component: OrgJoinView,
+	},
+	{
+		path: '/OrgMemberEdit',
+		name: 'orgmemberedit',
+		component: OrgMemberEditView,
 	},
 	{
 		path: '/Login',
@@ -86,6 +92,16 @@ const routes = [
 		// this generates a separate chunk (About.[hash].js) for this route
 		// which is lazy-loaded when the route is visited.
 		component: () => import('../views/AboutView.vue'),
+	},
+	{
+		path: '/success',
+		name: 'success',
+		component: () => import('../views/TossPayment/SuccessView.vue'),
+	},
+	{
+		path: '/fail',
+		name: 'fail',
+		component: () => import('../views/TossPayment/FailView.vue'),
 	},
 ];
 
