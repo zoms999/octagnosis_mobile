@@ -13,7 +13,6 @@
 					<div v-if="isAuthenticated" class="logout">
 						<span class="mx-3">|</span>
 						<span @click="handleInfoEdit" class="Poit" style="cursor: pointer">
-						<span @click="handleLogout" class="Poit" style="cursor: pointer">
 							정보수정
 						</span>
 						<span class="mx-3">|</span>
