@@ -125,7 +125,7 @@
 									background-color: #6eb0e0;
 									padding: 10px;
 									color: #ffffff;
-									line-height: 1.7rem;
+									line-height: 2.2rem;
 									border-radius: 10px;
 									font-size: 1.8rem;
 								"

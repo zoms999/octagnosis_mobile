@@ -261,7 +261,7 @@ const setTimeoutAction = () => {
 }
 
 .tiemr {
-	font-size: 1.4rem;
+	font-size: 2rem;
 	background-color: rgb(100, 100, 100);
 	padding: 5px 20px 5px 30px;
 	border-radius: 5px;

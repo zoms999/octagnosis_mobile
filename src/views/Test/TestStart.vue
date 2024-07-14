@@ -226,19 +226,19 @@ const getNextTest = (
 	questPageId,
 ) => {
 	if (ansPrgrsId == '0') {
-		if (
-			!confirm(
-				'기관에서 부여받은 검사회차 라이센스를 사용합니다.\n\n검사를 시작하시겠습니까 ?',
-			)
-		) {
+		const msg =
+			turnId == '0'
+				? '검사를 시작하시겠습니까 ?'
+				: '기관에서 부여받은 검사회차 라이센스를 사용합니다.\n\n검사를 시작하시겠습니까 ?';
+		if (!confirm(msg)) {
 			return;
 		}
 	} else {
 		alert('진행중인 검사를 계속 합니다.');
 	}
 	TestParm.ansPrgrsId = ansPrgrsId;
-	TestParm.turnId = turnId;
-	TestParm.payId = payId;
+	TestParm.turnId = turnId == null ? 0 : turnId;
+	TestParm.payId = payId == null ? 0 : payId;
 
 	TestParm.prodtId = prodtId;
 	TestParm.testId = testId;

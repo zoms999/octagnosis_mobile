@@ -28,7 +28,7 @@
 				</div>
 
 				<!-- 이미지 -->
-				<div class="imgs">
+				<div class="d-flex flex-wrap justify-content-center">
 					<div
 						class="imgBox d-flex flex-wrap justify-content-center"
 						v-for="questImg in getQuestImgList(item.questId)"
@@ -222,7 +222,7 @@ const setTimeoutAction = () => {
 	margin: 20px;
 }
 .imgHide {
-	display: none;
+	display: none !important;
 }
 
 .itemsScreen {
