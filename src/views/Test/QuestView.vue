@@ -305,10 +305,16 @@ const saveAns = () => {
 	if (NotChkYn) {
 		return;
 	} else {
-		Procs.value.saveAns.loading = true;
+		if (TestParm.ansPrgrsId == 0 || TestParm.ansPrgrsId == '') {
+			alert(
+				'검사 정보가 누락되었습니다. 검사창을 닫고 검사를 다시 진행해 주십시요.',
+			);
+		} else {
+			Procs.value.saveAns.loading = true;
 
-		TestParm.questList = QuestList.value;
-		execUrl(Procs.value.saveAns.path, TestParm);
+			TestParm.questList = QuestList.value;
+			execUrl(Procs.value.saveAns.path, TestParm);
+		}
 	}
 };
 
