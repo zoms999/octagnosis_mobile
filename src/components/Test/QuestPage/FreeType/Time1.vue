@@ -221,7 +221,7 @@ const setTimeoutAction = () => {
 	margin: 20px;
 }
 .imgHide {
-	display: none;
+	display: none !important;
 }
 
 .itemsScreen {
