@@ -106,13 +106,13 @@
 .finish .celebration-wrap .btn-wrap .btn:nth-child(1) {background-color: #4A5056;}
 
 /* 검사결과지 */
-.result {padding-top: 3.5rem; padding-bottom: 4rem;}
+.result {padding-top: 1rem; padding-bottom: 4rem;}
 .result .logo {margin: 0 auto;}
 .result .exit {display: flex; justify-content: flex-end; align-items: center; gap: 2rem; padding-left: 1.6rem; padding-right: 1.6rem; width: 100%; max-width: 121.2rem; margin: -1.4rem auto 0;}
 .result .exit .user {font-size: 1.6rem; color: #4A5056;}
 .result .exit .user strong {font-weight: 700; display: inline-block; margin-left: 0.4rem;}
 .result .container {margin-top: 2rem;}
-.result .result-sheet {background-color: #ffffff; border: 1px solid #CFD4DA; padding: 4rem 4.4rem;}
+.result .result-sheet {background-color: #ffffff; border: 1px solid #CFD4DA; padding: 1rem 4.4rem 4rem 4.4rem;}
 .result .result-sheet .menu .btn-menu {display: none;}
 .result .result-sheet .menu ul {display: flex; flex-wrap: wrap; gap: 0.2rem; justify-content: flex-start;}
 .result .result-sheet .menu ul li {flex: none; width: calc(14.285% - 0.18rem); min-width: 12.5rem;}
@@ -123,9 +123,9 @@
 .result .result-sheet .result-view .headline {font-size: 2rem; text-align: center; margin-top: 0.8rem; word-break: keep-all;}
 .result .result-sheet .result-view .headline strong {font-weight: 700;}
 .result .result-sheet .result-view .summary {margin-top: 2rem;}
-.result .result-sheet .result-view .summary .type-list dl {width: 30rem; display: flex; align-items: stretch; border-radius: 0.4rem; border-width: 1px; border-style: solid; overflow: hidden;}
+.result .result-sheet .result-view .summary .type-list dl {width: 34rem; display: flex; align-items: stretch; border-radius: 0.4rem; border-width: 1px; border-style: solid; overflow: hidden;}
 .result .result-sheet .result-view .summary .type-list dl + dl {margin-top: 1rem;}
-.result .result-sheet .result-view .summary .type-list dl dt {display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: #FFFFFF; font-weight: 700; width: 7rem; flex: none;}
+.result .result-sheet .result-view .summary .type-list dl dt {display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: #FFFFFF; font-weight: 700; width: 9rem; flex: none;}
 .result .result-sheet .result-view .summary .type-list dl dt img {width: 3.2rem;}
 .result .result-sheet .result-view .summary .type-list dl dd {font-size: 1.8rem; font-weight: 700; text-align: center; padding: 1.8rem 0; flex: 1 0;}
 .result .result-sheet .result-view .summary .type-list.mint dl {border-color: #1DB1AD;}
@@ -144,7 +144,7 @@
 .result .result-sheet .result-view .summary .subject {margin-top: 4rem;}
 .result .result-sheet .result-view .summary .subject .type-list {display: flex; align-items: center; justify-content: flex-start; margin: 0 auto; gap: 1rem; max-width: 60rem;}
 .result .result-sheet .result-view .summary .subject .type-list dl {width: 100%;}
-.result .result-sheet .result-view .summary .text {text-align: center; color: #ffffff; background-color: #418B89; padding: 1.8rem 1.5rem; border-radius: 500rem; word-break: keep-all;}
+.result .result-sheet .result-view .summary .text {text-align: center; color: #ffffff; background-color: #418B89; padding: 1.8rem 1.5rem; border-radius: 500rem; word-break: keep-all;font-size: 1.9rem;}
 .result .result-sheet .result-view .summary * + .text {margin-top: 4rem;}
 .result .result-sheet .result-view .layout {display: flex; margin-top: 4rem; gap: 4rem 2rem; flex-wrap: wrap;}
 .result .result-sheet .result-view .layout .item.full {width: 100%;}
@@ -158,7 +158,7 @@
 .result .result-sheet .result-view .partition .title-wrap + .text-wrap,
 .result .result-sheet .result-view .partition .title-wrap + .cont-wrap {border-top: 0.4rem solid #4A5056;}
 .result .result-sheet .result-view .partition .text-wrap {padding-top: 1rem;}
-.result .result-sheet .result-view .partition .text-wrap p {font-size: 1.4rem;}
+.result .result-sheet .result-view .partition .text-wrap p {font-size: 1.7rem;}
 .result .result-sheet .result-view .partition .cont-wrap {padding-top: 4rem;}
 .result .result-sheet .result-view .partition .cont-wrap .tit-wrap + .card-wrap {margin-top: 1rem;}
 .result .result-sheet .result-view .partition .cont-wrap .card-wrap + .tit-wrap {margin-top: 4rem;}
@@ -167,9 +167,9 @@
 .result .result-sheet .result-view .card-wrap .card.half {width: calc(50% - 0.5rem);}
 .result .result-sheet .result-view .card-wrap .card.full {width: 100%;}
 .result .result-sheet .result-view .card-wrap .card .card-head {height: 5rem; display: flex; justify-content: space-between; padding: 0 2rem; align-items: center; background-color: #F8F8F8;}
-.result .result-sheet .result-view .card-wrap .card .card-head p {font-size: 1.6rem; font-weight: 700; color: #4A5056;}
+.result .result-sheet .result-view .card-wrap .card .card-head p {font-size: 1.9rem; font-weight: 700; color: #4A5056;}
 .result .result-sheet .result-view .card-wrap .card .card-body {padding: 1.6rem 2rem;}
-.result .result-sheet .result-view .card-wrap .card .card-body > p {font-size: 1.4rem; line-height: 1.7142;}
+.result .result-sheet .result-view .card-wrap .card .card-body > p {font-size: 1.8rem; line-height: 1.7142;}
 .result .result-sheet .result-view .card-wrap .card .card-body > ul > li {font-size: 1.4rem; line-height: 1.7142; position: relative; padding-left: 1.5rem;}
 .result .result-sheet .result-view .card-wrap .card .card-body > ul > li::before {content: ""; width: 0.4rem; height: 0.4rem; border-radius: 50%; position: absolute; left: 0.6rem; top: 1rem; background-color: #4A5056;}
 .result .nav-wrap {position: relative; margin-top: 2rem;}
@@ -263,7 +263,7 @@
     .result .result-sheet .result-view .summary .ability .type-list dl {width: 100%;}
     .result .result-sheet .result-view .chart-wrap + .partition {margin-top: 4rem;}
     .result .result-sheet .result-view .summary + .chart-wrap {margin-top: 4rem;}
-    .result .result-sheet .result-view .list-wrap.v1 {margin-left: -1.6rem; width: calc(100% + 3.2rem)}
+    .result .result-sheet .result-view .list-wrap.v1 {margin-left: -1.6rem; width: calc(100% + 3.2rem);}
     .result .result-sheet .result-view .card-wrap .card,
     .result .result-sheet .result-view .card-wrap .card.half,
     .result .result-sheet .result-view .card-wrap .card.full {width: 100%;}

@@ -55,7 +55,11 @@ store.checkAuth();
 const isAuthenticated = computed(() => store.isAuthenticated);
 
 router.beforeEach((to, from, next) => {
-	if (to.name == 'questMain' || to.name == 'quest') {
+	if (
+		to.name == 'questMain' ||
+		to.name == 'quest' ||
+		to.name == 'TestRsltMain'
+	) {
 		TopYn.value = false;
 		BottomYn.value = false;
 	}

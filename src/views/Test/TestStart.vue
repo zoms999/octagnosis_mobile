@@ -98,7 +98,9 @@
 						</td>
 						<td>
 							<div v-if="item.AnsPrgrsDoneYn === 'Y'">
-								<button class="btn btn-primary">{{ $t('view_result') }}</button>
+								<button class="btn btn-primary" @click="popupTestRslt(item)">
+									{{ $t('view_result') }}
+								</button>
 							</div>
 							<div v-else>-</div>
 						</td>
@@ -134,7 +136,8 @@ onMounted(() => {
 
 // Model / Data  ****************************
 
-const { acuntId, orgId, turnConnCd, userId } = storeToRefs(useAuthStore());
+const { acuntId, orgId, turnConnCd, userId, persnNm } =
+	storeToRefs(useAuthStore());
 const { vAlert, vSuccess } = useAlert();
 const router = useRouter();
 const dayjs = inject('dayjs');
@@ -252,6 +255,49 @@ const popupPage = () => {
 
 	const parm = encodeBase64(JSON.stringify(TestParm));
 	let uri = `${nm}?p=${parm}`;
+
+	//localhost:5200/QuestMain?TestId=1&QuestPageId=2
+
+	if (windowRef != null && !windowRef.closed) {
+		windowRef.focus();
+		return;
+	}
+
+	const width = screen.width;
+	const height = screen.height;
+
+	let left = screen.width ? (screen.width - width) / 2 : 0;
+	let top = screen.height ? (screen.height - height) / 2 : 0;
+
+	let attr =
+		'top=' +
+		top +
+		', left=' +
+		left +
+		', width=' +
+		width +
+		', height=' +
+		height +
+		', resizable=no,status=no';
+
+	// 1. 윈도우 팝업 띄우기
+	windowRef = window.open(uri, '', attr);
+
+	if (!windowRef && windowRef.closed) {
+		//windowRef.addEventListener('beforeunload', this.evtClose);
+	} else {
+		windowRef.focus();
+	}
+};
+
+const popupTestRslt = item => {
+	var Parm = {
+		ProdtId: item.ProdtId,
+		AnsPrgrsId: item.AnsPrgrsId,
+	};
+
+	const parm = encodeBase64(JSON.stringify(Parm));
+	let uri = `TestRsltMain?p=${parm}`;
 
 	//localhost:5200/QuestMain?TestId=1&QuestPageId=2
 
