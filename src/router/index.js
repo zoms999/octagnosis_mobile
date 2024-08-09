@@ -32,11 +32,6 @@ const routes = [
 		component: OrgMemberEditView,
 	},
 	{
-		path: '/MemberEdit',
-		name: 'memberedit',
-		component: MemberEditView,
-	},
-	{
 		path: '/Login',
 		name: 'login',
 		component: LoginView,
