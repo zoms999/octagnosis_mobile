@@ -279,6 +279,7 @@ const getQuestPageForTest = () => {
 	const Parm = {
 		testId: TestParm.testId,
 		questPageId: TestParm.questPageId,
+		prodtId: TestParm.prodtId,
 	};
 
 	execUrl(Procs.value.getQuestPageForTest.path, Parm);

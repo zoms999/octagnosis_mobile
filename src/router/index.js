@@ -14,6 +14,7 @@ import QuestMain from '../views/Test/QuestMainView.vue';
 import Quest from '../views/Test/QuestView.vue';
 import OrgMemberEditView from '../views/Member/OrgMemberEdit.vue';
 import MemberEditView from '../views/Member/MemberEdit.vue';
+import TestRsltMain from '../views/Test/TestRsltMain.vue';
 
 const routes = [
 	{
@@ -103,6 +104,11 @@ const routes = [
 		path: '/fail',
 		name: 'fail',
 		component: () => import('../views/TossPayment/FailView.vue'),
+	},
+	{
+		path: '/TestRsltMain',
+		name: 'TestRsltMain',
+		component: TestRsltMain,
 	},
 ];
 

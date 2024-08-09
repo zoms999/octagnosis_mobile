@@ -78,12 +78,12 @@ i[class^='ic-'] {display: block; background-repeat: no-repeat; background-positi
 .tit.v1 {font-size: 2rem; font-weight: 700;}
 .tit.v2 {font-size: 2.4rem; font-weight: 700; color: #1DB1AD;}
 .tit.v3 {font-size: 2.4rem; font-weight: 700;}
-.tit.v4 {font-size: 2rem; font-weight: 700; color: #1DB1AD;}
+.tit.v4 {font-size: 2.4rem; font-weight: 700; color: #1DB1AD;}
 
 /* text */
 .txt-warning{}
 .txt-note {font-size: 1.4rem; color: #FF8E3B; text-align: center;}
-.txt-comment {padding: 0.8rem 2rem; font-size: 1.4rem; color: #ffffff; background-color: #1DB1AD; border-radius: 0.8rem;}
+.txt-comment {padding: 0.8rem 2rem; font-size: 2rem; color: #ffffff; background-color: #1DB1AD; border-radius: 0.8rem;}
 .txt-comment strong {font-weight: 700;}
 
 /* label */
@@ -101,9 +101,9 @@ i[class^='ic-'] {display: block; background-repeat: no-repeat; background-positi
 .tbl-wrap.v2 {border-top: 0.4rem solid #4A5056; overflow: auto;}
 .tbl-wrap.v2 table {min-width: 109rem;}
 .tbl-wrap.v2 table tr > * {border-bottom: 1px solid #CFD4DA; text-align: center;}
-.tbl-wrap.v2 table thead tr th {background-color: #F8F8F8; height: 5rem; padding: 1rem 1.5rem; vertical-align: middle; font-size: 1.4rem; font-weight: 700;}
-.tbl-wrap.v2 table tbody tr td {min-height: 4rem; padding: 1rem 1.5rem; font-size: 1.4rem; line-height: 1.714; vertical-align: middle;}
-.tbl-wrap.v2 table tbody tr th {font-size: 1.6rem; font-weight: 700; padding: 1rem 1.5rem; vertical-align: middle;}
+.tbl-wrap.v2 table thead tr th {background-color: #F8F8F8; height: 5rem; padding: 1rem 1.5rem; vertical-align: middle; font-size: 1.7rem; font-weight: 700;}
+.tbl-wrap.v2 table tbody tr td {min-height: 4rem; padding: 1rem 1.5rem; font-size: 1.8rem; line-height: 1.714; vertical-align: middle;}
+.tbl-wrap.v2 table tbody tr th {font-size: 1.8rem; font-weight: 700; padding: 1rem 1.5rem; vertical-align: middle;}
 
 /* 반응형 테이블 */
 .trans-tbl.v1 {display: flex; flex-wrap: wrap; align-items: stretch; gap: 0 2rem;}
