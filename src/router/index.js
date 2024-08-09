@@ -13,6 +13,7 @@ import FailView from '../views/TossPayment/FailView.vue';
 import QuestMain from '../views/Test/QuestMainView.vue';
 import Quest from '../views/Test/QuestView.vue';
 import OrgMemberEditView from '../views/Member/OrgMemberEdit.vue';
+import MemberEditView from '../views/Member/MemberEdit.vue';
 
 const routes = [
 	{
@@ -29,6 +30,11 @@ const routes = [
 		path: '/OrgMemberEdit',
 		name: 'orgmemberedit',
 		component: OrgMemberEditView,
+	},
+	{
+		path: '/MemberEdit',
+		name: 'memberedit',
+		component: MemberEditView,
 	},
 	{
 		path: '/Login',
