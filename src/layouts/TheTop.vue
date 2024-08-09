@@ -72,7 +72,7 @@ const handleInfoEdit = () => {
 	if (orgId.value == 1) {
 		router.push({ name: 'orgmemberedit', query: { mode: 'edit' } });
 	} else {
-		router.push({ name: 'register' });
+		router.push({ name: 'memberedit', query: { mode: 'edit' } });
 	}
 };
 

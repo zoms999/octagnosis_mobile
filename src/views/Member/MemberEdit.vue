@@ -2,11 +2,7 @@
 	<div id="content" class="join">
 		<div class="container">
 			<h1 class="logo v2"><a href="javascript:void(0);">옥타그노시스</a></h1>
-			<!-- 20230626 수정 -->
-			<h2 class="title">회원가입</h2>
-			<button class="btn btn-existing" @click="navigateToLogin">
-				이미 가입하신 분은 여기를 클릭하세요<i class="ic-existing"></i>
-			</button>
+			<h2 class="title">회원정보 수정</h2>
 			<div class="form-wrap mt10">
 				<div class="form-group">
 					<p class="txt-guide">아래 해당 사항을 입력해 주세요.</p>
@@ -15,24 +11,14 @@
 							<p>아이디</p>
 						</div>
 						<div class="form-cont">
-							<div class="inp-wrap">
-								<input
-									type="text"
-									v-model.trim="Acunt.acuntId"
-									id="acuntId"
-									name="acuntId"
-									class="w300"
-									placeholder="아이디를 입력하세요"
-									required="required"
-									ref="acuntIdInput"
-								/>
-								<button class="btn sm line-navy" @click="checkDuplicateId">
-									중복 체크
-								</button>
-								<div v-if="!Acunt.acuntId">
-									입력란이 비어 있습니다. 아이디를 입력하세요.
-								</div>
-							</div>
+							<input
+								type="text"
+								v-model="Acunt.acuntId"
+								id="acuntId"
+								name="acuntId"
+								class="w300"
+								disabled
+							/>
 						</div>
 					</div>
 					<div class="form">
@@ -47,7 +33,7 @@
 								name="pw"
 								class="w300"
 								placeholder="6자 이상, 영문, 숫자, 특수문자 사용"
-								required="required"
+								required
 								@input="checkPasswordMatch"
 							/>
 						</div>
@@ -64,7 +50,7 @@
 								name="pwConfirmation"
 								class="w300"
 								placeholder="비밀번호를 재입력하세요"
-								required="required"
+								required
 								@input="checkPasswordMatch"
 							/>
 						</div>
@@ -84,7 +70,7 @@
 								name="persnNm"
 								class="w300"
 								placeholder="이름을 입력하세요"
-								required="required"
+								required
 							/>
 						</div>
 					</div>
@@ -101,7 +87,7 @@
 										id="male"
 										value="M"
 									/>
-									<label for="">
+									<label for="male">
 										<p>남</p>
 									</label>
 								</div>
@@ -112,7 +98,7 @@
 										id="female"
 										value="F"
 									/>
-									<label for="">
+									<label for="female">
 										<p>여</p>
 									</label>
 								</div>
@@ -131,7 +117,7 @@
 								name="phone"
 								class="w300"
 								placeholder="숫자만 입력해 주세요"
-								required="required"
+								required
 							/>
 						</div>
 					</div>
@@ -147,7 +133,7 @@
 								name="email"
 								class="w300"
 								placeholder="이메일 주소를 입력하세요"
-								required="required"
+								required
 							/>
 						</div>
 					</div>
@@ -163,16 +149,18 @@
 									id="zip"
 									name="zip"
 									placeholder="우편번호"
-									required="required"
+									required
 								/>
-								<button class="btn sm line-navy">검색</button>
+								<button class="btn sm line-navy" @click="searchAddress">
+									검색
+								</button>
 								<input
 									type="text"
 									v-model.trim="Person.addrStret"
 									id="addrStret"
 									name="addrStret"
 									placeholder="주소"
-									required="required"
+									required
 								/>
 								<input
 									type="text"
@@ -180,7 +168,7 @@
 									id="addrLotNum"
 									name="addrLotNum"
 									placeholder="상세주소"
-									required="required"
+									required
 								/>
 							</div>
 						</div>
@@ -200,7 +188,7 @@
 						<div class="form-cont">
 							<div class="education">
 								<select v-model="Person.educt" id="educt" name="educt">
-									<option value="" hidden selected>학력</option>
+									<option value="" hidden>학력</option>
 									<option value="C01001">초등</option>
 									<option value="C01002">중등</option>
 									<option value="C01003">고등</option>
@@ -214,7 +202,7 @@
 									id="eductStus"
 									name="eductStus"
 								>
-									<option value="" hidden selected>상태</option>
+									<option value="" hidden>상태</option>
 									<option value="C03001">재학</option>
 									<option value="C03002">휴학</option>
 									<option value="C03003">자퇴</option>
@@ -257,7 +245,6 @@
 							</div>
 						</div>
 					</div>
-
 					<div class="form">
 						<div class="form-title">
 							<p>직업군</p>
@@ -277,7 +264,6 @@
 							</div>
 						</div>
 					</div>
-
 					<div class="form">
 						<div class="form-title">
 							<p></p>
@@ -304,56 +290,26 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group">
-					<div class="check">
-						<input
-							type="checkbox"
-							name="agreement"
-							id="agreement"
-							v-model="Person.agreement"
-							required
-						/>
-						<label for="agreement">
-							<p>개인정보 동의</p>
-						</label>
-					</div>
+				<div class="btn-wrap mt20">
+					<button class="btn md round fill-navy w165" @click="updateProfile">
+						수정하기
+					</button>
 				</div>
-			</div>
-			<div class="btn-wrap mt20">
-				<button class="btn md round fill-navy w165" @click="signUpSubmit">
-					회원가입
-				</button>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import axios from 'axios';
-import { useForm } from 'vee-validate';
-import { useRouter } from 'vue-router';
-const router = useRouter();
 
-const Acunt = {
+const Acunt = reactive({
 	acuntId: '',
-	userType: 'C00102',
-	userId: '',
 	pw: '',
-	useYn: 'Y',
-	regDt: '',
-	leaveDt: '',
-	expirDt: '',
-	termsUse: 'Y',
-	termsPersn: 'Y',
-	termsEvent: 'Y',
-	insId: '',
-	insDt: '',
-	uptId: '',
-	uptDt: '',
-};
+});
 
-const Person = {
+const Person = reactive({
 	code: '',
 	persnNm: '',
 	sex: '',
@@ -370,138 +326,76 @@ const Person = {
 	job: '', //직업군
 	jobNm: '', //직장명
 	jobDuty: '',
-	agreement: false,
-	orgId: 0, // 조직Id
-};
+});
 
-const { handleSubmit, errors } = useForm();
-const AcuntFieldsLabels = {
-	acuntId: '계정 ID',
-	pw: '비밀번호',
-};
-const PersonFieldsLabels = {
-	code: '코드',
-	persnNm: '이름',
-	sex: '성별',
-	phone: '전화번호',
-	email: '이메일',
-	zip: '우편번호',
-	addrStret: '도로명 주소',
-	addrLotNum: '지번 주소',
-	educt: '학력',
-	scholNm: '학교명',
-	scholMajor: '전공',
-	scholGrade: '학년',
-	job: '직업',
-	jobNm: '직장명',
-	jobDuty: '직무',
-	agreement: '동의',
-};
+const passwordsMatch = ref(true);
+const pwConfirmation = ref('');
 
-const navigateToLogin = () => {
-	router.push('/login'); // Update this with your actual login route
-};
+onMounted(async () => {
+	console.log('onMounted');
+	await loadUserData();
+});
+const acuntId = ref(sessionStorage.getItem('acuntId') || '');
 
-// 회원가입 버튼 클릭 시 호출될 함수
-const signUpSubmit = handleSubmit(async () => {
-	const acuntRequiredFields = ['acuntId', 'pw'];
-	const acuntEmptyFields = acuntRequiredFields.filter(field => !Acunt[field]);
-
-	if (acuntEmptyFields.length > 0) {
-		const missingFields = acuntEmptyFields
-			.map(field => AcuntFieldsLabels[field])
-			.join(', ');
-		alert(`다음 필드를 작성해주세요: ${missingFields}`);
-		return;
+const loadUserData = async () => {
+	try {
+		if (!acuntId.value) {
+			console.error('acuntId is not defined');
+			return;
+		}
+		console.log('acuntId.value', acuntId.value);
+		const response = await axios.post('/api/member/user-data', {
+			acuntId: acuntId.value,
+		});
+		if (response.data) {
+			Object.assign(Acunt, response.data.Acunt);
+			Object.assign(Person, response.data.Personal);
+			pwConfirmation.value = Acunt.pw; // 비밀번호 확인 필드에 pw 값을 설정
+			console.log('response.data', response.data);
+		}
+	} catch (error) {
+		console.error('Failed to load user data', error);
 	}
-	if (passwordsMatch.value == '') {
-		alert('비밀번호 확인을 입력하세요.');
-		return;
-	}
+};
 
-	const personRequiredFields = [
-		//'code',
-		'persnNm',
-		'sex',
-		'phone',
-		'email',
-		'zip',
-		'addrStret',
-		'addrLotNum',
-		'educt',
-		'scholNm',
-		'scholMajor',
-		'scholGrade',
-		'job',
-		'jobNm',
-		'jobDuty',
-		'agreement',
-	];
-	const personEmptyFields = personRequiredFields.filter(
-		field => !Person[field],
-	);
+const checkPasswordMatch = () => {
+	passwordsMatch.value = Acunt.pw === pwConfirmation.value;
+};
 
-	if (personEmptyFields.length > 0) {
-		const missingFields = personEmptyFields
-			.map(field => PersonFieldsLabels[field])
-			.join(', ');
-		alert(`다음 필드를 작성해주세요: ${missingFields}`);
-		return;
-	}
-
+const updateProfile = async () => {
 	if (!passwordsMatch.value) {
 		alert('비밀번호가 일치하지 않습니다.');
 		return;
 	}
+
 	const combinedData = {
 		acunt: Acunt,
 		personal: Person,
 	};
 
 	try {
-		const response = await axios.post('/api/member/register', combinedData);
-		console.log(response.data);
-		alert('회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.');
-		router.push({ name: 'login' });
-	} catch (error) {
-		console.error(error.response);
-		alert('회원가입에 실패했습니다. 다시 시도해주세요.');
-	}
-});
-
-const checkDuplicateId = async () => {
-	if (!Acunt.acuntId) {
-		// 입력된 값이 없는 경우 메시지를 표시합니다.
-		alert('아이디를 입력하세요.');
-		this.$refs.acuntIdInput.focus(); // 입력란에 포커스를 맞춥니다.
-		return;
-	}
-	try {
-		const response = await axios.post('/api/member/check-id', {
-			acuntId: Acunt.acuntId,
-		});
-		if (response.data.isDuplicate) {
-			alert('사용 가능한 아이디입니다.');
+		const response = await axios.post('/api/member/update-user', combinedData);
+		if (response.status === 200) {
+			alert('회원정보가 성공적으로 수정되었습니다.');
 		} else {
-			alert('이미 사용 중인 아이디입니다.');
+			alert('회원정보 수정에 실패했습니다.');
 		}
 	} catch (error) {
-		console.error(error);
-		alert('아이디 중복 체크에 실패했습니다.');
+		console.error('Failed to update profile', error);
+		alert('회원정보 수정에 실패했습니다.');
 	}
 };
 
-const passwordsMatch = ref(true);
-const pwConfirmation = ref('');
-const checkPasswordMatch = () => {
-	console.log('Password:', Acunt.pw);
-	console.log('Confirmation:', pwConfirmation.value);
-	passwordsMatch.value = Acunt.pw === pwConfirmation.value;
+const searchAddress = () => {
+	// 주소 검색 로직 구현
+	// 예: 다음 우편번호 서비스 API 사용
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .error-message {
 	color: red;
+	font-size: 0.8em;
+	margin-top: 5px;
 }
 </style>

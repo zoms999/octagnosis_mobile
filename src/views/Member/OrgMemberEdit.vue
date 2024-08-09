@@ -96,7 +96,7 @@
 						<div class="form-cont">
 							<input
 								type="password"
-								v-model="pwConfirmation"
+								v-model.trim="pwConfirmation"
 								id="pwConfirmation"
 								name="pwConfirmation"
 								class="w300"
@@ -263,24 +263,88 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>소속</p>
+							<p>학업군</p>
 						</div>
 						<div class="form-cont">
-							<input
-								type="text"
-								v-model.trim="Person.afflt"
-								id="afflt"
-								name="afflt"
-								class="w300"
-								placeholder="소속기관명을 입력하세요"
-								required
-							/>
+							<div class="study">
+								<input
+									type="text"
+									v-model.trim="Person.scholNm"
+									id="scholNm"
+									name="scholNm"
+									placeholder="학교명을 입력하세요"
+									required="required"
+								/>
+								<input
+									type="text"
+									v-model.trim="Person.scholMajor"
+									id="scholMajor"
+									name="scholMajor"
+									placeholder="전공을 입력하세요"
+									required="required"
+								/>
+								<input
+									type="text"
+									v-model.trim="Person.scholGrade"
+									id="scholGrade"
+									name="scholGrade"
+									placeholder="학년을 입력하세요"
+									required="required"
+								/>
+							</div>
+						</div>
+					</div>
+					<div class="form">
+						<div class="form-title">
+							<p>직업군</p>
+						</div>
+						<div class="form-cont">
+							<div class="education">
+								<select name="job" id="job" v-model="Person.job">
+									<option value="" hidden selected>기타</option>
+									<option value="C02001">학생</option>
+									<option value="C02002">회사원</option>
+									<option value="C02003">전문직</option>
+									<option value="C02004">사업가</option>
+									<option value="C02005">공무원</option>
+									<option value="C02006">주부</option>
+									<option value="C02007">무직</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="form">
+						<div class="form-title">
+							<p></p>
+						</div>
+						<div class="form-cont">
+							<div class="job">
+								<input
+									type="text"
+									v-model.trim="Person.jobNm"
+									id="jobNm"
+									name="jobNm"
+									placeholder="직장명을 입력하세요"
+									required="required"
+								/>
+								<input
+									type="text"
+									v-model.trim="Person.jobDuty"
+									id="jobDuty"
+									name="jobDuty"
+									placeholder="하시는 일을 입력하세요"
+									required="required"
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
-				<button class="btn sm filled-navy" @click="handleSubmit">
-					{{ isEditMode ? '수정하기' : '회원가입' }}
-				</button>
+				<div class="btn-wrap mt20">
+					<button class="btn md round fill-navy w165" @click="handleSubmit">
+						수정하기
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -307,9 +371,14 @@ const Person = reactive({
 	zip: '',
 	addrStret: '',
 	addrLotNum: '',
-	educt: '',
-	eductStus: '',
-	afflt: '',
+	educt: '', //학력
+	eductStus: '', //상태 재학 휴학 자퇴 수료 졸업
+	scholNm: '',
+	scholMajor: '', //전공
+	scholGrade: '', //학년
+	job: '', //직업군
+	jobNm: '', //직장명
+	jobDuty: '',
 });
 
 const Acunt = reactive({
@@ -379,6 +448,7 @@ const loadUserData = async () => {
 		if (response.data) {
 			Object.assign(Person, response.data.Personal);
 			Object.assign(Acunt, response.data.Acunt);
+			pwConfirmation.value = Acunt.pw; // 비밀번호 확인 필드에 pw 값을 설정
 			isEditMode.value = true; // Set edit mode based on your logic
 		}
 	} catch (error) {
@@ -396,13 +466,19 @@ const handleSubmit = async () => {
 		return;
 	}
 
+	const combinedData = {
+		acunt: Acunt,
+		personal: Person,
+	};
+
 	try {
-		const apiEndpoint = isEditMode.value ? '/api/update-user' : '/api/signup';
-		const response = await axios.post(apiEndpoint, {
-			Person,
-			Acunt,
-		});
-		if (response.data.success) {
+		const apiEndpoint = isEditMode.value
+			? '/api/member/update-user'
+			: '/api/signup';
+		const response = await axios.post(apiEndpoint, combinedData);
+		console.log('isEditMode', response.data);
+		console.log('isEditMode', response.data.success);
+		if (response.status === 200) {
 			alert(
 				isEditMode.value
 					? '정보가 수정되었습니다.'

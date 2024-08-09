@@ -81,7 +81,7 @@ export default {
 		return {
 			paymentWidget: null,
 			paymentMethodWidget: null,
-			clientKey: 'test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm',
+			clientKey: 'test_gck_yZqmkKeP8gWKkB7n6KZx8bQRxB9l',
 			//clientKey: 'test_ck_P9BRQmyarY7dQOplOXNa3J07KzLN',
 			customerKey: nanoid(),
 			amount: this.productPrice,
