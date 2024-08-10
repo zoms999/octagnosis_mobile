@@ -130,6 +130,7 @@ export default {
 					}
 					this.payId = response.data.payId; // Save the payId from the response
 					console.log('this.payId', this.payId);
+					console.log('this.phone', this.phone);
 					await this.paymentWidget.requestPayment({
 						orderId: nanoid(),
 						orderName: this.productName,
