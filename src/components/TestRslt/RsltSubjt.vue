@@ -3,18 +3,14 @@
 		<div class="result-sheet">
 			<div class="result-view">
 				<p class="name">{{ Props.ListItem.PersnNm }} 님</p>
-				<p class="headline">
-					옥타그노시스검사 결과로 나타난 <strong>성향적합 교과목 분석</strong>
-					결과 입니다.
-				</p>
+				<p class="headline" v-html="$t('RsltSubjt_1')"></p>
 				<div class="summary">
 					<p class="text">
-						{{ Props.ListItem.PersnNm }}님의 성향과 적성에 맞는 교과목을 가장
-						적합한 순서대로 분석한 결과입니다.
+						{{ $t('RsltSubjt_2').replaceAll('000', Props.ListItem.PersnNm) }}
 					</p>
 				</div>
 
-				<p class="tit v3 mt20">과목에 따른 순위</p>
+				<p class="tit v3 mt20">{{ $t('RsltSubjt_3') }}</p>
 
 				<div class="tbl-wrap v2 mt10">
 					<table>
@@ -27,11 +23,11 @@
 						</colgroup>
 						<thead>
 							<tr>
-								<th>교과군</th>
-								<th>선택 과목</th>
-								<th>과목명</th>
-								<th>전체<br />순위</th>
-								<th>과목 설명</th>
+								<th>{{ $t('RsltSubjt_5') }}</th>
+								<th>{{ $t('RsltSubjt_6') }}</th>
+								<th>{{ $t('RsltSubjt_7') }}</th>
+								<th>{{ $t('RsltSubjt_8') }}<br />{{ $t('RsltSubjt_9') }}</th>
+								<th>{{ $t('RsltSubjt_10') }}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -60,7 +56,7 @@
 					</table>
 				</div>
 
-				<p class="tit v3 mt40">순위별 해당 교과목</p>
+				<p class="tit v3 mt40">{{ $t('RsltSubjt_4') }}</p>
 
 				<div class="tbl-wrap v2 mt10">
 					<table>
@@ -73,11 +69,11 @@
 						</colgroup>
 						<thead>
 							<tr>
-								<th>순위</th>
-								<th>교과군</th>
-								<th>선택 과목</th>
-								<th>과목명</th>
-								<th>과목 설명</th>
+								<th>{{ $t('RsltSubjt_9') }}</th>
+								<th>{{ $t('RsltSubjt_5') }}</th>
+								<th>{{ $t('RsltSubjt_6') }}</th>
+								<th>{{ $t('RsltSubjt_7') }}</th>
+								<th>{{ $t('RsltSubjt_10') }}</th>
 							</tr>
 						</thead>
 						<tbody>

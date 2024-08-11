@@ -10,7 +10,7 @@
 					<span>{{ NowSec }} </span>
 					<span> / </span>
 					<span>{{ WaitSec }}</span>
-					<span>(초)</span>
+					<span>({{ $t('second') }})</span>
 				</div>
 			</div>
 		</div>
@@ -45,7 +45,7 @@
 
 				<!-- 보기 -->
 				<div class="itemsScreen" v-if="ScreenYn">
-					보기는 타이머 종료후 나타납니다.
+					{{ $t('timer_explain') }}
 				</div>
 				<div class="items d-flex flex-wrap" v-if="!ScreenYn">
 					<div

@@ -1,14 +1,14 @@
 <template>
 	<div class="examine-head">
 		<div class="d-flex justify-content-start">
-			<div class="category">종합검사</div>
+			<div class="category">{{ $t('total_test') }}</div>
 			<div
 				class="d-flex justify-content-start"
 				v-for="item in TestList"
 				:key="item.testId"
 			>
 				<div class="step" :class="{ curStep: item.testId == QuestPage.testId }">
-					{{ item.seq }}단계
+					{{ $t('step') }} {{ item.seq }}
 				</div>
 				<div class="stepTit">{{ item.testNm }}</div>
 				<div class="timer" v-if="item.testId == QuestPage.testId">
@@ -89,7 +89,11 @@
 		></FreeTypeTime2>
 	</div>
 	<div class="bottom d-flex justify-content-center">
-		<div class="btnNext d-flex" @click="saveAns">
+		<div
+			class="btnNext d-flex justify-content-center"
+			@click="saveAns"
+			style="width: 160px"
+		>
 			<template v-if="Procs.saveAns.loading">
 				<div
 					class="spinner-border"
@@ -100,7 +104,8 @@
 				</div>
 			</template>
 			<template v-else>
-				<span class="fs190">다 음</span>&nbsp;
+				<span class="fs190">{{ $t('next') }}</span
+				>&nbsp;
 				<span
 					class="material-icons"
 					style="border: none; font-size: 1.8rem; margin-top: 8px"
@@ -164,6 +169,9 @@ const { vAlert, vSuccess } = useAlert();
 const route = useRoute();
 const router = useRouter();
 const { encodeBase64, decodeBase64 } = useBase64Utils();
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const TestList = ref([]);
 const QuestPage = ref({});
@@ -232,7 +240,7 @@ const { data, execUrl, reqUrl } = useAxios(
 					break;
 				case Procs.value.saveAns.path:
 					Procs.value.saveAns.loading = false;
-					vSuccess('저장되었습니다.');
+					vSuccess(t('saved'));
 					TestParm.testId = data.value.testId;
 					TestParm.questPageId = data.value.questPageId;
 
@@ -291,13 +299,13 @@ const saveAns = () => {
 		if (QuestList.value[i].questId == 25) {
 			// 25번 문항은 선택값이 2개
 			if (QuestList.value[i].val1 == 0 || QuestList.value[i].val2 == 0) {
-				alert(QuestList.value[i].questNo + '번 문항이 선택되지 않았습니다.');
+				alert(t('select_menu') + ' : ' + QuestList.value[i].questNo);
 				NotChkYn = true;
 				break;
 			}
 		} else {
 			if (QuestList.value[i].val1 == 0) {
-				alert(QuestList.value[i].questNo + '번 문항이 선택되지 않았습니다.');
+				alert(t('select_menu') + ' : ' + QuestList.value[i].questNo);
 				NotChkYn = true;
 				break;
 			}
@@ -323,22 +331,24 @@ const saveAns = () => {
 
 const preventRefresh = event => {
 	// F5 키 코드 (116)
+	/*
 	if (event.keyCode === 116) {
 		event.preventDefault();
-		vAlert('검사중에는 화면을 새로고침 할 수 없습니다.');
+		vAlert(t('QuestView_1'));
 	}
 
 	// Ctrl+R 키 조합 (Ctrl: 17, R: 82)
 	if (event.ctrlKey && event.keyCode === 82) {
 		event.preventDefault();
-		vAlert('검사중에는 화면을 새로고침 할 수 없습니다.');
+		vAlert(t('QuestView_1'));
 	}
 
 	// Ctrl+Shift+R 키 조합 (Ctrl: 17, Shift: 16, R: 82)
 	if (event.ctrlKey && event.shiftKey && event.keyCode === 82) {
 		event.preventDefault();
-		vAlert('검사중에는 화면을 새로고침 할 수 없습니다.');
+		vAlert(t('QuestView_1'));
 	}
+		 */
 };
 </script>
 
@@ -394,14 +404,14 @@ const preventRefresh = event => {
 	color: #ffffff;
 	margin: 20px 0 0 20px;
 	font-size: 2.3rem;
-	padding: 10px 60px 10px 60px;
+	padding: 10px 30px 10px 30px;
 	border-radius: 10px;
 }
 
 .step {
 	border: 1px solid #ffffff;
 	border-radius: 30px;
-	font-size: 2rem;
+	font-size: 1.8rem;
 	font-weight: 500;
 	margin: 23px 0 0 50px;
 	padding: 8px 30px 0px 30px;
@@ -414,7 +424,7 @@ const preventRefresh = event => {
 .stepTit {
 	border: 0;
 	border-radius: 20px;
-	font-size: 2.4rem;
+	font-size: 2.2rem;
 	font-weight: 600;
 	margin: 16px 0 0 0px;
 	padding: 13px 30px 0px 20px;

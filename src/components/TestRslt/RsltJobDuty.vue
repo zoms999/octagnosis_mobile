@@ -3,15 +3,10 @@
 		<div class="result-sheet">
 			<div class="result-view">
 				<p class="name">{{ Props.ListItem.PersnNm }} 님</p>
-				<p class="headline">
-					옥타그노시스검사 결과에 따른 <strong>적합 직무군</strong>
-					입니다.
-				</p>
+				<p class="headline" v-html="$t('RsltJobDuty_1')"></p>
 				<div class="summary">
 					<p class="text">
-						아래 내용은 {{ Props.ListItem.PersnNm }}님에게 적합한 직무군으로
-						해당 직무들이 하는 일의 내용과 함께 현재 우리나라 기업들의 부서배치
-						현황을 토대로 안내해 드립니다.
+						{{ $t('RsltJobDuty_2').replaceAll('000', Props.ListItem.PersnNm) }}
 					</p>
 				</div>
 
@@ -25,9 +20,9 @@
 							</colgroup>
 							<thead>
 								<tr>
-									<th class="ta-l">직무명</th>
-									<th>직무 개요</th>
-									<th>적합 부서</th>
+									<th class="ta-l">{{ $t('RsltJobDuty_3') }}</th>
+									<th>{{ $t('RsltJobDuty_4') }}</th>
+									<th>{{ $t('RsltJobDuty_5') }}</th>
 								</tr>
 							</thead>
 							<tbody>

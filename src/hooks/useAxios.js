@@ -30,6 +30,10 @@ export const useAxios = (url, config = {}, options = { immediate: false }) => {
 		data.value = null;
 		error.value = null;
 		loading.value = true;
+		body.language =
+			sessionStorage.getItem('language') == null
+				? 'ko'
+				: sessionStorage.getItem('language');
 
 		axios(unref(reqUrl), {
 			...defaultConfig,
@@ -68,6 +72,11 @@ export const useAxios = (url, config = {}, options = { immediate: false }) => {
 		data.value = null;
 		error.value = null;
 		loading.value = true;
+
+		body.language =
+			sessionStorage.getItem('language') == null
+				? 'ko'
+				: sessionStorage.getItem('language');
 
 		return await axios(unref(reqUrl), {
 			...defaultConfig,

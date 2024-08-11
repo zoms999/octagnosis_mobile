@@ -2,15 +2,11 @@
 	<div class="result">
 		<div class="result-sheet">
 			<div class="result-view">
-				<p class="name">{{ Props.ListItem.PersnNm }} 님</p>
-				<p class="headline">
-					옥타그노시스검사 결과에 따른 성향에 적합한
-					<strong>직업</strong>과 <strong>학과</strong>입니다.
-				</p>
+				<p class="name">{{ Props.ListItem.PersnNm }} </p>
+				<p class="headline" v-html="$t('RsltTedcyJob_1')"></p>
 				<div class="summary">
 					<p class="text">
-						성향과 적성을 분석하여 {{ Props.ListItem.PersnNm }}님에게 가장 적합한 전공과 직업을 도출한
-						결과입니다.
+						{{ $t('RsltTedcyJob_2').replaceAll('000', Props.ListItem.PersnNm) }}
 					</p>
 				</div>
 
@@ -21,13 +17,13 @@
 					<div class="cont-wrap" v-for="(item, idx) in Rslt2" :key="idx">
 						<div class="tit-wrap">
 							<div class="tit-area">
-								<p class="label v1">추천 1</p>
+								<p class="label v1">{{ $t('suggestion') }} {{ idx+1 }}</p>
 								<p class="tit v4">{{ item.JobNm }}</p>
 							</div>
 						</div>
 						<div class="card-wrap">
 							<div class="card half">
-								<div class="card-head"><p>직업개요</p></div>
+								<div class="card-head"><p>{{ $t('job_overview') }}</p></div>
 								<div class="card-body">
 									<p>
 										{{ item.Expl }}
@@ -35,7 +31,7 @@
 								</div>
 							</div>
 							<div class="card half">
-								<div class="card-head"><p>주요업무</p></div>
+								<div class="card-head"><p>{{ $t('main_tasks') }}</p></div>
 								<div class="card-body">
 									<p>
 									<div v-html="item.MainWork"></div>
@@ -43,7 +39,7 @@
 								</div>
 							</div>
 							<div class="card full">
-								<div class="card-head"><p>적합학과</p></div>
+								<div class="card-head"><p>{{ $t('suitable_department') }}</p></div>
 								<div class="card-body">
 									<p>
 										{{ Rslt3[idx].major }}

@@ -2,15 +2,11 @@
 	<div class="result">
 		<div class="result-sheet">
 			<div class="result-view">
-				<p class="name">{{ Props.ListItem.PersnNm }} 님</p>
-				<p class="headline">
-					옥타그노시스검사 결과에 따른 <strong>선호도반응</strong>
-					검사결과 입니다.
-				</p>
+				<p class="name">{{ Props.ListItem.PersnNm }}</p>
+				<p class="headline" v-html="$t('RsltPrefer_1')"></p>
 				<div class="summary">
 					<p class="text">
-						{{ Props.ListItem.PersnNm }}님이 옥타그노시스 검사를 통해 분석된
-						선호하는 성향을 진단한 결과입니다.
+						{{ $t('RsltPrefer_2').replaceAll('000', Props.ListItem.PersnNm) }}
 					</p>
 				</div>
 
@@ -33,12 +29,15 @@
 					</div>
 				</div>
 
-				<p class="tit v3 mt-4">
-					{{ Props.ListItem.PersnNm }}님은
-					<strong class="txt-mint">{{ Rslt2[0].rrate1 }}%</strong>의 비율로
-					<strong class="txt-mint">{{ Rslt2[0].tdname1 }} </strong>을
-					선호하셨습니다.
-				</p>
+				<p
+					class="tit v3 mt-4"
+					v-html="
+						$t('RsltPrefer_3')
+							.replaceAll('000', Props.ListItem.PersnNm)
+							.replaceAll('PREFER', Rslt2[0].tdname1)
+							.replaceAll('RATE', Rslt2[0].rrate1)
+					"
+				></p>
 
 				<p class="txt-comment mt5">
 					<strong>{{ Rslt2[0].tdname1 }} </strong> :
@@ -56,10 +55,10 @@
 							</colgroup>
 							<thead>
 								<tr>
-									<th class="ta-l">직업명</th>
-									<th>직무 개요</th>
-									<th>주요 업무</th>
-									<th>관련 학과</th>
+									<th class="ta-l">{{ $t('RsltPrefer_4') }}</th>
+									<th>{{ $t('RsltPrefer_5') }}</th>
+									<th>{{ $t('RsltPrefer_6') }}</th>
+									<th>{{ $t('RsltPrefer_7') }}</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -79,12 +78,15 @@
 						</table>
 					</div>
 				</div>
-				<p class="tit v3 mt-4">
-					{{ Props.ListItem.PersnNm }}님은
-					<strong class="txt-mint">{{ Rslt2[0].rrate2 }}%</strong>의 비율로
-					<strong class="txt-mint">{{ Rslt2[0].tdname2 }} </strong>을
-					선호하셨습니다.
-				</p>
+				<p
+					class="tit v3 mt-4"
+					v-html="
+						$t('RsltPrefer_3')
+							.replaceAll('000', Props.ListItem.PersnNm)
+							.replaceAll('PREFER', Rslt2[0].tdname2)
+							.replaceAll('RATE', Rslt2[0].rrate2)
+					"
+				></p>
 
 				<p class="txt-comment mt5">
 					<strong>{{ Rslt2[0].tdname2 }} </strong> :
@@ -101,10 +103,10 @@
 						</colgroup>
 						<thead>
 							<tr>
-								<th class="ta-l">직업명</th>
-								<th>직무 개요</th>
-								<th>주요 업무</th>
-								<th>관련 학과</th>
+								<th class="ta-l">{{ $t('RsltPrefer_4') }}</th>
+								<th>{{ $t('RsltPrefer_5') }}</th>
+								<th>{{ $t('RsltPrefer_6') }}</th>
+								<th>{{ $t('RsltPrefer_7') }}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -124,12 +126,15 @@
 					</table>
 				</div>
 
-				<p class="tit v3 mt-4">
-					{{ Props.ListItem.PersnNm }}님은
-					<strong class="txt-mint">{{ Rslt2[0].rrate3 }}%</strong>의 비율로
-					<strong class="txt-mint">{{ Rslt2[0].tdname3 }} </strong>을
-					선호하셨습니다.
-				</p>
+				<p
+					class="tit v3 mt-4"
+					v-html="
+						$t('RsltPrefer_3')
+							.replaceAll('000', Props.ListItem.PersnNm)
+							.replaceAll('PREFER', Rslt2[0].tdname3)
+							.replaceAll('RATE', Rslt2[0].rrate3)
+					"
+				></p>
 
 				<p class="txt-comment mt5">
 					<strong>{{ Rslt2[0].tdname3 }} </strong> :
@@ -147,10 +152,10 @@
 							</colgroup>
 							<thead>
 								<tr>
-									<th class="ta-l">직업명</th>
-									<th>직무 개요</th>
-									<th>주요 업무</th>
-									<th>관련 학과</th>
+									<th class="ta-l">{{ $t('RsltPrefer_4') }}</th>
+									<th>{{ $t('RsltPrefer_5') }}</th>
+									<th>{{ $t('RsltPrefer_6') }}</th>
+									<th>{{ $t('RsltPrefer_7') }}</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -193,6 +198,7 @@ import {
 	LineElement,
 	Filler,
 } from 'chart.js';
+import { useI18n } from 'vue-i18n';
 
 const { vAlert, vSuccess } = useAlert();
 ChartJS.register(
@@ -207,6 +213,7 @@ ChartJS.register(
 	LineElement,
 	Filler,
 );
+const { t } = useI18n(); // Import translation function
 
 // Props / Emit  ****************************
 
@@ -317,9 +324,9 @@ const setChart = () => {
 	var labels2 = [];
 	var data2 = [];
 
-	labels1.push('전체`');
+	labels1.push(t('RsltPrefer_8'));
 	data1.push(100);
-	labels1.push(`선호반응율 (${Rslt1.value[0].irate}%)`);
+	labels1.push(`${t('RsltPrefer_9')} (${Rslt1.value[0].irate}%)`);
 	data1.push(Rslt1.value[0].irate);
 
 	labels2.push(`${Rslt2.value[0].tdname1} (${Rslt2.value[0].rrate1}%)`);
@@ -333,7 +340,7 @@ const setChart = () => {
 		labels: labels1,
 		datasets: [
 			{
-				label: '선호반응률(%)',
+				label: t('RsltPrefer_9') + '(%)',
 				backgroundColor: ['#f1f1f1', '#f87979'],
 				data: data1,
 			},
@@ -345,7 +352,7 @@ const setChart = () => {
 
 		datasets: [
 			{
-				label: '선호형',
+				label: t('RsltPrefer_10'),
 				backgroundColor: ['#36a2eb', '#ff6384', '#4bc0c0'],
 				data: data2,
 			},

@@ -229,15 +229,12 @@ const getNextTest = (
 	questPageId,
 ) => {
 	if (ansPrgrsId == '0') {
-		const msg =
-			turnId == '0'
-				? '검사를 시작하시겠습니까 ?'
-				: '기관에서 부여받은 검사회차 라이센스를 사용합니다.\n\n검사를 시작하시겠습니까 ?';
+		const msg = turnId == '0' ? t('TestStart_1') : t('TestStart_2');
 		if (!confirm(msg)) {
 			return;
 		}
 	} else {
-		alert('진행중인 검사를 계속 합니다.');
+		alert(t('TestStart_3'));
 	}
 	TestParm.ansPrgrsId = ansPrgrsId;
 	TestParm.turnId = turnId == null ? 0 : turnId;

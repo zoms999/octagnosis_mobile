@@ -15,9 +15,13 @@
 					class="bottom d-flex justify-content-center"
 					v-if="TestParm.testId != 0"
 				>
-					<div class="btnNext d-flex" @click="getNextTest">
-						<span style="font-size: 2.2rem !important">다 음</span> &nbsp;
-						&nbsp;
+					<div
+						class="btnNext d-flex justify-content-center"
+						@click="getNextTest"
+						style="width: 160px"
+					>
+						<span style="font-size: 2.2rem !important">{{ $t('next') }}</span>
+						&nbsp; &nbsp;
 						<span
 							class="material-icons"
 							style="border: none; font-size: 2.2rem; margin-top: 8px"

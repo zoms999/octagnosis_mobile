@@ -21,6 +21,7 @@ const changeLanguage = () => {
 	i18nStore.setLanguage(selectedLanguage.value);
 	sessionStorage.setItem('language', selectedLanguage.value); // 언어 설정을 세션에 저장
 	locale.value = selectedLanguage.value; // i18n의 locale 업데이트
+	location.reload();
 };
 </script>
 

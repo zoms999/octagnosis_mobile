@@ -1,19 +1,13 @@
 <template>
 	<div class="RsltBox">
-		<div class="TabBox">
-			<div class="row">
-				<div class="col-12">
-					<ul class="">
-						<li
-							v-for="(item, idx) in ShowRsltItems"
-							:key="item.id"
-							:class="{ active: item.activeYn == 'Y' }"
-							@click="goTab(item)"
-						>
-							{{ item.tit }}
-						</li>
-					</ul>
-				</div>
+		<div class="TabBox d-flex justify-content-start flex-wrap">
+			<div
+				v-for="(item, idx) in ShowRsltItems"
+				:key="item.id"
+				:class="{ active: item.activeYn == 'Y' }"
+				@click="goTab(item)"
+			>
+				{{ item.tit }}
 			</div>
 		</div>
 		<AppError v-if="error" :message="error.message"></AppError>
@@ -108,6 +102,7 @@ import RsltStudy from '@/components/TestRslt/RsltStudy.vue';
 import RsltSubjt from '@/components/TestRslt/RsltSubjt.vue';
 import RsltJobDuty from '@/components/TestRslt/RsltJobDuty.vue';
 import RsltPrefer from '@/components/TestRslt/RsltPrefer.vue';
+import { useI18n } from 'vue-i18n';
 
 const { vAlert, vSuccess } = useAlert();
 const dayjs = inject('dayjs');
@@ -117,6 +112,8 @@ const route = useRoute();
 
 const { acuntId, orgId, turnConnCd, userId, persnNm } =
 	storeToRefs(useAuthStore());
+
+const { t } = useI18n(); // Import translation function
 
 // Props / Emit  ****************************
 
@@ -150,17 +147,17 @@ onMounted(() => {
 const ListItem = ref();
 
 const RsltItems = ref([
-	{ id: '1', activeYn: 'Y', tit: '개인정보' },
-	{ id: '2', activeYn: 'N', tit: '성향진단' },
-	{ id: '3', activeYn: 'N', tit: '성향분석' },
-	{ id: '4', activeYn: 'N', tit: '사고력' },
-	{ id: '5', activeYn: 'N', tit: '성향적합직업학과' },
-	{ id: '6', activeYn: 'N', tit: '역량진단' },
-	{ id: '7', activeYn: 'N', tit: '역량적합직업학과' },
-	{ id: '8', loadYn: 'Y', activeYn: 'N', tit: '학습' },
-	{ id: '9', loadYn: 'Y', activeYn: 'N', tit: '교과목' },
-	{ id: '10', loadYn: 'Y', activeYn: 'N', tit: '직무' },
-	{ id: '11', loadYn: 'Y', activeYn: 'N', tit: '선호도' },
+	{ id: '1', activeYn: 'Y', tit: t('rslt_tit1') },
+	{ id: '2', activeYn: 'N', tit: t('rslt_tit2') },
+	{ id: '3', activeYn: 'N', tit: t('rslt_tit3') },
+	{ id: '4', activeYn: 'N', tit: t('rslt_tit4') },
+	{ id: '5', activeYn: 'N', tit: t('rslt_tit5') },
+	{ id: '6', activeYn: 'N', tit: t('rslt_tit6') },
+	{ id: '7', activeYn: 'N', tit: t('rslt_tit7') },
+	{ id: '8', activeYn: 'N', tit: t('rslt_tit8') },
+	{ id: '9', activeYn: 'N', tit: t('rslt_tit9') },
+	{ id: '10', activeYn: 'N', tit: t('rslt_tit10') },
+	{ id: '11', activeYn: 'N', tit: t('rslt_tit11') },
 ]);
 
 const ShowRsltItems = ref([]);
@@ -228,7 +225,7 @@ const goTab = item => {
 
 <style scoped>
 .RsltBox {
-	width: 1200px;
+	width: 1260px;
 	padding: 0 0 0 0;
 	margin: 10px auto;
 }
@@ -239,27 +236,24 @@ const goTab = item => {
 	margin: 5px 0 5px 0;
 	border: 1px solid #cacaca;
 }
-ul {
-	width: 1080px;
-	list-style-type: none;
-	padding: 0;
-}
 
-li {
-	width: 150px;
+.TabBox div {
+	width: 195px;
+	min-height: 60px;
 	display: inline-block;
 	font-size: 1.6rem;
-	padding: 13px 5px 13px 5px;
+	padding: 5px 0 0 0;
 	border: 1px solid #cacaca;
 	margin: 2px;
 	text-align: center;
+	vertical-align: middle;
 	font-weight: 700;
 	background-color: #f0f3f5;
 	color: #343a40;
 	cursor: pointer;
 }
 
-li.active {
+.TabBox div.active {
 	background-color: #3d7aed;
 	color: #ffffff;
 }

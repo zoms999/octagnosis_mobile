@@ -2,42 +2,38 @@
 	<div class="result">
 		<div class="result-sheet">
 			<div class="result-view">
-				<p class="name">{{ Props.ListItem.PersnNm  }} 님</p>
-				<p class="headline">
-					옥타그노시스검사 결과에 따른 <strong
-						>성향진단 결과</strong
-					>
+				<p class="name">{{ Props.ListItem.PersnNm }}</p>
+				<p class="headline" v-html="$t('RsltTedcy1_1')">
 				</p>
 				<div class="summary">
 					<div class="tendency">
 						<div class="item">
-							<p class="title mint">나의 성향</p>
+							<p class="title mint">{{ $t('RsltTedcy1_2') }}</p>
 							<div class="type-list mint">
 								<dl v-for="(item, idx) in Rslt1_1" :key="item.Rk">
-									<dt>상위 {{ idx + 1 }}성향</dt>
+									<dt>{{ $t('RsltTedcy1_4') }} {{ idx + 1 }}</dt>
 									<dd>{{ item.QuestAttrNm }}</dd>
 								</dl>
 							</div>
 						</div>
 						<div class="item">
-							<p class="title orange">나와 잘 안 맞는 성향</p>
+							<p class="title orange">{{ $t('RsltTedcy1_3') }}</p>
 							<div class="type-list orange">
 								<dl v-for="(item, idx) in Rslt1_2" :key="item.Rk">
-									<dt>하위 {{ idx + 1 }}성향</dt>
+									<dt>{{ $t('RsltTedcy1_5') }} {{ idx + 1 }}</dt>
 									<dd>{{ item.QuestAttrNm }}</dd>
 								</dl>
 							</div>
 						</div>
 					</div>
 					<p class="text mt-3">
-						나를 이루는 기둥이 되는 성향 3개를 진단해드렸습니다. 하위성향은
-						나와는 잘 안 맞는 성향입니다.
+						{{ $t('RsltTedcy1_6') }}
 					</p>
 				</div>
 
 				<div class="partition" v-for="(item, idx) in Rslt2" :key="item.Rk">
 					<div class="title-wrap">
-						<p class="label v1">주성향 {{ item.Rk }}</p>
+						<p class="label v1">{{ $t('RsltTedcy1_7') }} {{ item.Rk }}</p>
 						<p class="tit v2">{{ item.QuestAttrNm }}</p>
 					</div>
 					<div class="text-wrap"> 

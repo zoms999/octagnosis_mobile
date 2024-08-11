@@ -7,8 +7,8 @@
 		>
 	</p>
 	<div class="text03 text-center p-5">
-		<div class="">사고력 검사가 완료되었습니다.</div>
-		<div class="mt-5">이미지 검사를 진행하여 주십시오.</div>
+		<div class="">{{ $t('TestHead_2_1') }}</div>
+		<div class="mt-5">{{ $t('TestHead_2_2') }}</div>
 	</div>
 </template>
 

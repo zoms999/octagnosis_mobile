@@ -2,11 +2,9 @@
 	<div class="result">
 		<div class="result-sheet">
 			<div class="result-view">
-				<p class="name">{{ Props.ListItem.PersnNm }} 님</p>
-				<p class="headline">
-					옥타그노시스검사 결과, <strong
-						>강점 사고력은</strong
-					>
+				<p class="name">{{ Props.ListItem.PersnNm }}</p>
+				<p class="headline" v-html="$t('RsltThink_1')">
+					
 				</p>
 				<div class="summary">
 					<div class="thinking">
@@ -26,7 +24,7 @@
 						</div>
 					</div>
 					<p class="text mt-4">
-						{{ Props.ListItem.PersnNm }}님의 8가지 사고력을 진단한 결과입니다.
+						{{ $t('RsltThink_2').replaceAll('000', Props.ListItem.PersnNm) }}
 					</p>
 				</div>
 
@@ -51,7 +49,7 @@
 
 				<div class="partition" v-for="(item, idx) in Rslt3" :key="idx">
 					<div class="title-wrap">
-						<p class="tit v2">{{ item.QuestAttrNm }} ({{ item.score }}점)</p>
+						<p class="tit v2">{{ item.QuestAttrNm }} ({{ item.score }} {{$t('points')}})</p>
 					</div>
 					<div class="text-wrap">
 						<p>
@@ -73,6 +71,8 @@ import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, Li
   PointElement,
   LineElement,
   Filler } from 'chart.js'
+import { useI18n } from 'vue-i18n';
+
 
 const { vAlert, vSuccess } = useAlert();
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, RadialLinearScale,
@@ -80,6 +80,7 @@ ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale,
   LineElement,
   Filler)
 
+const { t } = useI18n(); // Import translation function
 
 // Props / Emit  ****************************
 
@@ -179,7 +180,7 @@ const setChart = () => {
 		labels: labels1,
 		datasets: [
 			{
-				label: '사고력 수직 측정 그래프',
+				label: t('RsltThink_3'),
 				backgroundColor: '#f87979',
 				data: data1,
 			},
@@ -190,7 +191,7 @@ const setChart = () => {
 		labels: labels1,
 		datasets: [
 			{
-				label: '사고력 분포 측정 그래프',
+				label: t('RsltThink_4'),
 				backgroundColor: 'rgba(255,99,132,0.2)',
 				borderColor: 'rgba(255,99,132,1)',
 				pointBackgroundColor: 'rgba(255,99,132,1)',

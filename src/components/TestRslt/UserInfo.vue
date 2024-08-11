@@ -2,28 +2,26 @@
 	<div class="result">
 		<div class="result-sheet">
 			<div class="result-view">
-				<p class="name">{{ Persn.persnNm }} 님</p>
+				<p class="name">{{ Persn.persnNm }}</p>
 				<p class="headline">
-					옥타그노시스검사와 함께 멋진 인생이 설계되기 바라며, 행복한 인생을
-					응원합니다.
+					{{ $t('UserInfo_1') }}
 				</p>
 				<div class="summary">
 					<p class="text">
-						옥타그노시스 검사는 {{ Persn.persnNm }}님의 ‘진짜 나’를 발견하고,
-						지혜로운 진로설계를 도와드립니다.
+						{{ $t('UserInfo_2').replaceAll('000', Persn.persnNm) }}
 					</p>
 				</div>
 
 				<div class="layout">
 					<div class="item full">
-						<p class="tit v1">기본정보</p>
+						<p class="tit v1">{{ $t('basic_info') }}</p>
 
 						<div class="trans-tbl v1 mt10">
 							<!-- tbody 영역 -->
 							<div class="tbl-body-item">
 								<div class="tbl-row">
 									<div class="tbl-col data" style="width: 14.5rem">
-										<p>이름</p>
+										<p>{{ $t('name') }}</p>
 									</div>
 									<div class="tbl-col data" style="width: calc(100% - 14.5rem)">
 										<p>
@@ -33,7 +31,7 @@
 								</div>
 								<div class="tbl-row">
 									<div class="tbl-col data" style="width: 14.5rem">
-										<p>성별</p>
+										<p>{{ $t('sex') }}</p>
 									</div>
 									<div class="tbl-col data" style="width: calc(100% - 14.5rem)">
 										<p>
@@ -43,7 +41,7 @@
 								</div>
 								<div class="tbl-row">
 									<div class="tbl-col data" style="width: 14.5rem">
-										<p>생일</p>
+										<p>{{ $t('birth') }}</p>
 									</div>
 									<div class="tbl-col data" style="width: calc(100% - 14.5rem)">
 										<p>
@@ -57,7 +55,7 @@
 							<div class="tbl-body-item">
 								<div class="tbl-row">
 									<div class="tbl-col data" style="width: 14.5rem">
-										휴대전화
+										<p>{{ $t('phone') }}</p>
 									</div>
 									<div class="tbl-col data" style="width: calc(100% - 14.5rem)">
 										<p>
@@ -67,7 +65,7 @@
 								</div>
 								<div class="tbl-row">
 									<div class="tbl-col data" style="width: 14.5rem">
-										(추가) 연락처
+										<p>{{ $t('add_phone') }}</p>
 									</div>
 									<div class="tbl-col data" style="width: calc(100% - 14.5rem)">
 										<p>
@@ -76,7 +74,9 @@
 									</div>
 								</div>
 								<div class="tbl-row">
-									<div class="tbl-col data" style="width: 14.5rem">이메일</div>
+									<div class="tbl-col data" style="width: 14.5rem">
+										<p>{{ $t('email') }}</p>
+									</div>
 									<div class="tbl-col data" style="width: calc(100% - 14.5rem)">
 										<p>
 											<strong>{{ Persn.email }}</strong>
@@ -88,7 +88,7 @@
 						</div>
 					</div>
 					<div class="item half">
-						<p class="tit v1">기본정보</p>
+						<p class="tit v1">{{ $t('basic_info') }}</p>
 
 						<div class="tbl-wrap v1 mt10">
 							<table>
@@ -98,25 +98,25 @@
 								</colgroup>
 								<tbody>
 									<tr>
-										<td>학업군</td>
+										<td>{{ $t('academic_group') }}</td>
 										<td>
 											<strong>{{ Persn.eductNm }}</strong>
 										</td>
 									</tr>
 									<tr>
-										<td>학교명</td>
+										<td>{{ $t('school_name') }}</td>
 										<td>
 											<strong>{{ Persn.scholNm }}</strong>
 										</td>
 									</tr>
 									<tr>
-										<td>학년</td>
+										<td>{{ $t('grade') }}</td>
 										<td>
 											<strong>{{ Persn.scholGrade }}</strong>
 										</td>
 									</tr>
 									<tr>
-										<td>전공</td>
+										<td>{{ $t('major') }}</td>
 										<td>
 											<strong>{{ Persn.scholMajor }}</strong>
 										</td>
@@ -126,7 +126,7 @@
 						</div>
 					</div>
 					<div class="item half">
-						<p class="tit v1">최종(현재) 직장 정보</p>
+						<p class="tit v1">{{ $t('last_job_info') }}</p>
 
 						<div class="tbl-wrap v1 mt10">
 							<table>
@@ -136,19 +136,19 @@
 								</colgroup>
 								<tbody>
 									<tr>
-										<td>직업군</td>
+										<td>{{ $t('occupation') }}</td>
 										<td>
 											<strong>{{ Persn.jobCdNm }}</strong>
 										</td>
 									</tr>
 									<tr>
-										<td>직장명</td>
+										<td>{{ $t('work_name') }}</td>
 										<td>
 											<strong>{{ Persn.jobNm }}</strong>
 										</td>
 									</tr>
 									<tr>
-										<td>하는일</td>
+										<td>{{ $t('what_to_do') }}</td>
 										<td>
 											<strong>{{ Persn.jobDuty }}</strong>
 										</td>

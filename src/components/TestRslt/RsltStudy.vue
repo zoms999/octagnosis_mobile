@@ -3,20 +3,17 @@
 		<div class="result-sheet">
 			<div class="result-view">
 				<p class="name">{{ Props.ListItem.PersnNm }} 님</p>
-				<p class="headline">
-					옥타그노시스검사 결과에 따른 학습스타일과 성향에 적합한
-					<strong>학습법</strong>입니다.
+				<p class="headline" v-html="$t('RsltStudy_1')">
 				</p>
 				<div class="summary">
 					<p class="text">
-						{{ Props.ListItem.PersnNm }}의 학습성향과 잠재성향에 적합한
-						학습유형과 구체적인 학습방법을 분석하여 도출한 것입니다.
+						{{ $t('RsltStudy_2').replaceAll('000', Props.ListItem.PersnNm) }}
 					</p>
 				</div>
 
 				<div class="partition">
 					<div class="title-wrap">
-						<p class="tit v3">{{ Props.ListItem.PersnNm }}님의 학습스타일</p>
+						<p class="tit v3">{{ $t('RsltStudy_3').replaceAll('000', Props.ListItem.PersnNm) }}</p>
 					</div>
 					<div class="text-wrap">
 						<p>
@@ -49,7 +46,7 @@
 				</div>
 				<div class="partition">
 					<div class="title-wrap">
-						<p class="tit v3">{{ Props.ListItem.PersnNm }}님의 적합한 학습법1</p>
+						<p class="tit v3">{{ $t('RsltStudy_3').replaceAll('000', Props.ListItem.PersnNm) }} 1</p>
 					</div>
 					<div class="text-wrap">
 						<p>
@@ -60,7 +57,7 @@
 
 				<div class="partition">
 					<div class="title-wrap">
-						<p class="tit v3">{{ Props.ListItem.PersnNm }}님의 적합한 학습법2</p>
+						<p class="tit v3">{{ $t('RsltStudy_3').replaceAll('000', Props.ListItem.PersnNm) }} 2</p>
 					</div>
 					<div class="text-wrap">
 						<p>

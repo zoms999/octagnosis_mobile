@@ -2,14 +2,11 @@
 	<div class="result">
 		<div class="result-sheet">
 			<div class="result-view">
-				<p class="name">{{ Props.ListItem.PersnNm }} 님</p>
-				<p class="headline">
-					옥타그노시스검사 결과에 따른 <strong>세부성향분석</strong>입니다.
-				</p>
+				<p class="name">{{ Props.ListItem.PersnNm }}</p>
+				<p class="headline" v-html="$t('RsltTedcy2_1')"></p>
 				<div class="summary">
 					<p class="text">
-						옥타그노시스 검사 결과에 따라 김민준님은 아래와 같은 결과로
-						분석되었습니다.
+						{{ $t('RsltTedcy2_2').replaceAll('000', Props.ListItem.PersnNm) }}
 					</p>
 					<!-- 20230703 수정 -->
 				</div>

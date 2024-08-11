@@ -10,7 +10,7 @@
 					<span>{{ NowSec }} </span>
 					<span> / </span>
 					<span>{{ WaitSec }}</span>
-					<span>(초)</span>
+					<span>({{ $t('second') }})</span>
 				</div>
 			</div>
 		</div>
@@ -38,10 +38,10 @@
 
 				<!-- 보기 -->
 				<div class="itemsScreen" v-if="ScreenYn">
-					보기는 타이머 종료후 나타납니다.
+					{{ $t('timer_explain') }}
 				</div>
 				<div class="items d-flex justify-content-start" v-if="!ScreenYn">
-					<div class="itemTit">한글 단어는 몇개였나 ?</div>
+					<div class="itemTit">{{ $t('Time1_1') }}</div>
 					<div
 						class="itemBox"
 						v-for="questItem in getQuestItemList1(item.questId)"
@@ -57,7 +57,7 @@
 					</div>
 				</div>
 				<div class="items d-flex justify-content-start" v-if="!ScreenYn">
-					<div class="itemTit">영문 단어는 몇개였나 ?</div>
+					<div class="itemTit">{{ $t('Time1_2') }}</div>
 					<div
 						class="itemBox"
 						v-for="questItem in getQuestItemList2(item.questId)"

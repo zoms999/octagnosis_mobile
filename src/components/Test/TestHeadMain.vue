@@ -6,28 +6,25 @@
 		>
 			assignment_turned_in
 		</span>
-		<span> 검사유의사항 </span>
+		<span> {{ $t('TestHeadMain_1') }} </span>
 	</p>
 	<p class="text03 text-start px-5">
-		옥타그노시스검사를 시작하기 전, 검사의 효과를 높이기 위해 아래 내용을
-		꼼꼼하게 읽어주시면 감사하겠습니다.
+		{{ $t('TestHeadMain_2') }}
 	</p>
 
 	<div class="checkItem">
-		<div>1. 검사 진행시 모든 문항에 솔직하게 답변해주세요</div>
+		<div>{{ $t('TestHeadMain_3') }}</div>
 		<div>
-			2. 시간 제한이 있는 문항에는 반드시 시간을 엄수해서 답해 주시기 바랍니다.
+			{{ $t('TestHeadMain_4') }}
 		</div>
 		<div>
-			3. 고민이 되거나 어려운 문제가 나올 시 시간을 지체하지 마시고, 생각 속에
-			떠오르는 대로 선택해주세요.
+			{{ $t('TestHeadMain_5') }}
 		</div>
 		<div>
-			4. 검사가 시작되면 중간에 멈추지 마시고, 끝까지 한번에 진행해 주세요.
+			{{ $t('TestHeadMain_6') }}
 		</div>
 		<div>
-			5. 검사에 방해가 될 수 있는 휴대전화, 전자기기 등은 무음이나 비행기모드로
-			하시고 검사를 진행해 주세요.
+			{{ $t('TestHeadMain_7') }}
 		</div>
 	</div>
 </template>

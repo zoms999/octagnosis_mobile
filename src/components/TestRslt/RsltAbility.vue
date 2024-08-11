@@ -2,10 +2,8 @@
 	<div class="result">
 		<div class="result-sheet">
 			<div class="result-view">
-				<p class="name">{{ Props.ListItem.PersnNm }} 님</p>
-				<p class="headline">
-					옥타그노시스검사 결과, <strong>핵심역량</strong>은
-				</p>
+				<p class="name">{{ Props.ListItem.PersnNm }}</p>
+				<p class="headline" v-html="$t('RsltAbility_1')"></p>
 				<div class="summary">
 					<div class="ability">
 						<div class="type-list mint">
@@ -18,8 +16,7 @@
 						</div>
 					</div>
 					<p class="text mt-2">
-						옥타그노시스 검사의 역량진단은 인간의 총 60가지 역량 스키마 중에서
-						도출합니다.
+						{{ $t('RsltAbility_2') }}
 					</p>
 				</div>
 
@@ -27,12 +24,12 @@
 
 				<div class="partition" v-for="(item, idx) in Rslt2" :key="idx">
 					<div class="title-wrap">
-						<p class="label v1">핵심역량 {{ idx + 1 }}</p>
+						<p class="label v1">{{ $t('RsltAbility_3') }} {{ idx + 1 }}</p>
 						<p class="tit v2">{{ item.QuestAttrNm }}</p>
 					</div>
 					<div class="text-wrap">
 						<p>
-							{{ item.Expl.replaceAll('000님', `${Props.ListItem.PersnNm}님`) }}
+							{{ item.Expl.replaceAll('000', `${Props.ListItem.PersnNm}`) }}
 						</p>
 					</div>
 				</div>
