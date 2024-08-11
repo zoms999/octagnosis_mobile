@@ -138,16 +138,14 @@ const { data, execUrl, reqUrl } = useAxios(
 					} else {
 						switch (data.value.errCode) {
 							case '100':
-								alert(
-									'기관소속 사용자 입니다. 기관 로그인 화면으로 이동합니다.',
-								);
+								alert(t('org_member'));
 								router.push('/OrgLogin');
 								break;
 							case '200':
-								vAlert('기관에 소속된 검사 회차코드가 아닙니다.');
+								vAlert(t('login_info1'));
 								break;
 							case '300':
-								vAlert('사용자 정보를 확인하세요.');
+								vAlert(t('login_info2'));
 								break;
 						}
 					}
@@ -161,7 +159,7 @@ const { data, execUrl, reqUrl } = useAxios(
 						loginData.value.code = '';
 						loginData.value.orgId = '0';
 						codeInvalid.value = false;
-						vAlert('잘못된 회차코드 입니다.');
+						vAlert(t('turn_code_wrong'));
 					}
 					break;
 				default:

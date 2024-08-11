@@ -88,6 +88,7 @@
   "enter2": "Please enter.",  
   "turn_code": "Turn code",
   "turn_code_valid": "Please check turn code validity.",
+  "turn_code_wrong": "Check the turn code.",
 
   "TestHeadMain_1": "Important Notes for the Test",
   "TestHeadMain_2": "Before starting the Octagnosis Test, please carefully read the following instructions to maximize the effectiveness of the test:.",
