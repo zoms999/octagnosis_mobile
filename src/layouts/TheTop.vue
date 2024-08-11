@@ -2,25 +2,32 @@
 	<div id="header" style="height: 90px">
 		<div class="container" style="padding-top: 5px">
 			<!-- 20230626 수정 -->
-			<h1 class="logo v1"><a href="javascript:void(0);">옥타그노시스</a></h1>
+			<h1 class="logo v1">
+				<a href="javascript:void(0);" style="cursor: default">옥타그노시스</a>
+			</h1>
 			<div class="etc">
-				<LanguageSwitcher />
 				<div v-if="!isLoginOrSignUpPage">
-					<p class="user">
-						Welcome,<strong>{{ persnNm }}</strong
-						>님
-					</p>
 					<div v-if="isAuthenticated" class="logout">
+						<span class="user">
+							{{ $t('welcome') }}<strong>{{ persnNm }}</strong
+							>님
+						</span>
+						<span class="mx-3">|</span>
+						<span @click="handleHome" class="Poit" style="cursor: pointer">
+							Home
+						</span>
 						<span class="mx-3">|</span>
 						<span @click="handleInfoEdit" class="Poit" style="cursor: pointer">
-							정보수정
+							{{ $t('edit_info') }}
 						</span>
 						<span class="mx-3">|</span>
 						<span @click="handleLogout" class="Poit" style="cursor: pointer">
-							로그아웃
+							{{ $t('logout') }}
 						</span>
 					</div>
 				</div>
+				<div v-else class="user">{{ $t('logout_please') }}</div>
+				<LanguageSwitcher />
 			</div>
 			<!--// 20230626 수정 -->
 		</div>
@@ -33,6 +40,7 @@ import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import LanguageSwitcher from '@/components/app/LanguageSwitcher.vue';
+import { useI18n } from 'vue-i18n';
 
 const store = useAuthStore();
 const {
@@ -48,6 +56,7 @@ const {
 const { logout } = store;
 const router = useRouter();
 const route = useRoute();
+const { t } = useI18n(); // Import translation function
 
 const acuntIdFromStorage = sessionStorage.getItem('acuntId');
 if (acuntIdFromStorage) {
@@ -62,11 +71,17 @@ if (acuntIdFromStorage) {
 console.log('sessionStorage acuntId ->' + acuntId.value);
 console.log('sessionStorage userId ->' + userId.value);
 const handleLogout = () => {
+	if (!confirm(t('logout_question'))) {
+		return;
+	}
 	const loginRoute = orgId.value == '0' ? 'login' : 'orglogin';
 	logout();
 	router.push({ name: loginRoute });
 };
 
+const handleHome = () => {
+	router.push({ name: 'testStart', query: {} });
+};
 const handleInfoEdit = () => {
 	console.log('orgId.value', orgId.value);
 	if (orgId.value == 1) {

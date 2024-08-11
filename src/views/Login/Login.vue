@@ -1,6 +1,5 @@
 <template>
 	<div id="content" class="login">
-		<h1 class="logo v2"><a href="javascript:void(0);">옥타그노시스</a></h1>
 		<div class="container">
 			<div class="login-form">
 				<h2 class="title">{{ $t('login') }}</h2>
@@ -130,16 +129,14 @@ const { data, execUrl, reqUrl } = useAxios(
 					} else {
 						switch (data.value.errCode) {
 							case '100':
-								alert(
-									'기관소속 사용자 입니다. 기관 로그인 화면으로 이동합니다.',
-								);
+								alert(t('org_member'));
 								router.push('/OrgLogin');
 								break;
 							case '200':
-								vAlert('기관에 소속된 검사 회차코드가 아닙니다.');
+								vAlert(t('login_info1'));
 								break;
 							case '300':
-								vAlert('사용자 정보를 확인하세요.');
+								vAlert(t('login_info2'));
 								break;
 						}
 					}
@@ -162,10 +159,12 @@ const { data, execUrl, reqUrl } = useAxios(
 );
 
 const goLogin = () => {
-	if (!validNotBlank(loginData.value.acuntId, '아이디', txtAcuntId.value)) {
+	if (
+		!validNotBlank(loginData.value.acuntId, t('username'), txtAcuntId.value)
+	) {
 		return;
 	}
-	if (!validNotBlank(loginData.value.pw, '비밀번호', txtPw.value)) {
+	if (!validNotBlank(loginData.value.pw, t('password'), txtPw.value)) {
 		return;
 	}
 
@@ -183,7 +182,7 @@ const validNotBlank = (val, tit, obj) => {
 	val = typeof val != 'string' ? val.toString() : val;
 	var Val = val.replace(/\s/g, '');
 	if (Val.length == 0) {
-		vAlert(tit == null ? `입력해 주세요.` : `${tit}를(을) 입력해 주세요.`);
+		vAlert(tit == null ? t('enter1') : `${tit}${t('enter2')}`);
 		if (obj != null) {
 			obj.focus();
 		}

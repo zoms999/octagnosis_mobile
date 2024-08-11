@@ -1,9 +1,8 @@
 <template>
 	<div id="content" class="join">
 		<div class="container">
-			<h1 class="logo v2"><a href="javascript:void(0);">옥타그노시스</a></h1>
 			<!-- 20230626 수정 -->
-			<h2 class="title">{{ isEditMode ? '정보 수정' : '회원가입' }}</h2>
+			<h2 class="title">{{ isEditMode ? '회원정보 수정' : '회원 가입' }}</h2>
 			<button class="btn btn-existing" v-if="!isEditMode">
 				이미 가입하신 분은 여기를 클릭하세요<i class="ic-existing"></i>
 			</button>

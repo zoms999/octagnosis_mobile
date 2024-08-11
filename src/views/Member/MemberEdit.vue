@@ -1,7 +1,6 @@
 <template>
 	<div id="content" class="join">
 		<div class="container">
-			<h1 class="logo v2"><a href="javascript:void(0);">옥타그노시스</a></h1>
 			<h2 class="title">회원정보 수정</h2>
 			<div class="form-wrap mt10">
 				<div class="form-group">

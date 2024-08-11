@@ -26,7 +26,11 @@
 					<button
 						class="btn btn-primary"
 						@click="navigateToPayment"
-						style="font-size: 1.8rem; padding: 0.8rem 1rem 0.8rem 1rem"
+						style="
+							font-size: 1.8rem;
+							padding: 0.8rem 1rem 0.8rem 1rem;
+							margin: 10px 0 0 0;
+						"
 					>
 						{{ $t('start_test_after_payment') }}
 					</button>

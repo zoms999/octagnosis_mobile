@@ -1,6 +1,5 @@
 <template>
 	<div id="content" class="login">
-		<h1 class="logo v2"><a href="javascript:void(0);">옥타그노시스</a></h1>
 		<!-- 20230626 수정 -->
 		<div class="container">
 			<div class="login-form">
@@ -184,19 +183,23 @@ const { data, execUrl, reqUrl } = useAxios(
 const codeInvalid = ref(null);
 
 const goLogin = () => {
-	if (!validNotBlank(loginData.value.acuntId, '아이디', txtAcuntId.value)) {
+	if (
+		!validNotBlank(loginData.value.acuntId, t('username'), txtAcuntId.value)
+	) {
 		return;
 	}
-	if (!validNotBlank(loginData.value.pw, '비밀번호', txtPw.value)) {
+	if (!validNotBlank(loginData.value.pw, t('password'), txtPw.value)) {
 		return;
 	}
 
-	if (!validNotBlank(loginData.value.code, '회차코드', txtTurnConnCd.value)) {
+	if (
+		!validNotBlank(loginData.value.code, t('turn_code'), txtTurnConnCd.value)
+	) {
 		return;
 	}
 
 	if (loginData.value.orgId == '0') {
-		vAlert('회차코드 유효성 검사를 진행하세요.');
+		vAlert(t('turn_code_valid'));
 		txtTurnConnCd.value.focus();
 		return;
 	}
@@ -210,7 +213,9 @@ const validateCode = () => {
 		valid: false,
 	});
 
-	if (!validNotBlank(loginData.value.code, '회차코드', txtTurnConnCd.value)) {
+	if (
+		!validNotBlank(loginData.value.code, t('turn_code'), txtTurnConnCd.value)
+	) {
 		return;
 	}
 
@@ -232,7 +237,7 @@ const validNotBlank = (val, tit, obj) => {
 	val = typeof val != 'string' ? val.toString() : val;
 	var Val = val.replace(/\s/g, '');
 	if (Val.length == 0) {
-		vAlert(tit == null ? `입력해 주세요.` : `${tit}를(을) 입력해 주세요.`);
+		vAlert(tit == null ? t('enter1') : `${tit}${t('enter2')}`);
 		if (obj != null) {
 			obj.focus();
 		}

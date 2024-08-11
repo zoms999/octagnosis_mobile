@@ -43,8 +43,10 @@
 							</p>
 						</div>
 						<div class="modal-footer">
-							<button @click="findPassword" class="btn-confirm">확인</button>
-							<button @click="closeModal" class="btn-close">닫기</button>
+							<button @click="findPassword" class="btn btn-primary">
+								확인
+							</button>
+							<button @click="closeModal" class="btn btn-primary">닫기</button>
 						</div>
 					</div>
 				</div>

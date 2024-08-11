@@ -1,5 +1,6 @@
 {
   "login": "로그인",
+  "logout": "로그아웃",
   "username": "아이디",
   "password": "비밀번호",
   "enterUsername": "아이디를 입력하세요",
@@ -76,8 +77,14 @@
   "job_overview": "직업개요",
   "main_tasks": "주요업무",
   "suitable_department": "적합학과",
-
-  
+  "edit_info": "회원정보 수정",
+  "welcome" :"안녕하세요 ",
+  "logout_please": "로그인 하세요",
+  "logout_question": "로그아웃 하시겠습니까 ?",
+  "org_member": "기관소속 사용자 입니다. 기관 로그인 화면으로 이동합니다.",
+  "login_info1": "기관에 소속된 검사 회차코드가 아닙니다.",
+  "login_info2": "사용자 정보를 확인하세요.",
+ 
 
   "TestHeadMain_1": "검사유의사항",
   "TestHeadMain_2": "옥타그노시스검사를 시작하기 전, 검사의 효과를 높이기 위해 아래 내용을 꼼꼼하게 읽어주시면 감사하겠습니다.",
