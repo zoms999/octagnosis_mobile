@@ -48,6 +48,7 @@ export const useAuthStore = defineStore('auth', {
 			this.isAuthenticated = false;
 
 			sessionStorage.removeItem('isAuthenticated');
+			sessionStorage.removeItem('userId');
 			/**
 			sessionStorage.removeItem('acuntId');
 			sessionStorage.removeItem('userType');

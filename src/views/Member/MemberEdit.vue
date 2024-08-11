@@ -301,6 +301,8 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 import axios from 'axios';
 
 const Acunt = reactive({
@@ -376,6 +378,7 @@ const updateProfile = async () => {
 		const response = await axios.post('/api/member/update-user', combinedData);
 		if (response.status === 200) {
 			alert('회원정보가 성공적으로 수정되었습니다.');
+			router.push({ name: 'testStart' });
 		} else {
 			alert('회원정보 수정에 실패했습니다.');
 		}

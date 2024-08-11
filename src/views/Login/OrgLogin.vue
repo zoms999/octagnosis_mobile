@@ -90,7 +90,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useAxios } from '@/hooks/useAxios';
 import { useAlert } from '@/hooks/useAlert';
 import { useRouter } from 'vue-router';
@@ -245,6 +245,13 @@ const validNotBlank = (val, tit, obj) => {
 	}
 	return true;
 };
+
+onMounted(() => {
+	const userId = sessionStorage.getItem('userId');
+	if (userId) {
+		router.push({ name: 'testStart' });
+	}
+});
 </script>
 
 <style scoped>

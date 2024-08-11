@@ -351,8 +351,9 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
-
+const router = useRouter();
 // Reactive state
 const isEditMode = ref(false);
 const orgName = ref('');
@@ -483,7 +484,7 @@ const handleSubmit = async () => {
 					? '정보가 수정되었습니다.'
 					: '회원가입이 완료되었습니다.',
 			);
-			window.location.href = '/';
+			router.push({ name: 'testStart' });
 		} else {
 			alert('오류가 발생했습니다. 다시 시도해주세요.');
 		}
