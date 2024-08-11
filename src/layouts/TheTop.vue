@@ -2,7 +2,9 @@
 	<div id="header" style="height: 90px">
 		<div class="container" style="padding-top: 5px">
 			<!-- 20230626 수정 -->
-			<h1 class="logo v1"><a href="javascript:void(0);">옥타그노시스</a></h1>
+			<h1 class="logo v1">
+				<a href="javascript:void(0);" @click="handleLogoClick">옥타그노시스</a>
+			</h1>
 			<div class="etc">
 				<LanguageSwitcher />
 				<div v-if="!isLoginOrSignUpPage">
@@ -80,6 +82,11 @@ const isLoginOrSignUpPage = computed(() => {
 	const loginPages = ['login', 'orglogin', 'register', 'orgregister']; // Add your login and signup route names here
 	return loginPages.includes(route.name);
 });
+
+const handleLogoClick = () => {
+	const loginRoute = orgId.value == '0' ? 'login' : 'orglogin';
+	router.push({ name: loginRoute });
+};
 </script>
 
 <style scoped>
