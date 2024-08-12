@@ -35,7 +35,9 @@
 									</div>
 									<div class="tbl-col data" style="width: calc(100% - 14.5rem)">
 										<p>
-											<strong>{{ Persn.sex == 'M' ? '남' : '여' }}</strong>
+											<strong>{{
+												Persn.sex == 'M' ? $t('man') : $t('female')
+											}}</strong>
 										</p>
 									</div>
 								</div>

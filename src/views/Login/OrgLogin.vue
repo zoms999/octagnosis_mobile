@@ -82,6 +82,11 @@
 								{{ $t('find_password_button') }}
 							</button>
 						</li>
+						<li>
+							<button class="btn-txt btn-find-pw" @click="goRegister()">
+								{{ $t('join_member') }}
+							</button>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -229,13 +234,17 @@ const findPw = () => {
 	alert('비밀번호 찾기 기능은 아직 구현되지 않았습니다.');
 };
 
+const goRegister = () => {
+	router.push({ name: 'orgregister' });
+};
+
 // Etc	**************************************
 
 const validNotBlank = (val, tit, obj) => {
 	val = typeof val != 'string' ? val.toString() : val;
 	var Val = val.replace(/\s/g, '');
 	if (Val.length == 0) {
-		vAlert(tit == null ? t('enter1') : `${tit}${t('enter2')}`);
+		vAlert(tit == null ? t('enter1') : `${tit} ${t('enter2')}`);
 		if (obj != null) {
 			obj.focus();
 		}

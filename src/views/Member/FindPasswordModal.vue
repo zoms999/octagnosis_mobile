@@ -11,27 +11,27 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h3>비밀번호 찾기</h3>
+							<h3>{{ $t('findPassword') }}</h3>
 							<button @click="closeModal" class="close-button">X</button>
 						</div>
 						<div class="modal-body">
 							<div class="form-group">
-								<label for="userId">아이디</label>
+								<label for="userId">{{ $t('username') }}</label>
 								<input
 									type="text"
 									id="userId"
 									v-model="userId"
-									placeholder="아이디를 입력하세요"
+									:placeholder="$t('enterUsername')"
 									required
 								/>
 							</div>
 							<div class="form-group">
-								<label for="email">이메일 주소</label>
+								<label for="email">{{ $t('email') }}</label>
 								<input
 									type="email"
 									id="email"
 									v-model="email"
-									placeholder="이메일 주소를 입력하세요"
+									:placeholder="$t('Member_15')"
 									required
 								/>
 							</div>
@@ -44,9 +44,11 @@
 						</div>
 						<div class="modal-footer">
 							<button @click="findPassword" class="btn btn-primary">
-								확인
+								{{ $t('confirm') }}
 							</button>
-							<button @click="closeModal" class="btn btn-primary">닫기</button>
+							<button @click="closeModal" class="btn btn-primary">
+								{{ $t('close') }}
+							</button>
 						</div>
 					</div>
 				</div>
@@ -58,6 +60,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import { useI18n } from 'vue-i18n';
 
 defineProps({
 	isVisible: {
@@ -66,6 +69,7 @@ defineProps({
 	},
 });
 
+const { t } = useI18n(); // Import translation function
 const emits = defineEmits(['close']);
 
 const userId = ref('');
@@ -89,15 +93,15 @@ const findPassword = async () => {
 			email: email.value,
 		});
 		if (response.data.success) {
-			successMessage.value = '임시 비밀번호를 이메일로 전송했습니다.';
+			successMessage.value = t('FindPw_1');
 			errorMessage.value = '';
 		} else {
-			errorMessage.value = '비밀번호 찾기 실패: ' + response.data.message;
+			errorMessage.value = t('FindPw_2') + response.data.message;
 			successMessage.value = '';
 		}
 	} catch (error) {
 		console.error(error);
-		errorMessage.value = '비밀번호 찾기 중 오류가 발생했습니다.';
+		errorMessage.value = t('FindPw_3');
 		successMessage.value = '';
 	}
 };

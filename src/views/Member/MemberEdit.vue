@@ -1,13 +1,13 @@
 <template>
 	<div id="content" class="join">
 		<div class="container">
-			<h2 class="title">회원정보 수정</h2>
+			<h2 class="title">{{ $t('edit_info') }}</h2>
 			<div class="form-wrap mt10">
 				<div class="form-group">
-					<p class="txt-guide">아래 해당 사항을 입력해 주세요.</p>
+					<p class="txt-guide">{{ $t('Member_2') }}</p>
 					<div class="form">
 						<div class="form-title">
-							<p>아이디</p>
+							<p>{{ $t('username') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
@@ -22,7 +22,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>비밀번호</p>
+							<p>{{ $t('password') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
@@ -31,7 +31,7 @@
 								id="pw"
 								name="pw"
 								class="w300"
-								placeholder="6자 이상, 영문, 숫자, 특수문자 사용"
+								:placeholder="$t('Member_13')"
 								required
 								@input="checkPasswordMatch"
 							/>
@@ -39,7 +39,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>비밀번호 확인</p>
+							<p>{{ $t('Member_9') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
@@ -48,18 +48,18 @@
 								id="pwConfirmation"
 								name="pwConfirmation"
 								class="w300"
-								placeholder="비밀번호를 재입력하세요"
+								:placeholder="$t('Member_10')"
 								required
 								@input="checkPasswordMatch"
 							/>
 						</div>
 						<div v-if="!passwordsMatch" class="error-message">
-							비밀번호가 일치하지 않습니다.
+							{{ $t('Member_11') }}
 						</div>
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>이름</p>
+							<p>{{ $t('name') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
@@ -68,14 +68,14 @@
 								id="persnNm"
 								name="persnNm"
 								class="w300"
-								placeholder="이름을 입력하세요"
+								:placeholder="$t('Member_14')"
 								required
 							/>
 						</div>
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>성별</p>
+							<p>{{ $t('sex') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="inp-wrap">
@@ -87,7 +87,7 @@
 										value="M"
 									/>
 									<label for="male">
-										<p>남</p>
+										<p>{{ $t('man') }}</p>
 									</label>
 								</div>
 								<div class="radio">
@@ -98,7 +98,7 @@
 										value="F"
 									/>
 									<label for="female">
-										<p>여</p>
+										{{ $t('female') }}
 									</label>
 								</div>
 							</div>
@@ -106,7 +106,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>연락처</p>
+							<p>{{ $t('phone') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
@@ -115,14 +115,14 @@
 								id="phone"
 								name="phone"
 								class="w300"
-								placeholder="숫자만 입력해 주세요"
+								:placeholder="$t('Member_16')"
 								required
 							/>
 						</div>
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>이메일 주소</p>
+							<p>{{ $t('email') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
@@ -131,14 +131,14 @@
 								id="email"
 								name="email"
 								class="w300"
-								placeholder="이메일 주소를 입력하세요"
+								:placeholder="$t('Member_15')"
 								required
 							/>
 						</div>
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>주소</p>
+							<p>{{ $t('address') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="abode">
@@ -158,7 +158,7 @@
 									v-model.trim="Person.addrStret"
 									id="addrStret"
 									name="addrStret"
-									placeholder="주소"
+									:placeholder="$t('address')"
 									required
 								/>
 								<input
@@ -166,7 +166,7 @@
 									v-model.trim="Person.addrLotNum"
 									id="addrLotNum"
 									name="addrLotNum"
-									placeholder="상세주소"
+									:placeholder="$t('address_detail')"
 									required
 								/>
 							</div>
@@ -175,45 +175,44 @@
 				</div>
 				<div class="form-group">
 					<p class="txt-guide">
-						아래 해당 사항을 입력해 주세요.
-						<span class="txt-orange"
-							>(현재 또는 최종학력으로 빈 칸에 직접 기재하시기 바랍니다.)</span
-						>
+						{{ $nextTick('Member_3') }}
 					</p>
 					<div class="form">
 						<div class="form-title">
-							<p>최종 학업</p>
+							<p>{{ $t('last_edu') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="education">
 								<select v-model="Person.educt" id="educt" name="educt">
-									<option value="" hidden>학력</option>
-									<option value="C01001">초등</option>
-									<option value="C01002">중등</option>
-									<option value="C01003">고등</option>
-									<option value="C01004">2,3년제 대학</option>
-									<option value="C01005">4년제 대학교</option>
-									<option value="C01006">대학원 석사</option>
-									<option value="C01007">대학원 박사</option>
+									<option value="" hidden selected>{{ $t('edu_1') }}</option>
+									<option value="C01001">{{ $t('edu_2') }}</option>
+									<option value="C01002">{{ $t('edu_3') }}</option>
+									<option value="C01003">{{ $t('edu_4') }}</option>
+									<option value="C01004">{{ $t('edu_5') }}</option>
+									<option value="C01005">{{ $t('edu_6') }}</option>
+									<option value="C01006">{{ $t('edu_7') }}</option>
+									<option value="C01007">{{ $t('edu_8') }}</option>
 								</select>
 								<select
 									v-model="Person.eductStus"
 									id="eductStus"
 									name="eductStus"
 								>
-									<option value="" hidden>상태</option>
-									<option value="C03001">재학</option>
-									<option value="C03002">휴학</option>
-									<option value="C03003">자퇴</option>
-									<option value="C03004">수료</option>
-									<option value="C03005">졸업</option>
+									<option value="" hidden selected>
+										{{ $t('eductStus_1') }}
+									</option>
+									<option value="C03001">{{ $t('eductStus_2') }}</option>
+									<option value="C03002">{{ $t('eductStus_3') }}</option>
+									<option value="C03003">{{ $t('eductStus_4') }}</option>
+									<option value="C03004">{{ $t('eductStus_5') }}</option>
+									<option value="C03005">{{ $t('eductStus_6') }}</option>
 								</select>
 							</div>
 						</div>
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>학업군</p>
+							<p>{{ $t('academic_group') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="study">
@@ -222,7 +221,7 @@
 									v-model.trim="Person.scholNm"
 									id="scholNm"
 									name="scholNm"
-									placeholder="학교명을 입력하세요"
+									:placeholder="$t('Member_17')"
 									required="required"
 								/>
 								<input
@@ -230,7 +229,7 @@
 									v-model.trim="Person.scholMajor"
 									id="scholMajor"
 									name="scholMajor"
-									placeholder="전공을 입력하세요"
+									:placeholder="$t('Member_18')"
 									required="required"
 								/>
 								<input
@@ -238,7 +237,7 @@
 									v-model.trim="Person.scholGrade"
 									id="scholGrade"
 									name="scholGrade"
-									placeholder="학년을 입력하세요"
+									:placeholder="$t('Member_19')"
 									required="required"
 								/>
 							</div>
@@ -246,19 +245,19 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>직업군</p>
+							<p>{{ $t('Member_20') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="education">
 								<select name="job" id="job" v-model="Person.job">
-									<option value="" hidden selected>기타</option>
-									<option value="C02001">학생</option>
-									<option value="C02002">회사원</option>
-									<option value="C02003">전문직</option>
-									<option value="C02004">사업가</option>
-									<option value="C02005">공무원</option>
-									<option value="C02006">주부</option>
-									<option value="C02007">무직</option>
+									<option value="" hidden selected>{{ $t('job_1') }}</option>
+									<option value="C02001">{{ $t('job_2') }}</option>
+									<option value="C02002">{{ $t('job_3') }}</option>
+									<option value="C02003">{{ $t('job_4') }}</option>
+									<option value="C02004">{{ $t('job_5') }}</option>
+									<option value="C02005">{{ $t('job_6') }}</option>
+									<option value="C02006">{{ $t('job_7') }}</option>
+									<option value="C02007">{{ $t('job_8') }}</option>
 								</select>
 							</div>
 						</div>
@@ -274,7 +273,7 @@
 									v-model.trim="Person.jobNm"
 									id="jobNm"
 									name="jobNm"
-									placeholder="직장명을 입력하세요"
+									:placeholder="$t('Member_21')"
 									required="required"
 								/>
 								<input
@@ -282,7 +281,7 @@
 									v-model.trim="Person.jobDuty"
 									id="jobDuty"
 									name="jobDuty"
-									placeholder="하시는 일을 입력하세요"
+									:placeholder="$t('Member_22')"
 									required="required"
 								/>
 							</div>
@@ -291,7 +290,7 @@
 				</div>
 				<div class="btn-wrap mt20">
 					<button class="btn md round fill-navy w165" @click="updateProfile">
-						수정하기
+						{{ $t('edit') }}
 					</button>
 				</div>
 			</div>
@@ -302,8 +301,11 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-const router = useRouter();
 import axios from 'axios';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n(); // Import translation function
+const router = useRouter();
 
 const Acunt = reactive({
 	acuntId: '',
@@ -365,7 +367,7 @@ const checkPasswordMatch = () => {
 
 const updateProfile = async () => {
 	if (!passwordsMatch.value) {
-		alert('비밀번호가 일치하지 않습니다.');
+		alert(t('Member_11'));
 		return;
 	}
 
@@ -377,14 +379,14 @@ const updateProfile = async () => {
 	try {
 		const response = await axios.post('/api/member/update-user', combinedData);
 		if (response.status === 200) {
-			alert('회원정보가 성공적으로 수정되었습니다.');
+			alert(t('Member_24'));
 			router.push({ name: 'testStart' });
 		} else {
-			alert('회원정보 수정에 실패했습니다.');
+			alert(t('Member_25'));
 		}
 	} catch (error) {
 		console.error('Failed to update profile', error);
-		alert('회원정보 수정에 실패했습니다.');
+		alert(t('Member_25'));
 	}
 };
 

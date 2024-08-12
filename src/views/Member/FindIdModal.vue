@@ -16,22 +16,22 @@
 						</div>
 						<div class="modal-body">
 							<div class="form-group">
-								<label for="name">이름</label>
+								<label for="name">{{ $t('name') }}</label>
 								<input
 									type="text"
 									id="name"
 									v-model="name"
-									placeholder="이름을 입력하세요"
+									:placeholder="$t('Member_14')"
 									required
 								/>
 							</div>
 							<div class="form-group">
-								<label for="email">이메일 주소</label>
+								<label for="email">{{ $t('email') }}</label>
 								<input
 									type="email"
 									id="email"
 									v-model="email"
-									placeholder="이메일 주소를 입력하세요"
+									:placeholder="$t('Member_15')"
 									required
 								/>
 							</div>
@@ -43,8 +43,12 @@
 							</p>
 						</div>
 						<div class="modal-footer">
-							<button @click="findId" class="btn-primary btn">확인</button>
-							<button @click="closeModal" class="btn-primary btn">닫기</button>
+							<button @click="findId" class="btn-primary btn">
+								{{ $t('confirm') }}
+							</button>
+							<button @click="closeModal" class="btn-primary btn">
+								{{ $t('close') }}
+							</button>
 						</div>
 					</div>
 				</div>
@@ -56,6 +60,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import { useI18n } from 'vue-i18n';
 
 defineProps({
 	isVisible: {
@@ -64,6 +69,7 @@ defineProps({
 	},
 });
 
+const { t } = useI18n(); // Import translation function
 const emits = defineEmits(['close']);
 
 const name = ref('');
@@ -82,15 +88,18 @@ const findId = async () => {
 			email: email.value,
 		});
 		if (response.data.success) {
-			successMessage.value = '아이디는 ' + response.data.acuntId + ' 입니다.';
+			successMessage.value = t('FindId_1').replaceAll(
+				'000',
+				response.data.acuntId,
+			);
 			errorMessage.value = '';
 		} else {
-			errorMessage.value = '아이디 찾기 실패: ' + response.data.message;
+			errorMessage.value = t('FindId_2') + response.data.message;
 			successMessage.value = '';
 		}
 	} catch (error) {
 		console.error(error);
-		errorMessage.value = '아이디 찾기 중 오류가 발생했습니다.';
+		errorMessage.value = t('FindId_23');
 		successMessage.value = '';
 	}
 };
