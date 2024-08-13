@@ -98,7 +98,7 @@
 										value="F"
 									/>
 									<label for="female">
-										{{ $t('female') }}
+										<p>{{ $t('female') }}</p>
 									</label>
 								</div>
 							</div>
@@ -175,7 +175,7 @@
 				</div>
 				<div class="form-group">
 					<p class="txt-guide">
-						{{ $nextTick('Member_3') }}
+						{{ $t('Member_3') }}
 					</p>
 					<div class="form">
 						<div class="form-title">
