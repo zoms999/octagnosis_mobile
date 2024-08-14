@@ -103,7 +103,7 @@
 										id="male"
 										value="M"
 									/>
-									<label for="">
+									<label for="male">
 										<p>{{ $t('man') }}</p>
 									</label>
 								</div>
@@ -114,7 +114,7 @@
 										id="female"
 										value="F"
 									/>
-									<label for="">
+									<label for="female">
 										<p>{{ $t('female') }}</p>
 									</label>
 								</div>
