@@ -9,7 +9,7 @@
 				{{ $t('Member_4') }}<i class="ic-existing"></i>
 			</button>
 			<div class="form-wrap mt10">
-				<div class="form-group">
+				<div class="form-group" v-if="!isEditMode">
 					<p class="txt-guide">{{ $t('Member_1') }}</p>
 					<div class="form">
 						<div class="form-title">
@@ -202,23 +202,42 @@
 									name="zip"
 									:placeholder="$t('zip')"
 									required
+									disabled="disabled"
 								/>
-								<button class="btn sm line-navy">{{ $t('search') }}</button>
+								<button class="btn sm line-navy" @click="popupAddr">
+									{{ $t('search') }}
+								</button>
+								<div class="d-flex justify-content-start" style="width: 100%">
+									<input
+										type="text"
+										v-model.trim="Person.addrStret"
+										id="addrStret"
+										name="addrStret"
+										:placeholder="$t('address')"
+										required
+										disabled="disabled"
+										class="me-2"
+										style="width: 60%"
+									/>
+									<input
+										type="text"
+										v-model.trim="Person.addr2"
+										id="addr2"
+										name="addr2"
+										:placeholder="$t('address_detail')"
+										required="required"
+										disabled="disabled"
+										style="width: 40%"
+									/>
+								</div>
 								<input
 									type="text"
-									v-model.trim="Person.addrStret"
-									id="addrStret"
-									name="addrStret"
-									:placeholder="$t('address')"
-									required
-								/>
-								<input
-									type="text"
-									v-model.trim="Person.addrLotNum"
-									id="addrLotNum"
-									name="addrLotNum"
-									:placeholder="$t('address_detail')"
-									required
+									v-model.trim="Person.addr3"
+									id="addr3"
+									name="addr3"
+									:placeholder="$t('address_add')"
+									required="required"
+									ref="txtAddr3"
 								/>
 							</div>
 						</div>
@@ -366,6 +385,7 @@ const codeInvalid = ref(null);
 const pwConfirmation = ref('');
 const passwordsMatch = ref(true);
 const duplicateIdChecked = ref(false);
+const txtAddr3 = ref();
 
 const Person = reactive({
 	code: '',
@@ -376,6 +396,8 @@ const Person = reactive({
 	zip: '',
 	addrStret: '',
 	addrLotNum: '',
+	addr2: '',
+	addr3: '',
 	educt: '', //학력
 	eductStus: '', //상태 재학 휴학 자퇴 수료 졸업
 	scholNm: '',
@@ -399,6 +421,11 @@ onMounted(() => {
 		isEditMode.value = true;
 		loadUserData();
 	}
+
+	const script = document.createElement('script');
+	script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+	script.async = true;
+	document.body.appendChild(script);
 });
 
 // Methods
@@ -493,5 +520,21 @@ const handleSubmit = async () => {
 		console.error(error);
 		alert(t('Member_26'));
 	}
+};
+
+const popupAddr = () => {
+	new daum.Postcode({
+		oncomplete: function (data) {
+			Person.zip = data.zonecode;
+			Person.addrStret = data.roadAddress;
+			Person.addrLotNum = data.jibunAddress;
+			Person.addr2 = data.buildingName;
+			txtAddr3.value.focus();
+
+			//alert(data);
+			// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+			// 예제를 참고하여 다양한 활용법을 확인해 보세요.
+		},
+	}).open();
 };
 </script>

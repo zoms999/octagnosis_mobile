@@ -162,7 +162,7 @@ select {display: block; width: 100%; border: 1px solid #CED4DA; border-radius: 0
 .radio {position: relative;}
 .radio + .radio {margin-left: 1rem;}
 .radio input[type="radio"] {position: absolute; left: 0; top: 0; width: 2rem; height: 2rem;}
-.radio input[type="radio"] + label {min-width: 2rem; min-height: 2rem; width: fit-content; background-image: url('../assets/img/icon/ic_radio_off.png'); background-repeat: no-repeat; background-size: 2rem; background-position: left center; display: flex; align-items: flex-start; justify-content: left;}
+.radio input[type="radio"] + label {margin-left:10px;;min-width: 2rem; min-height: 2rem; width: fit-content; background-image: url('../assets/img/icon/ic_radio_off.png'); background-repeat: no-repeat; background-size: 2rem; background-position: left center; display: flex; align-items: flex-start; justify-content: left;}
 .radio input[type="radio"] + label > * {font-size: 1.4rem; color: #4A5056; padding-left: 2.4rem;}
 .radio input[type="radio"]:checked + label {background-image: url('../assets/img/icon/ic_radio_on.png');}
 

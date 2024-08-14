@@ -97,6 +97,7 @@
   "address_load": "Street address",
   "address_gibun": "Street number address",
   "address_detail": "Detailed address",
+  "address_add": "Add address",
   "confirm" : "Confirm",
   "close" : "Close",
   "search" : "Search",

@@ -3,7 +3,10 @@
 		<div class="container">
 			<!-- 20230626 수정 -->
 			<h2 class="title">{{ $t('join_member') }}</h2>
-			<button class="btn btn-existing" @click="navigateToLogin">
+			<button
+				class="btn btn-existing d-flex justify-content-center"
+				@click="navigateToLogin"
+			>
 				{{ $t('Member_4') }}<i class="ic-existing"></i>
 			</button>
 			<div class="form-wrap mt10">
@@ -163,23 +166,42 @@
 									name="zip"
 									:placeholder="$t('zip')"
 									required="required"
+									disabled="disabled"
 								/>
-								<button class="btn sm line-navy">{{ $t('search') }}</button>
+								<button class="btn sm line-navy" @click="popupAddr">
+									{{ $t('search') }}
+								</button>
+								<div class="d-flex justify-content-start" style="width: 100%">
+									<input
+										type="text"
+										v-model.trim="Person.addrStret"
+										id="addrStret"
+										name="addrStret"
+										:placeholder="$t('address')"
+										required="required"
+										disabled="disabled"
+										class="me-2"
+										style="width: 60%"
+									/>
+									<input
+										type="text"
+										v-model.trim="Person.addr2"
+										id="addrLotNum"
+										name="addrLotNum"
+										:placeholder="$t('address_detail')"
+										required="required"
+										disabled="disabled"
+										style="width: 40%"
+									/>
+								</div>
 								<input
 									type="text"
-									v-model.trim="Person.addrStret"
-									id="addrStret"
-									name="addrStret"
-									:placeholder="$t('address')"
+									v-model.trim="Person.addr3"
+									id="addr3"
+									name="addr3"
+									:placeholder="$t('address_add')"
 									required="required"
-								/>
-								<input
-									type="text"
-									v-model.trim="Person.addrLotNum"
-									id="addrLotNum"
-									name="addrLotNum"
-									:placeholder="$t('address_detail')"
-									required="required"
+									ref="txtAddr3"
 								/>
 							</div>
 						</div>
@@ -327,7 +349,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
 import axios from 'axios';
 import { useForm } from 'vee-validate';
 import { useRouter } from 'vue-router';
@@ -335,8 +357,9 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n(); // Import translation function
 const router = useRouter();
+const txtAddr3 = ref();
 
-const Acunt = {
+const Acunt = ref({
 	acuntId: '',
 	userType: 'C00102',
 	userId: '',
@@ -352,9 +375,9 @@ const Acunt = {
 	insDt: '',
 	uptId: '',
 	uptDt: '',
-};
+});
 
-const Person = {
+const Person = reactive({
 	code: '',
 	persnNm: '',
 	sex: '',
@@ -363,6 +386,8 @@ const Person = {
 	zip: '',
 	addrStret: '',
 	addrLotNum: '',
+	addr2: '',
+	addr3: '',
 	educt: '', //학력
 	eductStus: '', //상태 재학 휴학 자퇴 수료 졸업
 	scholNm: '',
@@ -373,7 +398,7 @@ const Person = {
 	jobDuty: '',
 	agreement: false,
 	orgId: 0, // 조직Id
-};
+});
 
 const { handleSubmit, errors } = useForm();
 const AcuntFieldsLabels = {
@@ -406,7 +431,9 @@ const navigateToLogin = () => {
 // 회원가입 버튼 클릭 시 호출될 함수
 const signUpSubmit = handleSubmit(async () => {
 	const acuntRequiredFields = ['acuntId', 'pw'];
-	const acuntEmptyFields = acuntRequiredFields.filter(field => !Acunt[field]);
+	const acuntEmptyFields = acuntRequiredFields.filter(
+		field => !Acunt.value[field],
+	);
 
 	if (acuntEmptyFields.length > 0) {
 		const missingFields = acuntEmptyFields
@@ -471,7 +498,7 @@ const signUpSubmit = handleSubmit(async () => {
 });
 
 const checkDuplicateId = async () => {
-	if (!Acunt.acuntId) {
+	if (!Acunt.value.acuntId) {
 		// 입력된 값이 없는 경우 메시지를 표시합니다.
 		alert(t('enterUsername'));
 		this.$refs.acuntIdInput.focus(); // 입력란에 포커스를 맞춥니다.
@@ -479,7 +506,7 @@ const checkDuplicateId = async () => {
 	}
 	try {
 		const response = await axios.post('/api/member/check-id', {
-			acuntId: Acunt.acuntId,
+			acuntId: Acunt.value.acuntId,
 		});
 		if (response.data.isDuplicate) {
 			alert(t('Member_31'));
@@ -495,9 +522,32 @@ const checkDuplicateId = async () => {
 const passwordsMatch = ref(true);
 const pwConfirmation = ref('');
 const checkPasswordMatch = () => {
-	console.log('Password:', Acunt.pw);
+	console.log('Password:', Acunt.value.pw);
 	console.log('Confirmation:', pwConfirmation.value);
-	passwordsMatch.value = Acunt.pw === pwConfirmation.value;
+	passwordsMatch.value = Acunt.value.pw === pwConfirmation.value;
+};
+
+onMounted(() => {
+	const script = document.createElement('script');
+	script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+	script.async = true;
+	document.body.appendChild(script);
+});
+
+const popupAddr = () => {
+	new daum.Postcode({
+		oncomplete: function (data) {
+			Person.zip = data.zonecode;
+			Person.addrStret = data.roadAddress;
+			Person.addrLotNum = data.jibunAddress;
+			Person.addr2 = data.buildingName;
+			txtAddr3.value.focus();
+
+			//alert(data);
+			// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+			// 예제를 참고하여 다양한 활용법을 확인해 보세요.
+		},
+	}).open();
 };
 </script>
 
