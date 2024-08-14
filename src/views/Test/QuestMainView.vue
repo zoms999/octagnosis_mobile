@@ -18,7 +18,7 @@
 					<div
 						class="btnNext d-flex justify-content-center"
 						@click="getNextTest"
-						style="width: 160px"
+						style="width: 180px"
 					>
 						<span style="font-size: 2.2rem !important">{{ $t('next') }}</span>
 						&nbsp; &nbsp;
