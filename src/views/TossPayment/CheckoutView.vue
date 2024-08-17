@@ -107,7 +107,7 @@ export default {
 						price: this.amount,
 						payDt: '',
 						orgId: this.orgId, // Set appropriate value
-						turnId: 22222, // Set appropriate value
+						turnId: 0, // Set appropriate value
 						payYn: 'N', // Set appropriate value
 						insId: this.userId, // Set appropriate value
 						insDt: '',
