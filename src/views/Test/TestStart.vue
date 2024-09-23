@@ -41,7 +41,9 @@
 					<tr>
 						<th class="w80">{{ $t('number') }}</th>
 						<th>{{ $t('test_item') }}</th>
-						<th class="w150">{{ $t('validity_date') }}</th>
+						<th class="w150" :class="{ 'd-none': TestParm.orgId == '0' }">
+							{{ $t('validity_date') }}
+						</th>
 						<th class="w150">{{ $t('start_date') }}</th>
 						<th class="w150">{{ $t('completion_date') }}</th>
 						<th class="w140">{{ $t('status') }}</th>
@@ -56,7 +58,9 @@
 					>
 						<td>{{ idx + 1 }}</td>
 						<td>{{ item.ProdtNm }}</td>
-						<td>{{ dayjs(item.ValidEndDt).format('YYYY-MM-DD') }}</td>
+						<td :class="{ 'd-none': TestParm.orgId == '0' }">
+							{{ dayjs(item.ValidEndDt).format('YYYY-MM-DD') }}
+						</td>
 						<td>
 							{{
 								item.AnsPrgrsStartDt !== ''
