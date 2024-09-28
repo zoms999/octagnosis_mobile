@@ -92,7 +92,7 @@
 		<div
 			class="btnNext d-flex justify-content-center"
 			@click="saveAns"
-			style="width: 160px"
+			style="width: 180px"
 		>
 			<template v-if="Procs.saveAns.loading">
 				<div
