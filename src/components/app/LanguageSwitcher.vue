@@ -4,6 +4,7 @@
 		<select v-model="selectedLanguage" @change="changeLanguage">
 			<option value="en">English</option>
 			<option value="ko">한국어</option>
+			<option value="ja">日本語</option>
 		</select>
 	</div>
 </template>

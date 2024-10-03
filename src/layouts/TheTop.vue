@@ -1,6 +1,6 @@
 <template>
-	<div id="header" style="height: 90px">
-		<div class="container" style="padding-top: 5px">
+	<div id="header" class="header">
+		<div class="container">
 			<!-- 20230626 수정 -->
 			<h1 class="logo v1">
 				<a href="javascript:void(0);" @click="handleLogoClick">옥타그노시스</a>
@@ -12,18 +12,14 @@
 							{{ $t('welcome') }}<strong>{{ persnNm }}</strong
 							>님
 						</span>
-						<span class="mx-3">|</span>
-						<span @click="handleHome" class="Poit" style="cursor: pointer">
-							Home
-						</span>
-						<span class="mx-3">|</span>
-						<span @click="handleInfoEdit" class="Poit" style="cursor: pointer">
-							{{ $t('edit_info') }}
-						</span>
-						<span class="mx-3">|</span>
-						<span @click="handleLogout" class="Poit" style="cursor: pointer">
-							{{ $t('logout') }}
-						</span>
+						<span class="separator">|</span>
+						<span @click="handleHome" class="link">Home</span>
+						<span class="separator">|</span>
+						<span @click="handleInfoEdit" class="link">{{
+							$t('edit_info')
+						}}</span>
+						<span class="separator">|</span>
+						<span @click="handleLogout" class="link">{{ $t('logout') }}</span>
 					</div>
 				</div>
 				<div v-else class="user">{{ $t('logout_please') }}</div>
@@ -104,25 +100,61 @@ const handleLogoClick = () => {
 </script>
 
 <style scoped>
-.TopRight {
-	background-color: transparent;
-	height: 40px;
-	margin: 20px 30px !important;
-	color: #ffffff;
+.header {
+	background: linear-gradient(135deg, #1db1ad 0%, #3d7aed 100%);
+	height: 90px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 20px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+	display: flex;
+	align-items: center;
+	width: 100%;
 }
 
 .logo {
-	width: 230px;
-	margin: 15px 0 0 14px;
+	font-size: 24px;
+	font-weight: bold;
+	color: #ffffff;
+	margin-right: 20px;
 }
 
-.header {
-	background: linear-gradient(135deg, #1db1ad 0%, #3d7aed 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1db1ad', endColorstr='#3d7aed',GradientType=1 );
-	height: 120px !important;
+.logo a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.etc {
+	display: flex;
+	align-items: center;
 }
 
 .logout {
+	display: flex;
+	align-items: center;
 	color: #ffffff;
+}
+
+.user {
+	margin-right: 10px;
+}
+
+.separator {
+	margin: 0 10px;
+	color: #ffffff;
+}
+
+.link {
+	cursor: pointer;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.link:hover {
+	text-decoration: underline;
 }
 </style>
