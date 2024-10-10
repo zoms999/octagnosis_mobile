@@ -24,7 +24,7 @@
 									id="acuntId"
 									name="acuntId"
 									class="w300"
-									:placeholder="$t('code_placeholder')"
+									:placeholder="$t('enterUsername')"
 									required="required"
 									ref="acuntIdInput"
 								/>
