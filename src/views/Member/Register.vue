@@ -482,7 +482,7 @@ const signUpSubmit = handleSubmit(async () => {
 		return;
 	}
 	const combinedData = {
-		acunt: Acunt,
+		acunt: Acunt.value,
 		personal: Person,
 	};
 
