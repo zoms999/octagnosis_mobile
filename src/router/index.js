@@ -15,6 +15,7 @@ import Quest from '../views/Test/QuestView.vue';
 import OrgMemberEditView from '../views/Member/OrgMemberEdit.vue';
 import MemberEditView from '../views/Member/MemberEdit.vue';
 import TestRsltMain from '../views/Test/TestRsltMain.vue';
+import InquiryBoard from '@/views/Inquiry/InquiryBoard.vue';
 
 const routes = [
 	{
@@ -114,6 +115,11 @@ const routes = [
 		path: '/TestRsltMain',
 		name: 'TestRsltMain',
 		component: TestRsltMain,
+	},
+	{
+		path: '/inquiry',
+		name: 'InquiryBoard',
+		component: InquiryBoard,
 	},
 ];
 

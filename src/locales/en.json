@@ -282,6 +282,17 @@
   "RsltPrefer_7": "Related Department",
   "RsltPrefer_8": "Total",
   "RsltPrefer_9": "Preferred response rate",
-  "RsltPrefer_10": "Preferred type"
+  "RsltPrefer_10": "Preferred type",
 
+  "inquiry": {
+    "button": "Inquire",
+    "title": "Inquiry Board",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message",
+      "submit": "Submit"
+    }
+  }
 }

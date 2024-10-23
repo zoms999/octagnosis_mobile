@@ -19,7 +19,16 @@
 							$t('edit_info')
 						}}</span>
 						<span class="separator">|</span>
+						<router-link to="/inquiry" class="link">{{
+							$t('inquiry.button')
+						}}</router-link>
+						<span class="separator">|</span>
 						<span @click="handleLogout" class="link">{{ $t('logout') }}</span>
+					</div>
+					<div v-else>
+						<router-link to="/inquiry" class="link">{{
+							$t('inquiry.button')
+						}}</router-link>
 					</div>
 				</div>
 				<div v-else class="user">{{ $t('logout_please') }}</div>
@@ -156,5 +165,19 @@ const handleLogoClick = () => {
 
 .link:hover {
 	text-decoration: underline;
+}
+
+.inquiry-btn {
+	padding: 0;
+	background-color: transparent;
+	color: #ffffff;
+	text-decoration: none;
+	border-radius: 0;
+	margin-left: 0;
+}
+
+.inquiry-btn:hover {
+	background-color: transparent;
+	text-decoration: underline !important;
 }
 </style>
