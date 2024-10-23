@@ -102,7 +102,7 @@ const getQuestItemImg = imgNm => {
 	margin-bottom: 30px;
 }
 .questPageNm span {
-	font-size: 1.8rem;
+	font-size: 2.2rem;
 	padding: 10px;
 }
 .num {
@@ -113,15 +113,15 @@ const getQuestItemImg = imgNm => {
 	text-align: center;
 	vertical-align: middle;
 	color: #ffffff;
-	padding-top: 8px;
+	padding-top: 10px;
 	font-size: 1.9rem;
 	margin: 0 10px 0 0;
 }
 .quest1 {
-	font-size: 1.8rem;
+	font-size: 1.95rem;
 }
 .quest2 {
-	font-size: 1.8rem;
+	font-size: 1.95rem;
 	margin: 0px 0 20px 0;
 }
 

@@ -48,7 +48,9 @@
 									<div class="tbl-col data" style="width: calc(100% - 14.5rem)">
 										<p>
 											<strong>{{
-												`${Persn.birthDate.toString().substring(0, 4)}-${Persn.birthDate.toString().substring(4, 6)}-${Persn.birthDate.toString().substring(6, 8)}`
+												Persn.birthDate !== null && Persn.birthDate.length == 8
+													? `${Persn.birthDate.toString().substring(0, 4)}-${Persn.birthDate.toString().substring(4, 6)}-${Persn.birthDate.toString().substring(6, 8)}`
+													: ''
 											}}</strong>
 										</p>
 									</div>
