@@ -21,7 +21,7 @@
   "start_date": "검사시작일",
   "completion_date": "검사완료일",
   "status": "검사상태",
-  "view_result": "결���보기",
+  "view_result": "결과보기",
   "license_shortage": "검사라이센스 부족",
   "start_test": "검사 시작",
   "test_in_progress": "검사 진행중",
