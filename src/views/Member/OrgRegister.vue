@@ -14,7 +14,7 @@
 					<p class="txt-guide">{{ $t('Member_1') }}</p>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('Member_5') }}</p>
+							<p><span class="essential">*</span>{{ $t('Member_5') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="inp-wrap">
@@ -42,7 +42,7 @@
 					<p class="txt-guide">{{ $t('Member_2') }}</p>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('username') }}</p>
+							<p><span class="essential">*</span>{{ $t('username') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="inp-wrap">
@@ -67,7 +67,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('password') }}</p>
+							<p><span class="essential">*</span>{{ $t('password') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
@@ -79,12 +79,13 @@
 								:placeholder="$t('Member_13')"
 								required="required"
 								@input="checkPasswordMatch"
+								ref="txtPw"
 							/>
 						</div>
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('Member_9') }}</p>
+							<p><span class="essential">*</span>{{ $t('Member_9') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
@@ -104,7 +105,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('name') }}</p>
+							<p><span class="essential">*</span>{{ $t('name') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
@@ -120,7 +121,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('sex') }}</p>
+							<p><span class="essential">*</span>{{ $t('sex') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="inp-wrap">
@@ -151,7 +152,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('phone') }}</p>
+							<p><span class="essential">*</span>{{ $t('phone') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
@@ -167,7 +168,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('email') }}</p>
+							<p><span class="essential">*</span>{{ $t('email') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
@@ -183,7 +184,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('address') }}</p>
+							<p><span class="essential">*</span>{{ $t('address') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="abode">
@@ -241,7 +242,7 @@
 					</p>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('last_edu') }}</p>
+							<p><span class="essential">*</span>{{ $t('last_edu') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="education">
@@ -274,7 +275,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('academic_group') }}</p>
+							<p><span class="essential">*</span>{{ $t('academic_group') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="study">
@@ -308,7 +309,7 @@
 
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('Member_20') }}</p>
+							<p><span class="essential">*</span>{{ $t('Member_20') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="education">
@@ -453,6 +454,7 @@ const orgName = ref('');
 const codeInvalid = ref(false);
 const codeValidationAttempted = ref(false);
 const txtAddr3 = ref();
+const txtPw = ref();
 
 const validateCode = async () => {
 	try {
@@ -483,6 +485,12 @@ const signUpSubmit = handleSubmit(async () => {
 		return;
 	}
 
+	if (Acunt.value.pw.length < 6) {
+		alert(t('Member_13'));
+		txtPw.value.focus();
+		return;
+	}
+
 	const acuntRequiredFields = ['acuntId', 'pw'];
 	const acuntEmptyFields = acuntRequiredFields.filter(
 		field => !Acunt.value[field],
@@ -508,16 +516,19 @@ const signUpSubmit = handleSubmit(async () => {
 		'email',
 		'zip',
 		'addrStret',
-		'addr2',
 		'educt',
 		'scholNm',
 		'scholMajor',
-		'scholGrade',
+		...(Person.value.eductStus !== 'C03005' ? ['scholGrade'] : []),
 		'job',
-		'jobNm',
-		'jobDuty',
+		...(Person.value.job !== 'C02001' &&
+		Person.value.job !== 'C02006' &&
+		Person.value.job !== 'C02007'
+			? ['jobNm', 'jobDuty']
+			: []),
 		'agreement',
 	];
+
 	const personEmptyFields = personRequiredFields.filter(
 		field => !Person.value[field],
 	);

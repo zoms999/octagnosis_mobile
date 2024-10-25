@@ -46,10 +46,12 @@
 						</a> -->
 					</div>
 				</div>
-				<div class="box_section response-section">
-					<b>Response Data :</b>
-					<div class="response-content">
-						<pre>{{ jsonData }}</pre>
+				<div style="display: none">
+					<div class="box_section response-section">
+						<b>Response Data :</b>
+						<div class="response-content">
+							<pre>{{ jsonData }}</pre>
+						</div>
 					</div>
 				</div>
 			</section>

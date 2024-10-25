@@ -22,7 +22,10 @@
 					{{ $t('test_history') }}
 					<span class="sub">{{ $t('ongoing_test_message') }}</span>
 				</div>
-				<div class="actions">
+				<div
+					class="actions"
+					v-if="TestParm.orgId == '' || TestParm.orgId == '0'"
+				>
 					<button
 						class="btn btn-primary"
 						@click="navigateToPayment"

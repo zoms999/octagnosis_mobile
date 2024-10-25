@@ -14,7 +14,7 @@
 					<p class="txt-guide">{{ $t('Member_2') }}</p>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('username') }}</p>
+							<p><span class="essential">*</span>{{ $t('username') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="inp-wrap">
@@ -39,7 +39,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('password') }}</p>
+							<p><span class="essential">*</span>{{ $t('password') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
@@ -56,7 +56,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('Member_9') }}</p>
+							<p><span class="essential">*</span>{{ $t('Member_9') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
@@ -76,7 +76,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('name') }}</p>
+							<p><span class="essential">*</span>{{ $t('name') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
@@ -92,7 +92,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('sex') }}</p>
+							<p><span class="essential">*</span>{{ $t('sex') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="inp-wrap">
@@ -123,7 +123,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('phone') }}</p>
+							<p><span class="essential">*</span>{{ $t('phone') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
@@ -139,7 +139,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('email') }}</p>
+							<p><span class="essential">*</span>{{ $t('email') }}</p>
 						</div>
 						<div class="form-cont">
 							<input
@@ -155,7 +155,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('address') }}</p>
+							<p><span class="essential">*</span>{{ $t('address') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="abode">
@@ -213,7 +213,7 @@
 					</p>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('last_edu') }}</p>
+							<p><span class="essential">*</span>{{ $t('last_edu') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="education">
@@ -246,7 +246,7 @@
 					</div>
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('academic_group') }}</p>
+							<p><span class="essential">*</span>{{ $t('academic_group') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="study">
@@ -280,7 +280,7 @@
 
 					<div class="form">
 						<div class="form-title">
-							<p>{{ $t('Member_20') }}</p>
+							<p><span class="essential">*</span>{{ $t('Member_20') }}</p>
 						</div>
 						<div class="form-cont">
 							<div class="education">
@@ -459,10 +459,13 @@ const signUpSubmit = handleSubmit(async () => {
 		'educt',
 		'scholNm',
 		'scholMajor',
-		'scholGrade',
+		...(Person.value.eductStus !== 'C03005' ? ['scholGrade'] : []),
 		'job',
-		'jobNm',
-		'jobDuty',
+		...(Person.value.job !== 'C02001' &&
+		Person.value.job !== 'C02006' &&
+		Person.value.job !== 'C02007'
+			? ['jobNm', 'jobDuty']
+			: []),
 		'agreement',
 	];
 	const personEmptyFields = personRequiredFields.filter(

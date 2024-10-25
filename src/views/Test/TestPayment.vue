@@ -78,6 +78,8 @@ const fetchProducts = async () => {
 		const response = await axios.get('/api/products');
 		products.value = response.data.ProductList;
 		if (products.value.length > 0) {
+			// 기관전용 상품 (ProdtId : 6) 출력안되게 처리.
+			products.value = products.value.filter(o => o.ProdtId != 6);
 			selectedProductId.value = products.value[0].ProdtId;
 			selectedProduct.value = products.value[0];
 		}
