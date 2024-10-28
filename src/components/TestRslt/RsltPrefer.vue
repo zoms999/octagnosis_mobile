@@ -131,14 +131,14 @@
 					v-html="
 						$t('RsltPrefer_3')
 							.replaceAll('000', Props.ListItem.PersnNm)
-							.replaceAll('PREFER', Rslt2[0].tdname3)
-							.replaceAll('RATE', Rslt2[0].rrate3)
+							.replaceAll('PREFER', Rslt2[0] == null ? '-' : Rslt2[0].tdname3)
+							.replaceAll('RATE', Rslt2[0] == null ? '-' : Rslt2[0].rrate3)
 					"
 				></p>
 
 				<p class="txt-comment mt5">
-					<strong>{{ Rslt2[0].tdname3 }} </strong> :
-					{{ Rslt2[0].exp3 }}
+					<strong>{{ Rslt2[0] == null ? '-' : Rslt2[0].tdname3 }} </strong> :
+					{{ Rslt2[0] == null ? '-' : Rslt2[0].exp3 }}
 				</p>
 
 				<div class="hide-mobile mt10">
