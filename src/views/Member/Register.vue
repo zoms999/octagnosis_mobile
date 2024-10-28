@@ -459,11 +459,11 @@ const signUpSubmit = handleSubmit(async () => {
 		'educt',
 		'scholNm',
 		'scholMajor',
-		...(Person.value.eductStus !== 'C03005' ? ['scholGrade'] : []),
+		...(Person.eductStus !== 'C03005' ? ['scholGrade'] : []),
 		'job',
-		...(Person.value.job !== 'C02001' &&
-		Person.value.job !== 'C02006' &&
-		Person.value.job !== 'C02007'
+		...(Person.job !== 'C02001' &&
+		Person.job !== 'C02006' &&
+		Person.job !== 'C02007'
 			? ['jobNm', 'jobDuty']
 			: []),
 		'agreement',
@@ -484,6 +484,12 @@ const signUpSubmit = handleSubmit(async () => {
 		alert(t('Member_11'));
 		return;
 	}
+
+	if (!isValidPassword(Acunt.value.pw)) {
+		alert(t('Member_13'));
+		return;
+	}
+
 	const combinedData = {
 		acunt: Acunt.value,
 		personal: Person,
@@ -551,6 +557,20 @@ const popupAddr = () => {
 			// 예제를 참고하여 다양한 활용법을 확인해 보세요.
 		},
 	}).open();
+};
+
+// 6자리이상, 특수문자, 대문자, 소문자 조합이 됐는지 확인
+const isValidPassword = password => {
+	const minLength = 6;
+	const hasLowerCase = /[a-z]/.test(password);
+	const hasUpperCase = /[A-Z]/.test(password);
+	const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+	if (password.length < minLength) {
+		return false;
+	}
+
+	return hasLowerCase && hasUpperCase && hasSpecialChar;
 };
 </script>
 

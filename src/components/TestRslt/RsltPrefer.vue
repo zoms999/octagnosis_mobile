@@ -34,13 +34,13 @@
 					v-html="
 						$t('RsltPrefer_3')
 							.replaceAll('000', Props.ListItem.PersnNm)
-							.replaceAll('PREFER', Rslt2[0].tdname1)
-							.replaceAll('RATE', Rslt2[0].rrate1)
+							.replaceAll('PREFER', Rslt2[0] == null ? '-' : Rslt2[0].tdname1)
+							.replaceAll('RATE', Rslt2[0] == null ? '-' : Rslt2[0].rrate1)
 					"
 				></p>
 
 				<p class="txt-comment mt5">
-					<strong>{{ Rslt2[0].tdname1 }} </strong> :
+					<strong>{{ Rslt2[0] == null ? '-' : Rslt2[0].tdname1 }} </strong> :
 					{{ Rslt2[0].exp1 }}
 				</p>
 
@@ -83,8 +83,8 @@
 					v-html="
 						$t('RsltPrefer_3')
 							.replaceAll('000', Props.ListItem.PersnNm)
-							.replaceAll('PREFER', Rslt2[0].tdname2)
-							.replaceAll('RATE', Rslt2[0].rrate2)
+							.replaceAll('PREFER', Rslt2[0] == null ? '-' : Rslt2[0].tdname2)
+							.replaceAll('RATE', Rslt2[0] == null ? '-' : Rslt2[0].rrate2)
 					"
 				></p>
 
@@ -329,13 +329,6 @@ const setChart = () => {
 	labels1.push(`${t('RsltPrefer_9')} (${Rslt1.value[0].irate}%)`);
 	data1.push(Rslt1.value[0].irate);
 
-	labels2.push(`${Rslt2.value[0].tdname1} (${Rslt2.value[0].rrate1}%)`);
-	data2.push(Rslt2.value[0].rrate1);
-	labels2.push(`${Rslt2.value[0].tdname2} (${Rslt2.value[0].rrate2}%)`);
-	data2.push(Rslt2.value[0].rrate2);
-	labels2.push(`${Rslt2.value[0].tdname3} (${Rslt2.value[0].rrate3}%)`);
-	data2.push(Rslt2.value[0].rrate3);
-
 	ChartData1 = {
 		labels: labels1,
 		datasets: [
@@ -347,18 +340,26 @@ const setChart = () => {
 		],
 	};
 
-	ChartData2 = {
-		labels: labels2,
+	if (Rslt2.value[0] != null) {
+		labels2.push(`${Rslt2.value[0].tdname1} (${Rslt2.value[0].rrate1}%)`);
+		data2.push(Rslt2.value[0].rrate1);
+		labels2.push(`${Rslt2.value[0].tdname2} (${Rslt2.value[0].rrate2}%)`);
+		data2.push(Rslt2.value[0].rrate2);
+		labels2.push(`${Rslt2.value[0].tdname3} (${Rslt2.value[0].rrate3}%)`);
+		data2.push(Rslt2.value[0].rrate3);
 
-		datasets: [
-			{
-				label: t('RsltPrefer_10'),
-				backgroundColor: ['#36a2eb', '#ff6384', '#4bc0c0'],
-				data: data2,
-			},
-		],
-	};
+		ChartData2 = {
+			labels: labels2,
 
+			datasets: [
+				{
+					label: t('RsltPrefer_10'),
+					backgroundColor: ['#36a2eb', '#ff6384', '#4bc0c0'],
+					data: data2,
+				},
+			],
+		};
+	}
 	chartLoadYn.value = true;
 };
 

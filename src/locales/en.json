@@ -142,7 +142,7 @@
   "Member_10" : "Please re-enter your password",
   "Member_11" : "Password does not match.",
   "Member_12" : "Please check for duplicate IDs.",
-  "Member_13" : "6 characters or more, use English letters, numbers, and special characters",
+  "Member_13" : "6 characters or more, use English uppercase letters, lowercase letters, special characters[!@#$%^&*()]",
   "Member_14" : "Enter your name",
   "Member_15" : "Enter your email address",
   "Member_16" : "Please enter only numbers",
