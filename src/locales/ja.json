@@ -1,9 +1,9 @@
 {
   "login": "ログイン",
   "logout": "ログアウト",
-  "username": "ユーザー名",
+  "username": "ユーザーID",
   "password": "パスワード",
-  "enterUsername": "ユーザー名を入力してください",
+  "enterUsername": "ユーザーIDを入力してください",
   "enterPassword": "パスワードを入力してください",
   "findId": "IDを探す",
   "findPassword": "パスワードを探す",
@@ -11,7 +11,7 @@
   "find_yourself_description": "本当の自分を見つけます。",
   "test_name": "オクタグノーシス検査",
   "life_plan": "自分らしく生きるための人生設計図を提示します！",
-  "description": "海外のキャリア適性検査の寄せ集めではありません。教育科学的な質問に基づいて特許を取得したキャリア適性検査です。",
+  "description": "海外の進路適性検査の寄せ集めではありません。教育科学的な項目に基づいて特許を取得した進路適性検査です。",
   "test_history": "検査履歴",
   "ongoing_test_message": "（進行中の検査は速やかに完了してください。）",
   "start_test_after_payment": "支払い後に検査開始",
@@ -283,5 +283,17 @@
 "RsltPrefer_7": "関連学科",
 "RsltPrefer_8": "全体",
 "RsltPrefer_9": "好み反応率",
-"RsltPrefer_10": "Preferred type"
+"RsltPrefer_10": "Preferred type",
+
+  "inquiry": {
+    "button": "お問い合わせ",
+    "title": "お問い合わせ掲示板",
+    "form": {
+      "name": "お名前",
+      "email": "メールアドレス",
+      "subject": "件名",
+      "message": "内容",
+      "submit": "送信"
+    }
+  }
 }
