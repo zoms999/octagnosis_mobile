@@ -223,21 +223,32 @@ const getNextTest = (
 
 const popupPage = () => {
 	console.log('popupPage 함수 호출됨');
-	console.log('questPageId:', testParm.questPageId);
-	const nm = Number(testParm.questPageId) === 0 ? 'questMain' : 'quest';
+	console.log('questPageId 값:', testParm.questPageId);
+	console.log('questPageId 타입:', typeof testParm.questPageId);
+
+	const nm =
+		testParm.questPageId === 0 || testParm.questPageId === '0'
+			? 'questMain'
+			: 'quest';
 	const parm = encodeBase64(JSON.stringify(testParm));
 	const uri = `${nm}?p=${parm}`;
 
-	if (windowRef.value && !windowRef.value.closed) {
-		console.log('기존 창이 열려 있으므로, 창을 포커스합니다.');
-		windowRef.value.focus();
-		return;
-	}
+	// 모바일 기기 체크
+	const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-	windowRef.value = window.open(uri, '_blank');
-
-	if (windowRef.value && !windowRef.value.closed) {
-		windowRef.value.focus();
+	if (isMobile) {
+		// 모바일에서는 현재 창에서 이동
+		window.location.href = uri;
+	} else {
+		// 데스크톱에서는 기존 팝업 로직 유지
+		if (windowRef.value && !windowRef.value.closed) {
+			windowRef.value.focus();
+			return;
+		}
+		windowRef.value = window.open(uri, '_blank');
+		if (windowRef.value && !windowRef.value.closed) {
+			windowRef.value.focus();
+		}
 	}
 };
 

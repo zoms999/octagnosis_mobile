@@ -37,7 +37,7 @@
 					<span class="loader"></span>
 				</template>
 				<template v-else>
-					{{ $t('next') }}
+					<span class="next-text">{{ $t('next') }}</span>
 					<span class="material-icons">arrow_forward</span>
 				</template>
 			</button>
@@ -107,7 +107,8 @@ const { data, execUrl, reqUrl } = useAxios(
 		immediate: false,
 		onSuccess: () => {
 			switch (reqUrl.value) {
-				case Procs.value.getQuestPageForTest.path:
+				case Procs.value.getQuestPageForTest.path: {
+					console.log('Question page data received:', data.value);
 					Procs.value.getQuestPageForTest.loading = false;
 					TestList.value = data.value.TestList;
 					QuestPage.value = data.value.QuestPage;
@@ -125,25 +126,40 @@ const { data, execUrl, reqUrl } = useAxios(
 						showYn: true,
 					}));
 					break;
-				case Procs.value.saveAns.path:
+				}
+				case Procs.value.saveAns.path: {
+					console.log('Answer saved, response:', data.value);
 					Procs.value.saveAns.loading = false;
 					vSuccess(t('saved'));
-					TestParm.value = {
-						...TestParm.value,
-						testId: data.value.testId,
-						questPageId: data.value.questPageId,
-						questList: '',
-					};
-					const parm = encodeBase64(JSON.stringify(TestParm.value));
-					if (TestParm.value.questPageId == '0') {
-						router.push(`questMain?p=${parm}`);
+
+					let nextUrl;
+					const parm = encodeBase64(
+						JSON.stringify({
+							...TestParm.value,
+							testId: data.value.testId,
+							questPageId: data.value.questPageId,
+							questList: '',
+						}),
+					);
+
+					if (data.value.questPageId === '0') {
+						nextUrl = `questMain?p=${parm}`;
 					} else {
-						location.href = `quest?p=${parm}`;
+						nextUrl = `quest?p=${parm}`;
+					}
+
+					// 모바일 환경에서는 location.href 사용
+					if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+						window.location.href = nextUrl;
+					} else {
+						router.push(nextUrl);
 					}
 					break;
+				}
 			}
 		},
 		onError: err => {
+			console.error('API Error:', err);
 			vAlert(err.message);
 			Object.keys(Procs.value).forEach(
 				key => (Procs.value[key].loading = false),
@@ -177,6 +193,7 @@ const getQuestPageForTest = () => {
 };
 
 const saveAns = () => {
+	console.log('Save answer triggered');
 	const notAnsweredQuest = QuestList.value.find(
 		quest =>
 			(quest.questId == 25 && (quest.val1 == 0 || quest.val2 == 0)) ||
@@ -188,42 +205,59 @@ const saveAns = () => {
 		return;
 	}
 
-	if (TestParm.value.ansPrgrsId == 0 || TestParm.value.ansPrgrsId == '') {
+	if (!TestParm.value.ansPrgrsId || TestParm.value.ansPrgrsId === '0') {
 		vAlert(
 			'검사 정보가 누락되었습니다. 검사창을 닫고 검사를 다시 진행해 주십시요.',
 		);
-	} else {
-		Procs.value.saveAns.loading = true;
-		TestParm.value.questList = QuestList.value;
-		execUrl(Procs.value.saveAns.path, TestParm.value);
+		return;
 	}
+
+	Procs.value.saveAns.loading = true;
+	TestParm.value.questList = QuestList.value;
+	execUrl(Procs.value.saveAns.path, TestParm.value);
 };
 
 onMounted(() => {
-	const P = JSON.parse(decodeBase64(route.query.p));
-	TestParm.value = { ...TestParm.value, ...P };
-	getQuestPageForTest();
+	console.log('QuestView mounted, route query:', route.query);
+	try {
+		if (!route.query.p) {
+			vAlert('잘못된 접근입니다.');
+			return;
+		}
+		const P = JSON.parse(decodeBase64(route.query.p));
+		console.log('Decoded parameters:', P);
+		TestParm.value = { ...TestParm.value, ...P };
+		getQuestPageForTest();
+	} catch (error) {
+		console.error('Error in mounting:', error);
+		vAlert('데이터 처리 중 오류가 발생했습니다.');
+	}
 });
 </script>
 
 <style lang="scss" scoped>
 .mobile-test-interface {
-	font-family: 'Noto Sans KR', sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 	background-color: #f5f5f5;
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
+	width: 100%;
+	max-width: 100vw;
+	overflow-x: hidden;
 }
 
 .test-header {
 	background-color: #0d4f8a;
 	color: #ffffff;
 	padding: 1rem;
+	width: 100%;
+	box-sizing: border-box;
 
 	.category {
 		background-color: #1db1ad;
 		color: #ffffff;
-		font-size: 1rem;
+		font-size: 0.9rem;
 		padding: 0.4rem 0.8rem;
 		border-radius: 4px;
 		display: inline-block;
@@ -234,6 +268,7 @@ onMounted(() => {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
+		gap: 0.5rem;
 		margin-top: 0.5rem;
 
 		.step {
@@ -241,8 +276,6 @@ onMounted(() => {
 			border-radius: 12px;
 			font-size: 0.8rem;
 			padding: 0.2rem 0.4rem;
-			margin-right: 0.5rem;
-			margin-bottom: 0.3rem;
 
 			&.current-step {
 				background-color: #28a745;
@@ -252,11 +285,11 @@ onMounted(() => {
 		.step-title {
 			font-size: 0.9rem;
 			font-weight: 600;
-			margin-right: 0.5rem;
 		}
 
 		.question-progress {
 			font-size: 0.9rem;
+			margin-left: auto;
 
 			.current {
 				color: #ffd62c;
@@ -267,16 +300,21 @@ onMounted(() => {
 }
 
 .question-area {
-	flex-grow: 1;
+	flex: 1;
 	padding: 1rem;
 	background-color: #ffffff;
 	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
 }
 
 .test-footer {
+	position: sticky;
+	bottom: 0;
+	width: 100%;
 	padding: 1rem;
 	background-color: #ffffff;
 	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+	z-index: 100;
 
 	.btn-next {
 		width: 100%;
@@ -284,13 +322,14 @@ onMounted(() => {
 		color: #ffffff;
 		border: none;
 		border-radius: 25px;
-		padding: 0.8rem;
+		padding: 1rem;
 		font-size: 1rem;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		cursor: pointer;
-		transition: background-color 0.3s ease;
+		gap: 0.5rem;
+		touch-action: manipulation;
+		-webkit-tap-highlight-color: transparent;
 
 		&:disabled {
 			background-color: #cccccc;
@@ -298,7 +337,6 @@ onMounted(() => {
 		}
 
 		.material-icons {
-			margin-left: 0.5rem;
 			font-size: 1.2rem;
 		}
 
@@ -309,6 +347,11 @@ onMounted(() => {
 			border-top: 2px solid transparent;
 			border-radius: 50%;
 			animation: spin 1s linear infinite;
+		}
+
+		.next-text {
+			font-size: 1.5rem;
+			font-weight: 600;
 		}
 	}
 }
@@ -324,13 +367,19 @@ onMounted(() => {
 
 @media (max-width: 480px) {
 	.test-header {
+		padding: 0.8rem;
+
 		.category {
-			font-size: 0.9rem;
+			font-size: 0.8rem;
+			padding: 0.3rem 0.6rem;
 		}
 
 		.test-progress {
+			gap: 0.3rem;
+
 			.step {
 				font-size: 0.7rem;
+				padding: 0.2rem 0.4rem;
 			}
 
 			.step-title {
@@ -343,8 +392,15 @@ onMounted(() => {
 		}
 	}
 
+	.question-area {
+		padding: 0.8rem;
+	}
+
 	.test-footer {
+		padding: 0.8rem;
+
 		.btn-next {
+			padding: 0.8rem;
 			font-size: 0.9rem;
 		}
 	}

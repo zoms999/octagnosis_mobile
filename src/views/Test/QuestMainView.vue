@@ -39,6 +39,11 @@ import TestHead_1 from '@/components/Test/TestHead_1.vue';
 import TestHead_2 from '@/components/Test/TestHead_2.vue';
 import TestHeadComplete from '@/components/Test/TestHeadComplete.vue';
 
+import awardImage1 from '@/assets/img/main/img_award01.png';
+import awardImage2 from '@/assets/img/main/img_award02.png';
+import awardImage3 from '@/assets/img/main/img_award03.png';
+import awardImage4 from '@/assets/img/main/img_award04.png';
+
 const { acuntId, orgId, turnConnCd } = storeToRefs(useAuthStore());
 const { vAlert, vSuccess } = useAlert();
 const route = useRoute();
@@ -57,19 +62,19 @@ const TestParm = ref({
 
 const awards = [
 	{
-		image: require('@/assets/img/main/img_award01.png'),
+		image: awardImage1,
 		text: '특허: 제 10-2469087호',
 	},
 	{
-		image: require('@/assets/img/main/img_award02.png'),
+		image: awardImage2,
 		text: '올해의 우수브랜드 대상<br>2년 연속 진로교육부문 1위<br>(중앙일보)',
 	},
 	{
-		image: require('@/assets/img/main/img_award03.png'),
+		image: awardImage3,
 		text: '고객감동 브랜드대상<br>진로상담부문 1위<br>(중앙일보)',
 	},
 	{
-		image: require('@/assets/img/main/img_award04.png'),
+		image: awardImage4,
 		text: '신지식경영인 대상<br>(조선일보)',
 	},
 ];
@@ -134,16 +139,23 @@ const goNext = () => {
 };
 </script>
 
+<
 <style lang="scss" scoped>
 .mobile-test-completion {
 	font-family: 'Noto Sans KR', sans-serif;
 	background-color: #ffffff;
 	min-height: 100vh;
 	padding: 1rem;
+	display: flex;
+	flex-direction: column;
 }
 
 .celebration-wrap {
-	margin-bottom: 2rem;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-bottom: 1.5rem;
 }
 
 .bottom-nav {
@@ -161,18 +173,26 @@ const goNext = () => {
 	padding: 0.75rem 1.5rem;
 	border-radius: 2rem;
 	border: none;
-	font-size: 1.1rem;
+	font-size: 1.5rem;
 	font-weight: 600;
 	cursor: pointer;
-	transition: background-color 0.3s ease;
+	transition: all 0.3s ease;
+	width: 100%;
+	max-width: 300px;
 
 	&:active {
-		background-color: darken(#0d4f8a, 10%);
+		transform: scale(0.98);
 	}
 
-	.material-icons {
+	&:disabled {
+		opacity: 0.7;
+		cursor: not-allowed;
+	}
+
+	.icon {
 		margin-left: 0.5rem;
-		font-size: 1.5rem;
+		width: 1.5rem;
+		height: 1.5rem;
 	}
 }
 
@@ -181,7 +201,7 @@ const goNext = () => {
 }
 
 .awards-title {
-	font-size: 1.5rem;
+	font-size: 1.3rem;
 	font-weight: 700;
 	text-align: center;
 	margin-bottom: 1.5rem;
@@ -190,8 +210,8 @@ const goNext = () => {
 
 .awards-list {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-	gap: 1.5rem;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1.25rem;
 }
 
 .award-item {
@@ -202,8 +222,8 @@ const goNext = () => {
 }
 
 .award-image {
-	width: 80px;
-	height: 80px;
+	width: 60px;
+	height: 60px;
 	margin-bottom: 0.75rem;
 
 	img {
@@ -214,23 +234,38 @@ const goNext = () => {
 }
 
 .award-text {
-	font-size: 0.9rem;
+	font-size: 0.8rem;
 	line-height: 1.4;
 	color: #666;
 }
 
-@media (max-width: 480px) {
+@media (min-width: 481px) {
 	.awards-list {
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(4, 1fr);
 	}
 
 	.award-image {
-		width: 60px;
-		height: 60px;
+		width: 80px;
+		height: 80px;
 	}
 
 	.award-text {
-		font-size: 0.8rem;
+		font-size: 0.9rem;
+	}
+}
+
+@media (max-width: 320px) {
+	.awards-list {
+		grid-template-columns: 1fr;
+	}
+
+	.award-image {
+		width: 50px;
+		height: 50px;
+	}
+
+	.award-text {
+		font-size: 0.75rem;
 	}
 }
 </style>
