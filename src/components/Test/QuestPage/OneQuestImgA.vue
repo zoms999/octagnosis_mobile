@@ -21,7 +21,7 @@
 						class="imgBox d-flex flex-wrap justify-content-center"
 						v-for="questImg in getQuestImgList(item.questId)"
 						:key="questImg.imgId"
-						:style="`width:${Math.round(100 / item.imgColCnt, 2) - 0.5}% !important`"
+						:style="{ width: `calc(${100 / item.imgColCnt}% - 0.5%)` }"
 					>
 						<img :src="`${imageSrc}/QuestImg/${questImg.imgNm}`" class="img" />
 					</div>
@@ -34,7 +34,7 @@
 						class="itemBox"
 						v-for="questItem in getQuestItemList(item.questId)"
 						:key="questItem.itemId"
-						:style="`width:${Math.round(100 / item.itemColCnt, 2) - 0.5}% !important`"
+						:style="{ width: `calc(${100 / item.itemColCnt}% - 0.5%)` }"
 					>
 						<div
 							class="item"
@@ -52,26 +52,12 @@
 
 <script setup>
 import { computed } from 'vue';
-// Props / Emit  ****************************
 
 var QuestPage = defineModel('QuestPage');
 var QuestList = defineModel('QuestList');
 var QuestItemList = defineModel('QuestItemList');
 var QuestImgList = defineModel('QuestImgList');
 
-// Hook  ************************************
-
-// Model / Data  ****************************
-
-// Html ref  ********************************
-
-// Axios / Route  ***************************
-
-// Modal  ***********************************
-
-// Watch  ***********************************
-
-// Method  **********************************
 const imageSrc = computed(() => {
 	const basePath = import.meta.env.VITE_IMG_BASE_PATH;
 	return `${basePath}`;
@@ -94,8 +80,6 @@ const setQuestVal = (questId, itemId) => {
 		item.selected = item.itemId == itemId ? true : false;
 	});
 };
-
-// Etc  *************************************
 </script>
 
 <style scoped>
@@ -161,5 +145,48 @@ const setQuestVal = (questId, itemId) => {
 .itemChecked {
 	background-color: #3d7aed !important;
 	color: #ffffff;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+	.questPageNm span {
+		font-size: 1.5rem;
+		padding: 5px;
+	}
+	.numBox {
+		width: 40px;
+	}
+	.num {
+		width: 35px;
+		height: 35px;
+		font-size: 1.3rem;
+		padding-top: 7px;
+		margin: 0 5px 0 0;
+	}
+	.quest1,
+	.quest2 {
+		font-size: 1.3rem;
+		padding: 0 10px;
+	}
+	.quest2 {
+		margin: 0 0 10px 0;
+	}
+	.imgs {
+		padding: 0 5px;
+	}
+	.imgBox {
+		margin: auto 2px;
+	}
+	.img {
+		margin: 10px;
+		max-width: 100%;
+		height: auto;
+	}
+	.items {
+		margin: 10px 20px 0 20px;
+	}
+	.items .itemBox .item {
+		font-size: 1.5rem;
+	}
 }
 </style>

@@ -1,102 +1,75 @@
 <template>
-	<div id="content" class="login">
-		<div class="container">
-			<div class="login-form">
-				<h2 class="title">{{ $t('login') }}</h2>
-				<div class="form-group">
-					<div class="form">
-						<div class="form-title">
-							<p>{{ $t('username') }}</p>
-						</div>
-						<div class="form-cont">
-							<input
-								type="text"
-								v-model="loginData.acuntId"
-								class="w300"
-								:placeholder="$t('enterUsername')"
-								required="required"
-								ref="txtAcuntId"
-							/>
-						</div>
-					</div>
-					<div class="form">
-						<div class="form-title">
-							<p>{{ $t('password') }}</p>
-						</div>
-						<div class="form-cont">
-							<input
-								type="password"
-								v-model="loginData.pw"
-								class="w300"
-								:placeholder="$t('enterPassword')"
-								required="required"
-								ref="txtPw"
-							/>
-						</div>
-					</div>
+	<div class="login-container">
+		<div class="login-card">
+			<h2 class="login-title">{{ $t('login') }}</h2>
+
+			<div class="form-group">
+				<div class="input-wrapper">
+					<label>{{ $t('username') }}</label>
+					<input
+						type="text"
+						v-model="loginData.acuntId"
+						:placeholder="$t('enterUsername')"
+						required
+						ref="txtAcuntId"
+					/>
 				</div>
 
-				<div class="btn-wrap mt30">
-					<button class="btn md round fill-navy w300" @click="goLogin">
-						{{ $t('login') }}
-					</button>
-				</div>
-
-				<div class="user-offer">
-					<ul>
-						<li>
-							<button
-								class="btn-txt btn-find-id"
-								@click="showFindIdModal = true"
-							>
-								{{ $t('findId') }}
-							</button>
-						</li>
-						<li>
-							<button
-								class="btn-txt btn-find-pw"
-								@click="showFindPwModal = true"
-							>
-								{{ $t('findPassword') }}
-							</button>
-						</li>
-						<li>
-							<button class="btn-txt btn-find-pw" @click="goRegister()">
-								{{ $t('join_member') }}
-							</button>
-						</li>
-					</ul>
+				<div class="input-wrapper">
+					<label>{{ $t('password') }}</label>
+					<input
+						type="password"
+						v-model="loginData.pw"
+						:placeholder="$t('enterPassword')"
+						required
+						ref="txtPw"
+					/>
 				</div>
 			</div>
+
+			<button class="login-button" @click="goLogin">
+				{{ $t('login') }}
+			</button>
+
+			<div class="action-links">
+				<button class="link-button" @click="showFindIdModal = true">
+					{{ $t('findId') }}
+				</button>
+				<span class="divider">|</span>
+				<button class="link-button" @click="showFindPwModal = true">
+					{{ $t('findPassword') }}
+				</button>
+				<span class="divider">|</span>
+				<button class="link-button" @click="goRegister()">
+					{{ $t('join_member') }}
+				</button>
+			</div>
 		</div>
+
+		<FindIdModal
+			:isVisible="showFindIdModal"
+			@close="showFindIdModal = false"
+		/>
+		<FindPasswordModal
+			:isVisible="showFindPwModal"
+			@close="showFindPwModal = false"
+		/>
 	</div>
-	<FindIdModal :isVisible="showFindIdModal" @close="showFindIdModal = false" />
-	<FindPasswordModal
-		:isVisible="showFindPwModal"
-		@close="showFindPwModal = false"
-	/>
 </template>
 
-<script setup>
+<script setup name="UserLogin">
 import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAxios } from '@/hooks/useAxios';
 import { useAlert } from '@/hooks/useAlert';
-
 import { useRouter } from 'vue-router';
-import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
-
 import FindIdModal from '@/views/Member/FindIdModal.vue';
 import FindPasswordModal from '@/views/Member/FindPasswordModal.vue';
-import LanguageSwitcher from '@/components/app/LanguageSwitcher.vue';
 
-const { t, locale } = useI18n();
-
+const { t } = useI18n();
 const store = useAuthStore();
-const { isAuthenticated } = storeToRefs(store);
 const { login } = store;
-
 const router = useRouter();
 
 const loginData = ref({
@@ -106,7 +79,7 @@ const loginData = ref({
 	orgId: '0',
 });
 
-const { vAlert, vSuccess } = useAlert();
+const { vAlert } = useAlert();
 
 const txtAcuntId = ref(null);
 const txtPw = ref(null);
@@ -145,9 +118,7 @@ const { data, execUrl, reqUrl } = useAxios(
 								break;
 						}
 					}
-
 					break;
-
 				default:
 					break;
 			}
@@ -201,4 +172,156 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.login-container {
+	min-height: calc(100vh - 200px);
+	padding: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #f5f7fa;
+}
+
+.login-card {
+	width: 100%;
+	max-width: 400px;
+	padding: 32px 24px;
+	background: white;
+	border-radius: 16px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.login-title {
+	font-size: 24px;
+	font-weight: 700;
+	text-align: center;
+	color: #1a1a1a;
+	margin-bottom: 32px;
+}
+
+.form-group {
+	margin-bottom: 24px;
+}
+
+.input-wrapper {
+	margin-bottom: 16px;
+
+	label {
+		display: block;
+		font-size: 14px;
+		color: #4a5568;
+		margin-bottom: 8px;
+	}
+
+	input {
+		width: 100%;
+		padding: 12px 16px;
+		border: 1px solid #e2e8f0;
+		border-radius: 8px;
+		font-size: 16px;
+		transition: border-color 0.2s;
+
+		&:focus {
+			outline: none;
+			border-color: #3d7aed;
+		}
+	}
+}
+
+.login-button {
+	width: 100%;
+	padding: 14px;
+	background: linear-gradient(135deg, #1db1ad 0%, #3d7aed 100%);
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-size: 16px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: opacity 0.2s;
+
+	&:hover {
+		opacity: 0.9;
+	}
+
+	&:active {
+		transform: translateY(1px);
+	}
+}
+
+.action-links {
+	margin-top: 24px;
+	text-align: center;
+
+	.link-button {
+		background: none;
+		border: none;
+		color: #4a5568;
+		font-size: 14px;
+		cursor: pointer;
+		padding: 4px 8px;
+		transition: color 0.2s;
+
+		&:hover {
+			color: #3d7aed;
+		}
+	}
+
+	.divider {
+		color: #cbd5e0;
+		margin: 0 4px;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.login-container {
+		padding: 16px;
+		background: white;
+		min-height: calc(100vh - 160px);
+	}
+
+	.login-card {
+		box-shadow: none;
+		padding: 20px 16px;
+	}
+
+	.login-title {
+		font-size: 20px;
+		margin-bottom: 24px;
+	}
+
+	.input-wrapper {
+		margin-bottom: 20px;
+
+		label {
+			font-size: 15px;
+		}
+
+		input {
+			padding: 12px 14px;
+			font-size: 16px;
+			-webkit-appearance: none;
+			border-radius: 8px;
+		}
+	}
+
+	.login-button {
+		padding: 16px;
+		font-size: 16px;
+		border-radius: 8px;
+	}
+
+	.action-links {
+		margin-top: 32px;
+
+		.link-button {
+			font-size: 14px;
+			padding: 8px;
+		}
+
+		.divider {
+			margin: 0 8px;
+		}
+	}
+}
+</style>

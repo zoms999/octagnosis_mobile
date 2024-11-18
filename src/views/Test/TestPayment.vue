@@ -1,6 +1,6 @@
 <template>
 	<div class="payment-container">
-		<h1>결제를 진행하여 주십시오.</h1>
+		<h1 class="title">결제를 진행하여 주십시오.</h1>
 		<p class="info-text">
 			검사자님께서는 아래 선택하신 프로그램으로 진행됨을 알려드립니다.
 		</p>
@@ -49,17 +49,21 @@
 		<button class="payment-button" @click="handlePayment">결제하기</button>
 
 		<!-- Modal -->
-		<div v-if="showModal" class="modal">
-			<div class="modal-content">
-				<CheckoutView
-					:productId="selectedProductId"
-					:productName="selectedProduct.ProdtNm"
-					:productPrice="selectedProduct.Price"
-					:productType="selectedProduct.ProdtType"
-				/>
-				<button class="close-button" @click="closeModal">닫기</button>
-			</div>
-		</div>
+		<Teleport to="body">
+			<Transition name="modal">
+				<div v-if="showModal" class="modal">
+					<div class="modal-content">
+						<CheckoutView
+							:productId="selectedProductId"
+							:productName="selectedProduct.ProdtNm"
+							:productPrice="selectedProduct.Price"
+							:productType="selectedProduct.ProdtType"
+						/>
+						<button class="close-button" @click="closeModal">닫기</button>
+					</div>
+				</div>
+			</Transition>
+		</Teleport>
 	</div>
 </template>
 
@@ -76,10 +80,8 @@ const showModal = ref(false);
 const fetchProducts = async () => {
 	try {
 		const response = await axios.get('/api/products');
-		products.value = response.data.ProductList;
+		products.value = response.data.ProductList.filter(o => o.ProdtId != 6);
 		if (products.value.length > 0) {
-			// 기관전용 상품 (ProdtId : 6) 출력안되게 처리.
-			products.value = products.value.filter(o => o.ProdtId != 6);
 			selectedProductId.value = products.value[0].ProdtId;
 			selectedProduct.value = products.value[0];
 		}
@@ -104,48 +106,45 @@ const closeModal = () => {
 	showModal.value = false;
 };
 
-onMounted(() => {
-	fetchProducts();
-});
+onMounted(fetchProducts);
 </script>
 
 <style lang="scss" scoped>
 .payment-container {
 	font-family: 'Noto Sans KR', sans-serif;
-	max-width: 800px;
-	margin: 60px auto;
-	padding: 40px;
+	max-width: 100%;
+	margin: 0 auto;
+	padding: 20px;
 	background-color: #ffffff;
-	border-radius: 20px;
-	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
+.title {
 	color: #333;
-	font-size: 32px;
+	font-size: 24px;
 	font-weight: 700;
 	text-align: center;
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 }
 
 .info-text {
 	text-align: center;
 	color: #666;
-	font-size: 18px;
-	margin-bottom: 40px;
+	font-size: 16px;
+	margin-bottom: 30px;
 }
 
 .program-info {
 	background-color: #f8f9fa;
 	border-radius: 12px;
-	padding: 25px;
-	margin-bottom: 40px;
+	padding: 20px;
+	margin-bottom: 30px;
 
 	label {
 		display: block;
 		font-weight: 600;
 		margin-bottom: 10px;
 		color: #333;
+		font-size: 16px;
 	}
 
 	select {
@@ -155,7 +154,11 @@ h1 {
 		border-radius: 8px;
 		font-size: 16px;
 		margin-bottom: 15px;
-		transition: border-color 0.3s;
+		appearance: none;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+		background-repeat: no-repeat;
+		background-position: right 12px center;
+		background-size: 12px;
 
 		&:focus {
 			outline: none;
@@ -165,22 +168,23 @@ h1 {
 
 	.price {
 		display: block;
-		font-size: 24px;
+		font-size: 20px;
 		font-weight: 700;
 		color: #28a745;
+		margin-top: 10px;
 	}
 }
 
 .important-info {
 	background-color: #fff3cd;
 	border-radius: 12px;
-	padding: 25px;
-	margin-bottom: 40px;
+	padding: 20px;
+	margin-bottom: 30px;
 
 	h2 {
 		color: #856404;
-		font-size: 24px;
-		margin-bottom: 20px;
+		font-size: 18px;
+		margin-bottom: 15px;
 	}
 
 	ul {
@@ -189,7 +193,8 @@ h1 {
 		li {
 			color: #666;
 			margin-bottom: 10px;
-			line-height: 1.6;
+			line-height: 1.5;
+			font-size: 14px;
 		}
 	}
 }
@@ -197,20 +202,18 @@ h1 {
 .payment-button {
 	display: block;
 	width: 100%;
-	padding: 18px;
-	font-size: 20px;
+	padding: 16px;
+	font-size: 18px;
 	font-weight: 600;
 	color: #fff;
 	background-color: #007bff;
 	border: none;
 	border-radius: 12px;
 	cursor: pointer;
-	transition: all 0.3s ease;
+	transition: background-color 0.3s ease;
 
-	&:hover {
+	&:active {
 		background-color: #0056b3;
-		transform: translateY(-2px);
-		box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
 	}
 }
 
@@ -220,39 +223,100 @@ h1 {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0, 0, 0, 0.6); /* 배경 어두운 색상 증가 */
+	background-color: rgba(0, 0, 0, 0.6);
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	z-index: 1000;
 }
 
 .modal-content {
 	background-color: #fff;
-	padding: 40px;
-	border-radius: 20px;
-	width: 95%;
-	max-width: 800px;
-	box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+	padding: 20px;
+	border-radius: 12px;
+	width: 90%;
+	max-width: 400px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .close-button {
 	display: block;
 	width: 100%;
-	margin-top: 25px;
-	padding: 15px 30px;
-	font-size: 18px;
+	margin-top: 20px;
+	padding: 12px;
+	font-size: 16px;
 	font-weight: 600;
 	color: #fff;
 	background-color: #6c757d;
 	border: none;
-	border-radius: 12px;
+	border-radius: 8px;
 	cursor: pointer;
-	transition: all 0.3s ease;
+	transition: background-color 0.3s ease;
 
-	&:hover {
+	&:active {
 		background-color: #5a6268;
-		transform: translateY(-2px);
-		box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+	}
+}
+
+.modal-enter-active,
+.modal-leave-active {
+	transition: opacity 0.3s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+	opacity: 0;
+}
+
+@media (max-width: 480px) {
+	.title {
+		font-size: 22px;
+	}
+
+	.info-text {
+		font-size: 14px;
+	}
+
+	.program-info {
+		padding: 15px;
+
+		label {
+			font-size: 14px;
+		}
+
+		select {
+			font-size: 14px;
+		}
+
+		.price {
+			font-size: 18px;
+		}
+	}
+
+	.important-info {
+		padding: 15px;
+
+		h2 {
+			font-size: 16px;
+		}
+
+		ul li {
+			font-size: 12px;
+		}
+	}
+
+	.payment-button {
+		font-size: 16px;
+		padding: 14px;
+	}
+
+	.modal-content {
+		padding: 15px;
+	}
+
+	.close-button {
+		font-size: 14px;
+		padding: 10px;
 	}
 }
 </style>
