@@ -1,7 +1,7 @@
 <template>
-	<div class="mobile-test-interface">
+	<div class="mobile-test-app">
 		<header class="test-header">
-			<div class="category">{{ $t('total_test') }}</div>
+			<h1 class="test-title">{{ $t('total_test') }}</h1>
 			<div class="test-progress" v-for="item in TestList" :key="item.testId">
 				<div
 					class="step"
@@ -11,15 +11,18 @@
 				</div>
 				<div class="step-title">{{ item.testNm }}</div>
 				<div v-if="item.testId == QuestPage.testId" class="question-progress">
-					<span class="current">{{ QuestPage.questPageSeq }}</span>
-					<span class="total">/ {{ item.questPageCnt }}</span>
+					<span class="material-icons">timer</span>
+					<span class="question-count"
+						><strong>{{ QuestPage.questPageSeq }}</strong> /
+						{{ item.questPageCnt }}</span
+					>
 				</div>
 			</div>
 		</header>
 
-		<main class="question-area">
+		<main class="question-container">
 			<component
-				:is="currentQuestionComponent"
+				:is="getQuestionComponent"
 				v-model:QuestPage="QuestPage"
 				v-model:QuestList="QuestList"
 				v-model:QuestItemList="QuestItemList"
@@ -34,10 +37,10 @@
 				:disabled="Procs.saveAns.loading"
 			>
 				<template v-if="Procs.saveAns.loading">
-					<span class="loader"></span>
+					<span class="spinner"></span>
 				</template>
 				<template v-else>
-					<span class="next-text">{{ $t('next') }}</span>
+					<span>{{ $t('next') }}</span>
 					<span class="material-icons">arrow_forward</span>
 				</template>
 			</button>
@@ -46,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
@@ -55,6 +58,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useBase64Utils } from '@/plugins/base64.js';
 import { useI18n } from 'vue-i18n';
 
+// Import question components
 import MultiQuestItemA from '@/components/Test/QuestPage/MultiQuestItemA.vue';
 import OneQuestItemA from '@/components/Test/QuestPage/OneQuestItemA.vue';
 import OneQuestItemB from '@/components/Test/QuestPage/OneQuestItemB.vue';
@@ -66,11 +70,11 @@ import FreeTypeTime1 from '@/components/Test/QuestPage/FreeType/Time1.vue';
 import FreeTypeTime2 from '@/components/Test/QuestPage/FreeType/Time2.vue';
 
 const { t } = useI18n();
+const { acuntId, orgId, turnConnCd, userId } = storeToRefs(useAuthStore());
 const { vAlert, vSuccess } = useAlert();
 const route = useRoute();
 const router = useRouter();
 const { encodeBase64, decodeBase64 } = useBase64Utils();
-const { acuntId, orgId, turnConnCd, userId } = storeToRefs(useAuthStore());
 
 const TestList = ref([]);
 const QuestPage = ref({});
@@ -96,7 +100,6 @@ const Procs = ref({
 		path: '/api/Test/getQuestPageForTest',
 		loading: false,
 	},
-	getNextTest: { path: '/api/Test/getNextTest', loading: false },
 	saveAns: { path: '/api/Test/saveAns', loading: false },
 });
 
@@ -107,80 +110,77 @@ const { data, execUrl, reqUrl } = useAxios(
 		immediate: false,
 		onSuccess: () => {
 			switch (reqUrl.value) {
-				case Procs.value.getQuestPageForTest.path: {
-					console.log('Question page data received:', data.value);
+				case Procs.value.getQuestPageForTest.path:
 					Procs.value.getQuestPageForTest.loading = false;
 					TestList.value = data.value.TestList;
 					QuestPage.value = data.value.QuestPage;
-					QuestList.value = data.value.QuestList.map(quest => ({
-						...quest,
-						val1: 0,
-						val2: 0,
-					}));
-					QuestItemList.value = data.value.QuestItemList.map(item => ({
-						...item,
-						selected: false,
-					}));
-					QuestImgList.value = data.value.QuestImgList.map(item => ({
-						...item,
-						showYn: true,
-					}));
+					QuestList.value = data.value.QuestList;
+					QuestItemList.value = data.value.QuestItemList;
+					QuestImgList.value = data.value.QuestImgList;
+
+					QuestList.value.forEach(quest => {
+						quest.val1 = 0;
+						quest.val2 = 0;
+					});
+					QuestItemList.value.forEach(item => {
+						item.selected = false;
+					});
+					QuestImgList.value.forEach(item => {
+						item.showYn = true;
+					});
 					break;
-				}
-				case Procs.value.saveAns.path: {
-					console.log('Answer saved, response:', data.value);
+				case Procs.value.saveAns.path:
 					Procs.value.saveAns.loading = false;
 					vSuccess(t('saved'));
+					TestParm.value.testId = data.value.testId;
+					TestParm.value.questPageId = data.value.questPageId;
+					TestParm.value.questList = '';
 
-					let nextUrl;
-					const parm = encodeBase64(
-						JSON.stringify({
-							...TestParm.value,
-							testId: data.value.testId,
-							questPageId: data.value.questPageId,
-							questList: '',
-						}),
-					);
-
-					if (data.value.questPageId === '0') {
-						nextUrl = `questMain?p=${parm}`;
+					if (TestParm.value.questPageId == '0') {
+						const parm = encodeBase64(JSON.stringify(TestParm.value));
+						router.push(`questMain?p=${parm}`);
 					} else {
-						nextUrl = `quest?p=${parm}`;
-					}
-
-					// 모바일 환경에서는 location.href 사용
-					if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-						window.location.href = nextUrl;
-					} else {
-						router.push(nextUrl);
+						const parm = encodeBase64(JSON.stringify(TestParm.value));
+						router.replace({
+							path: 'quest',
+							query: { p: parm, t: Date.now() },
+						});
 					}
 					break;
-				}
 			}
 		},
 		onError: err => {
-			console.error('API Error:', err);
 			vAlert(err.message);
-			Object.keys(Procs.value).forEach(
-				key => (Procs.value[key].loading = false),
-			);
+			for (const key in Procs.value) {
+				Procs.value[key].loading = false;
+			}
 		},
 	},
 );
 
-const currentQuestionComponent = computed(() => {
-	const componentMap = {
-		C00402: MultiQuestItemA,
-		C00401: OneQuestItemA,
-		C00407: OneQuestItemB,
-		C00403: OneQuestImgA,
-		C00404: OneQuestImgB,
-		C00408: OneQuestImgC,
-		C00405: OneQuestImgTimeA,
-		C00406: FreeTypeTime1,
-		C00409: FreeTypeTime2,
-	};
-	return componentMap[QuestPage.value.questPageType] || null;
+const getQuestionComponent = computed(() => {
+	switch (QuestPage.value.questPageType) {
+		case 'C00402':
+			return MultiQuestItemA;
+		case 'C00401':
+			return OneQuestItemA;
+		case 'C00407':
+			return OneQuestItemB;
+		case 'C00403':
+			return OneQuestImgA;
+		case 'C00404':
+			return OneQuestImgB;
+		case 'C00408':
+			return OneQuestImgC;
+		case 'C00405':
+			return OneQuestImgTimeA;
+		case 'C00406':
+			return FreeTypeTime1;
+		case 'C00409':
+			return FreeTypeTime2;
+		default:
+			return null;
+	}
 });
 
 const getQuestPageForTest = () => {
@@ -192,168 +192,136 @@ const getQuestPageForTest = () => {
 	execUrl(Procs.value.getQuestPageForTest.path, Parm);
 };
 
-const saveAns = () => {
-	console.log('Save answer triggered');
-	const notAnsweredQuest = QuestList.value.find(
-		quest =>
-			(quest.questId == 25 && (quest.val1 == 0 || quest.val2 == 0)) ||
-			(quest.questId != 25 && quest.val1 == 0),
-	);
-
-	if (notAnsweredQuest) {
-		vAlert(t('select_menu') + ' : ' + notAnsweredQuest.questNo);
+const saveAns = async () => {
+	if (
+		QuestList.value.some(
+			quest => quest.val1 === 0 || (quest.questId === 25 && quest.val2 === 0),
+		)
+	) {
+		vAlert(t('select_menu'));
 		return;
 	}
 
 	if (!TestParm.value.ansPrgrsId || TestParm.value.ansPrgrsId === '0') {
-		vAlert(
-			'검사 정보가 누락되었습니다. 검사창을 닫고 검사를 다시 진행해 주십시요.',
-		);
+		vAlert(t('test_info_missing'));
 		return;
 	}
 
-	Procs.value.saveAns.loading = true;
-	TestParm.value.questList = QuestList.value;
-	execUrl(Procs.value.saveAns.path, TestParm.value);
+	try {
+		Procs.value.saveAns.loading = true;
+		TestParm.value.questList = QuestList.value;
+		await execUrl(Procs.value.saveAns.path, TestParm.value);
+
+		const parm = encodeBase64(JSON.stringify(TestParm.value));
+		if (TestParm.value.questPageId === '0') {
+			window.location.href = `questMain?p=${parm}`;
+		} else {
+			window.location.href = `quest?p=${parm}&t=${Date.now()}`;
+		}
+	} catch (error) {
+		console.error('Error saving answer:', error);
+		Procs.value.saveAns.loading = false;
+		vAlert('저장 중 오류가 발생했습니다.');
+	}
 };
 
+// Lifecycle hooks
+import { onMounted, onBeforeUnmount } from 'vue';
+
 onMounted(() => {
-	console.log('QuestView mounted, route query:', route.query);
-	try {
-		if (!route.query.p) {
-			vAlert('잘못된 접근입니다.');
-			return;
-		}
-		const P = JSON.parse(decodeBase64(route.query.p));
-		console.log('Decoded parameters:', P);
-		TestParm.value = { ...TestParm.value, ...P };
-		getQuestPageForTest();
-	} catch (error) {
-		console.error('Error in mounting:', error);
-		vAlert('데이터 처리 중 오류가 발생했습니다.');
-	}
+	const P = JSON.parse(decodeBase64(route.query.p));
+	Object.assign(TestParm.value, P);
+	getQuestPageForTest();
 });
 </script>
 
-<style lang="scss" scoped>
-.mobile-test-interface {
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-	background-color: #f5f5f5;
-	min-height: 100vh;
+<style scoped>
+.mobile-test-app {
 	display: flex;
 	flex-direction: column;
-	width: 100%;
-	max-width: 100vw;
-	overflow-x: hidden;
+	min-height: 100vh;
+	background-color: #f5f5f5;
 }
 
 .test-header {
 	background-color: #0d4f8a;
 	color: #ffffff;
 	padding: 1rem;
-	width: 100%;
-	box-sizing: border-box;
-
-	.category {
-		background-color: #1db1ad;
-		color: #ffffff;
-		font-size: 0.9rem;
-		padding: 0.4rem 0.8rem;
-		border-radius: 4px;
-		display: inline-block;
-		margin-bottom: 0.5rem;
-	}
-
-	.test-progress {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 0.5rem;
-		margin-top: 0.5rem;
-
-		.step {
-			border: 1px solid #ffffff;
-			border-radius: 12px;
-			font-size: 0.8rem;
-			padding: 0.2rem 0.4rem;
-
-			&.current-step {
-				background-color: #28a745;
-			}
-		}
-
-		.step-title {
-			font-size: 0.9rem;
-			font-weight: 600;
-		}
-
-		.question-progress {
-			font-size: 0.9rem;
-			margin-left: auto;
-
-			.current {
-				color: #ffd62c;
-				font-weight: bold;
-			}
-		}
-	}
 }
 
-.question-area {
-	flex: 1;
+.test-title {
+	font-size: 1.5rem;
+	margin-bottom: 0.5rem;
+}
+
+.test-progress {
+	display: flex;
+	align-items: center;
+	margin-bottom: 0.5rem;
+}
+
+.step {
+	background-color: rgba(255, 255, 255, 0.2);
+	border-radius: 1rem;
+	padding: 0.25rem 0.5rem;
+	font-size: 0.875rem;
+	margin-right: 0.5rem;
+}
+
+.current-step {
+	background-color: #1db1ad;
+}
+
+.step-title {
+	font-size: 1rem;
+	font-weight: 600;
+	flex-grow: 1;
+}
+
+.question-progress {
+	display: flex;
+	align-items: center;
+}
+
+.question-count {
+	margin-left: 0.25rem;
+}
+
+.question-container {
+	flex-grow: 1;
 	padding: 1rem;
 	background-color: #ffffff;
-	overflow-y: auto;
-	-webkit-overflow-scrolling: touch;
 }
 
 .test-footer {
-	position: sticky;
-	bottom: 0;
-	width: 100%;
 	padding: 1rem;
 	background-color: #ffffff;
-	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-	z-index: 100;
+}
 
-	.btn-next {
-		width: 100%;
-		background-color: #0d4f8a;
-		color: #ffffff;
-		border: none;
-		border-radius: 25px;
-		padding: 1rem;
-		font-size: 1rem;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		gap: 0.5rem;
-		touch-action: manipulation;
-		-webkit-tap-highlight-color: transparent;
+.btn-next {
+	width: 100%;
+	background-color: #0d4f8a;
+	color: #ffffff;
+	border: none;
+	border-radius: 2rem;
+	padding: 0.75rem;
+	font-size: 1rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
-		&:disabled {
-			background-color: #cccccc;
-			cursor: not-allowed;
-		}
+.btn-next:disabled {
+	opacity: 0.7;
+}
 
-		.material-icons {
-			font-size: 1.2rem;
-		}
-
-		.loader {
-			width: 20px;
-			height: 20px;
-			border: 2px solid #ffffff;
-			border-top: 2px solid transparent;
-			border-radius: 50%;
-			animation: spin 1s linear infinite;
-		}
-
-		.next-text {
-			font-size: 1.5rem;
-			font-weight: 600;
-		}
-	}
+.spinner {
+	width: 1.5rem;
+	height: 1.5rem;
+	border: 2px solid #ffffff;
+	border-top: 2px solid transparent;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
@@ -362,47 +330,6 @@ onMounted(() => {
 	}
 	100% {
 		transform: rotate(360deg);
-	}
-}
-
-@media (max-width: 480px) {
-	.test-header {
-		padding: 0.8rem;
-
-		.category {
-			font-size: 0.8rem;
-			padding: 0.3rem 0.6rem;
-		}
-
-		.test-progress {
-			gap: 0.3rem;
-
-			.step {
-				font-size: 0.7rem;
-				padding: 0.2rem 0.4rem;
-			}
-
-			.step-title {
-				font-size: 0.8rem;
-			}
-
-			.question-progress {
-				font-size: 0.8rem;
-			}
-		}
-	}
-
-	.question-area {
-		padding: 0.8rem;
-	}
-
-	.test-footer {
-		padding: 0.8rem;
-
-		.btn-next {
-			padding: 0.8rem;
-			font-size: 0.9rem;
-		}
 	}
 }
 </style>

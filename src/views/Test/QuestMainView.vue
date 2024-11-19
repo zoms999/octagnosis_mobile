@@ -80,18 +80,31 @@ const awards = [
 ];
 
 const currentTestHead = computed(() => {
-	switch (TestParm.value.testId) {
-		case 9:
-			return TestHeadMain;
-		case 6:
-			return TestHead_1;
-		case 10:
-			return TestHead_2;
-		case 0:
-			return TestHeadComplete;
-		default:
-			return null;
-	}
+	console.log('현재 TestParm.value.testId:', TestParm.value.testId);
+	console.log('TestParm 전체 값:', TestParm.value);
+
+	const component = (() => {
+		switch (TestParm.value.testId) {
+			case 9:
+				console.log('TestHeadMain 컴포넌트 반환');
+				return TestHeadMain;
+			case 6:
+				console.log('TestHead_1 컴포넌트 반환');
+				return TestHead_1;
+			case 10:
+				console.log('TestHead_2 컴포넌트 반환');
+				return TestHead_2;
+			case 0:
+				console.log('TestHeadComplete 컴포넌트 반환');
+				return TestHeadComplete;
+			default:
+				console.log('일치하는 컴포넌트 없음');
+				return null;
+		}
+	})();
+
+	console.log('선택된 컴포넌트:', component);
+	return component;
 });
 
 const Procs = ref({
